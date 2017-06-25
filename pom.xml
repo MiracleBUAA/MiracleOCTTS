@@ -65,7 +65,34 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
 	</build>
 
+	<profiles>
+		<!--本地-->
+		<profile>
+			<id>local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<db.name>octts</db.name>
+				<connection.driver>com.mysql.jdbc.Driver</connection.driver>
+				<connection.url>
+					<![CDATA[jdbc:mysql://localhost:3306/${db.name}?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]>
+				</connection.url>
+				<connection.username>octts</connection.username>
+				<connection.password>octts</connection.password>
+			</properties>
+		</profile>
+	</profiles>
 
 </project>
