@@ -19,6 +19,9 @@ public class Student extends BaseEntity {
     @Size(max = PASSWORD_MAX_LENGTH, min = PASSWORD_MIN_LENGTH)
     private String password;
 
+    private boolean gender;
+    private String group_id;
+
     private String name;
     private String student_class;
 
@@ -93,5 +96,21 @@ public class Student extends BaseEntity {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public Boolean getGender() {
+        return gender;
+    }
+
+    public void setGender(Boolean gender) {
+        this.gender = gender;
+    }
+
+    public String getGroup_id() {
+        return group_id;
+    }
+
+    public void setGroup_id(String group_id) {
+        this.group_id = group_id;
     }
 }
