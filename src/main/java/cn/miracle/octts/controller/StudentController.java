@@ -2,6 +2,7 @@ package cn.miracle.octts.controller;
 
 import cn.miracle.octts.entity.Student;
 import cn.miracle.octts.service.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,11 +16,17 @@ import java.util.concurrent.atomic.AtomicLong;
 public class StudentController {
     private static final String template = "/course_information<br/>/personal_information<br/>/announcement<br/>/course_resources";
     private final AtomicLong counter = new AtomicLong();
+    @Autowired
     private StudentService studentService;
 
     @RequestMapping("/student")
     public String student() {
         return template;
+    }
+
+    @RequestMapping("/student/announcement")
+    public String announcement() {
+        return "No announcement!";
     }
 
 
