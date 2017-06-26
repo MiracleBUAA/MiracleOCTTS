@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
-    <properties resource="application.properties"/>
+    <!--<properties resource="classpath:application.properties"/>-->
 
     <settings>
         <!-- Globally enables or disables any caches configured in any mapper under this configuration -->
@@ -24,12 +24,16 @@
         <environment id="development">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
-                <property name="driver" value="${jdbc.driverClassName}"/>
-                <property name="url" value="${jdbc.url}"/>
-                <property name="username" value="${jdbc.username}"/>
-                <property name="password" value="${jdbc.password}"/>
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/${db.name}?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8"/>
+                <property name="username" value="octts"/>
+                <property name="password" value="octts"/>
             </dataSource>
         </environment>
     </environments>
+
+    <mappers>
+        <package name="mybatis.mapper"/>
+    </mappers>
 
 </configuration>

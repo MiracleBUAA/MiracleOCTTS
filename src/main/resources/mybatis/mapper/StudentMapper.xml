@@ -2,12 +2,18 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper>
-    <resultMap id="UserResult" type="User">
+<mapper namespace="cn.miracle.octts.dao.StudentDao">
+    <resultMap id="StudentLogin" type="Student">
         <id property="id" column="id"/>
-        <result property="name" column="user_name"/>
-        <result property="staff_id" column="staff_id"/>
-        <result property="telephone" column="telephone"/>
+        <result property="student_id" column="student_id"/>
+        <result property="password" column="password"/>
+    </resultMap>
+    <resultMap id="StudentDetail" type="Student">
+        <id property="id" column="id" />
+        <result property="student_id" column="student_id" />
+        <result property="name" column="name" />
+        <result property="student_class" column="class"/>
         <result property="email" column="email"/>
+        <result property="telephone" column="telephone"/>
     </resultMap>
 </mapper>
