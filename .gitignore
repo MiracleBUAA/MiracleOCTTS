@@ -1,3 +1,6 @@
+# .gitignore for maven 
+target/
+
 # Compiled class file
 *.class
 
