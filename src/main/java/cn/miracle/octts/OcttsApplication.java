@@ -10,7 +10,6 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableAutoConfiguration
 @MapperScan("cn.miracle.octts.dao")
 public class OcttsApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(OcttsApplication.class, args);
 	}
