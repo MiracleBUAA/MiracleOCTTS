@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.18, for Win64 (x86_64)
 --
 -- Host: localhost    Database: octts
 -- ------------------------------------------------------
--- Server version	5.7.17
+-- Server version	5.7.18
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT = @@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS = @@CHARACTER_SET_RESULTS */;
@@ -27,10 +27,10 @@ CREATE TABLE `auth_student` (
   `gmt_create`   DATETIME            NOT NULL,
   `gmt_modified` DATETIME            NOT NULL,
   `student_id`   CHAR(8)             NOT NULL,
-  `group_id`     TINYINT                      DEFAULT NULL,
+  `group_id`     TINYINT(4)                   DEFAULT NULL,
   `password`     VARCHAR(30)         NOT NULL,
   `name`         VARCHAR(20)         NOT NULL,
-  `gender`       BOOL                NOT NULL,
+  `gender`       TINYINT(1)          NOT NULL,
   `class`        CHAR(6)             NOT NULL,
   `email`        VARCHAR(50)                  DEFAULT NULL,
   `telephone`    CHAR(14)                     DEFAULT NULL,
@@ -38,6 +38,7 @@ CREATE TABLE `auth_student` (
   UNIQUE KEY `uk_student_id` (`student_id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -95,4 +96,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-25 22:35:00
+-- Dump completed on 2017-06-26 22:41:57
