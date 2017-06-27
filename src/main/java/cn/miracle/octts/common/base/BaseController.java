@@ -1,5 +1,7 @@
 package cn.miracle.octts.common.base;
 
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.HashMap;
 
 /**
@@ -7,7 +9,7 @@ import java.util.HashMap;
  */
 public class BaseController {
 
-    public static BaseResponse setParamError() {
+    protected static BaseResponse setParamError() {
         BaseResponse response = new BaseResponse();
         response.setErrorNo(1);
         response.setErrorMsg("参数错误");
