@@ -1,9 +1,11 @@
 package cn.miracle.octts.entity;
 
+import cn.miracle.octts.common.base.BaseEntity;
+
 /**
  * Created by Tony on 2017/6/27.
  */
-public class Resource {
+public class Resource extends BaseEntity{
     private String resource_id;
     private String course_id;
     private String teacher_id;

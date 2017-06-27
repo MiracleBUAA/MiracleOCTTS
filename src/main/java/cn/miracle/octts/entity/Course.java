@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 /**
  * Created by Tony on 2017/6/27.
  */
-public class Course {
+public class Course extends BaseEntity {
     private String course_id;
     private Date course_start_time;
     private Date course_end_time;

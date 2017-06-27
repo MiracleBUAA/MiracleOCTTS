@@ -11,7 +11,7 @@ import java.sql.Date;
 /**
  * Created by Tony on 2017/6/27.
  */
-public class Announcement {
+public class Announcement extends BaseEntity{
     private String announcement_id;
     private String course_id;
     private String teacher_id;

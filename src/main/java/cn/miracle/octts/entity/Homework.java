@@ -1,12 +1,14 @@
 package cn.miracle.octts.entity;
 
+import cn.miracle.octts.common.base.BaseEntity;
+
 import java.sql.Date;
 
 
 /**
  * Created by Tony on 2017/6/27.
  */
-public class Homework {
+public class Homework extends BaseEntity{
     private String homework_id;
     private String course_id;
     private String teacher_id;

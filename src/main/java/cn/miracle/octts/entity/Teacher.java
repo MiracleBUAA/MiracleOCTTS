@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 /**
  * Created by Tony on 2017/6/27.
  */
-public class Teacher extends BaseEntity{
+public class Teacher extends BaseEntity {
 
     private static final int PASSWORD_MAX_LENGTH = 30;
     private static final int PASSWORD_MIN_LENGTH = 6;
