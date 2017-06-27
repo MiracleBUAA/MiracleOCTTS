@@ -14,11 +14,6 @@ import java.util.List;
 @Mapper
 @Component
 public interface StudentDao extends BaseMapper<Student> {
-//    @Select("SELECT student_id, name, class, email, telephone" +
-//            "FROM auth_student")
-//    @ResultMap("mybatis.mapper.StudentMapper.StudentDetail")
-//    @Override
-//    List<Student> findAll();
 
     @Select("SELECT student_id, group_id, name, gender, class, email, telephone " +
             "FROM student " +
@@ -34,4 +29,10 @@ public interface StudentDao extends BaseMapper<Student> {
             @Result(column = "telephone", property = "telephone")
     })
     Student findById(Integer stud_id);
+
+    @Select(("SELECT STUDENT_ID, PASSWORD " +
+            "FROM STUDENT " +
+            "WHERE STUDENT_ID = #{student_id}"))
+    @ResultMap("cn.miracle.octts.dao.StudentDao.StudentLogin")
+    Student findByIdforLogin(Integer student_id);
 }
