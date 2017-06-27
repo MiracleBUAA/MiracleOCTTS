@@ -66,7 +66,7 @@ CREATE TABLE `course` (
   `course_start_time`      DATE                NOT NULL,
   `course_end_time`        DATE                NOT NULL,
   `course_hours`           TINYINT(4)          NOT NULL,
-  `credit`                 TINYINT(4)          NOT NULL,
+  `credit`                 DECIMAL(10, 0)      NOT NULL,
   `course_location`        VARCHAR(50)         NOT NULL,
   `team_limit_information` VARCHAR(255)        NOT NULL,
   `teacher_information`    VARCHAR(255)        NOT NULL,
@@ -195,6 +195,40 @@ LOCK TABLES `homework` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `homword_upload`
+--
+
+DROP TABLE IF EXISTS `homword_upload`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `homword_upload` (
+  `id`                  BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `gmt_create`          DATETIME            NOT NULL,
+  `gmt_modified`        DATETIME            NOT NULL,
+  `homword_upload_id`   INT(11)             NOT NULL,
+  `group_id`            TINYINT(4)          NOT NULL,
+  `homword_url`         VARCHAR(255)        NOT NULL,
+  `message`             VARCHAR(255)                 DEFAULT NULL,
+  `homword_upload_time` DATETIME            NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_homword_upload_id` (`homword_upload_id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `homword_upload`
+--
+
+LOCK TABLES `homword_upload` WRITE;
+/*!40000 ALTER TABLE `homword_upload`
+  DISABLE KEYS */;
+/*!40000 ALTER TABLE `homword_upload`
+  ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `resource`
 --
 
@@ -254,7 +288,6 @@ CREATE TABLE `student` (
   UNIQUE KEY `uk_student_id` (`student_id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -312,4 +345,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-27 10:24:03
+-- Dump completed on 2017-06-27 13:57:34
