@@ -18,24 +18,25 @@ import java.util.concurrent.atomic.AtomicLong;
  * Created by hf on 2017/6/26.
  */
 @RestController
+@RequestMapping("/student")
 public class StudentController {
     private static final String template = "/course_information<br/>/personal_information<br/>/announcement<br/>/course_resources";
     private final AtomicLong counter = new AtomicLong();
     @Autowired
     private StudentService studentService;
 
-    @RequestMapping("/student")
+    @RequestMapping("/")
     public String student() {
         return template;
     }
 
-    @RequestMapping("/student/announcement")
+    @RequestMapping("/announcement")
     public String announcement() {
         return "No announcement!";
     }
 
 
-    @RequestMapping("/student/personal_information")///student/personal_information?id = 14211133
+    @RequestMapping("/personal_information")///student/personal_information?id = 14211133
     public Student personInformation(@RequestParam(value = "uid") Integer uid) {
         if (uid == null) {
             return new Student();
@@ -44,7 +45,7 @@ public class StudentController {
         }
     }
 
-    @RequestMapping("/student/info")
+    @RequestMapping("/info")
     public ResponseEntity<BaseResponse> studentInfo(@RequestParam(value = "uid")Integer uid) {
         BaseResponse response = new BaseResponse();
         response.setErrorNo(0);
