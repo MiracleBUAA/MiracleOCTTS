@@ -196,36 +196,36 @@ LOCK TABLES `homework` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `homword_upload`
+-- Table structure for table `homework_upload`
 --
 
-DROP TABLE IF EXISTS `homword_upload`;
+DROP TABLE IF EXISTS `homework_upload`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `homword_upload` (
-  `id`                  BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `gmt_create`          DATETIME            NOT NULL,
-  `gmt_modified`        DATETIME            NOT NULL,
-  `homword_upload_id`   INT(11)             NOT NULL,
-  `group_id`            TINYINT(4)          NOT NULL,
-  `homword_url`         VARCHAR(255)        NOT NULL,
-  `message`             VARCHAR(255)                 DEFAULT NULL,
-  `homword_upload_time` DATETIME            NOT NULL,
+CREATE TABLE `homework_upload` (
+  `id`                   BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `gmt_create`           DATETIME            NOT NULL,
+  `gmt_modified`         DATETIME            NOT NULL,
+  `homework_upload_id`   INT(11)             NOT NULL,
+  `group_id`             TINYINT(4)          NOT NULL,
+  `homework_url`         VARCHAR(255)        NOT NULL,
+  `message`              VARCHAR(255)                 DEFAULT NULL,
+  `homework_upload_time` DATETIME            NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_homword_upload_id` (`homword_upload_id`)
+  UNIQUE KEY `uk_homework_upload_id` (`homework_upload_id`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `homword_upload`
+-- Dumping data for table `homework_upload`
 --
 
-LOCK TABLES `homword_upload` WRITE;
-/*!40000 ALTER TABLE `homword_upload`
+LOCK TABLES `homework_upload` WRITE;
+/*!40000 ALTER TABLE `homework_upload`
   DISABLE KEYS */;
-/*!40000 ALTER TABLE `homword_upload`
+/*!40000 ALTER TABLE `homework_upload`
   ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -263,6 +263,42 @@ LOCK TABLES `resource` WRITE;
 /*!40000 ALTER TABLE `resource`
   DISABLE KEYS */;
 /*!40000 ALTER TABLE `resource`
+  ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `score`
+--
+
+DROP TABLE IF EXISTS `score`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `score` (
+  `id`           BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `gmt_create`   DATETIME            NOT NULL,
+  `gmt_modified` DATETIME            NOT NULL,
+  `score_id`     INT(11)             NOT NULL,
+  `group_id`     TINYINT(4)          NOT NULL,
+  `homework_id`  TINYINT(4)          NOT NULL,
+  `teacher_id`   VARCHAR(20)         NOT NULL,
+  `score`        DECIMAL(10, 0)               DEFAULT '0',
+  `message`      VARCHAR(255)                 DEFAULT NULL,
+  `score_time`   DATETIME            NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_score_id` (`score_id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `score`
+--
+
+LOCK TABLES `score` WRITE;
+/*!40000 ALTER TABLE `score`
+  DISABLE KEYS */;
+/*!40000 ALTER TABLE `score`
   ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -346,4 +382,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-27 16:16:04
+-- Dump completed on 2017-06-27 18:49:08
