@@ -4,6 +4,8 @@ import cn.miracle.octts.common.base.BaseEntity;
 import cn.miracle.octts.common.base.BaseResponse;
 import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.service.StudentService;
+import cn.miracle.octts.util.FileUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -62,12 +69,33 @@ public class StudentController extends BaseController{
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+    * 上传作业文件
+    * */
     @RequestMapping(value = "/homework_upload", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> UploadHomework (@RequestParam(value = "course_id") Integer course_id,
+    public ResponseEntity<BaseResponse> UploadHomework (@RequestParam(value = "file") MultipartFile uploadFile,
+                                                        @RequestParam(value = "course_id") Integer course_id,
                                                         @RequestParam(value = "homework_id") Integer homework_id,
                                                         @RequestParam(value = "group_id") Integer group_id) {
         BaseResponse response = new BaseResponse();
+        if (course_id == null || homework_id == null || group_id == null) {
+            response = setParamError();
+        } else if(uploadFile.isEmpty()) {
+            response = setFileUploadError();
+        } else {
+            try {
 
+                FileUtils.saveUploadFiles(Collections.singletonList(uploadFile));
+
+                // TODO: WRITE DATABASE
+                HashMap<String, Object> data = new HashMap<>();
+                data.put("desc", "OK");
+                response = setCorrectResponse(data);
+
+            } catch (IOException e) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
