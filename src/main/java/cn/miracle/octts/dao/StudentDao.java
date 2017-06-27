@@ -21,7 +21,7 @@ public interface StudentDao extends BaseMapper<Student> {
 //    List<Student> findAll();
 
     @Select("SELECT student_id, group_id, name, gender, class, email, telephone " +
-            "FROM auth_student " +
+            "FROM student " +
             "Where student_id = #{stud_id}")
     @Results({
             @Result(id = true, column = "id", property = "id"),
