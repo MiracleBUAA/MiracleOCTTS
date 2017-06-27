@@ -1,0 +1,25 @@
+package cn.miracle.octts.common.base;
+
+import java.util.HashMap;
+
+/**
+ * Created by hf on 2017/6/27.
+ */
+public class BaseController {
+
+    public static BaseResponse setParamError() {
+        BaseResponse response = new BaseResponse();
+        response.setErrorNo(1);
+        response.setErrorMsg("参数错误");
+        response.setData(new HashMap<>());
+        return response;
+    }
+
+    public static BaseResponse setCorrectResponse(HashMap<String, Object> data) {
+        BaseResponse response = new BaseResponse();
+        response.setErrorNo(0);
+        response.setErrorMsg("OK");
+        response.setData(data);
+        return response;
+    }
+}
