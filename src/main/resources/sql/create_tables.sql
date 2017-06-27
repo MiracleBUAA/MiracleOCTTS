@@ -65,6 +65,7 @@ CREATE TABLE `course` (
   `course_id`              INT(11)             NOT NULL,
   `course_start_time`      DATE                NOT NULL,
   `course_end_time`        DATE                NOT NULL,
+  `course_name`            VARCHAR(20)         NOT NULL,
   `course_hours`           TINYINT(4)          NOT NULL,
   `credit`                 DECIMAL(10, 0)      NOT NULL,
   `course_location`        VARCHAR(50)         NOT NULL,
@@ -345,4 +346,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-27 13:57:34
+-- Dump completed on 2017-06-27 16:16:04
