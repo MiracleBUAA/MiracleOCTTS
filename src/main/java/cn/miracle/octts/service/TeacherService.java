@@ -1,7 +1,9 @@
 package cn.miracle.octts.service;
 
 import cn.miracle.octts.dao.StudentDao;
+import cn.miracle.octts.dao.TeacherDao;
 import cn.miracle.octts.entity.Student;
+import cn.miracle.octts.entity.Teacher;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -21,15 +23,21 @@ public class TeacherService {
     @Autowired
     private StudentDao studentDao;
 
-    public int importStudentList() {
+    @Autowired
+    private TeacherDao teacherDao;
+
+    public Teacher findTeacherByIdForLogin(String teacher_id) {
+        return teacherDao.findByIdForLogin(teacher_id);
+    }
+
+    public int importStudentList(String ListUrl) {
         jxl.Workbook readwb = null;
 
         Date currentTime = new Date(System.currentTimeMillis());
         int studentCount = 0;
 
         try {
-            String xlsurl = "C:\\Users\\Tony\\Documents\\student_list.xls";
-            InputStream instream = new FileInputStream(xlsurl);
+            InputStream instream = new FileInputStream(ListUrl);
             readwb = Workbook.getWorkbook(instream);
             Sheet readsheet = readwb.getSheet(0);
             int rsColumns = readsheet.getColumns();
@@ -56,7 +64,9 @@ public class TeacherService {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            readwb.close();
+            if (readwb != null) {
+                readwb.close();
+            }
         }
         return studentCount;
     }

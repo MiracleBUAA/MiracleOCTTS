@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.miracle.octts.dao.TeacherDao">
+    <resultMap id="TeacherLogin" type="Teacher">
+        <id property="id" column="id"/>
+        <result property="teacher_id" column="teacher_id"/>
+        <result property="password" column="password"/>
+    </resultMap>
+</mapper>
