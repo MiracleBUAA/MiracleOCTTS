@@ -12,7 +12,8 @@ import java.math.BigDecimal;
  * Created by Tony on 2017/6/27.
  */
 public class Course extends BaseEntity {
-    private String course_id;
+    private Integer course_id;
+    private String course_name;
     private Date course_start_time;
     private Date course_end_time;
     private Integer course_hours;
@@ -25,12 +26,20 @@ public class Course extends BaseEntity {
     public Course() {
     }
 
-    public String getCourse_id() {
+    public Integer getCourse_id() {
         return course_id;
     }
 
-    public void setCourse_id(String course_id) {
+    public void setCourse_id(Integer course_id) {
         this.course_id = course_id;
+    }
+
+    public String getCourse_name() {
+        return course_name;
+    }
+
+    public void setCourse_name(String course_name) {
+        this.course_name = course_name;
     }
 
     public Date getCourse_start_time() {

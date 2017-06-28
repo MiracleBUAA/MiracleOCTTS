@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.miracle.octts.dao.CourseDao">
+    <resultMap id="CourseDetail" type="Course">
+        <id property="id" column="id"/>
+        <result property="course_id" column="course_id"/>
+        <result property="course_name" column="course_name"/>
+        <result property="course_start_time" column="course_start_time"/>
+        <result property="course_end_time" column="course_end_time"/>
+        <result property="course_hour" column="course_hour"/>
+        <result property="credit" column="credit"/>
+        <result property="course_location" column="course_location"/>
+        <result property="team_limit_information" column="team_limit_information"/>
+        <result property="teacher_information" column="teacher_information"/>
+        <result property="course_information" column="course_information"/>
+    </resultMap>
+</mapper>
