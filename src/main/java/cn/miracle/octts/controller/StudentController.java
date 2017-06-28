@@ -5,15 +5,18 @@ import cn.miracle.octts.common.base.BaseResponse;
 import cn.miracle.octts.service.StudentService;
 import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -75,8 +78,9 @@ public class StudentController extends BaseController {
         } else if (uploadFile.isEmpty()) {
             response = setFileUploadError();
         } else {
+            // 完成文件上传
             try {
-
+                // 将文件写入服务器
                 FileUtils.saveUploadFiles(Collections.singletonList(uploadFile));
 
                 // TODO: WRITE DATABASE
@@ -91,13 +95,31 @@ public class StudentController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public ResponseEntity<BaseResponse> DownloadHomework(@RequestParam(value = "course_id") Integer course_id,
-                                                         @RequestParam(value = "homework_id") Integer homework_id,
-                                                         @RequestParam(value = "group_id") Integer group_id) {
+    @RequestMapping(value = "/download/{file_folder}/{file_name}", method = RequestMethod.GET)
+    public ResponseEntity<org.springframework.core.io.Resource> DownloadHomework(@PathVariable String file_folder,
+                                                                                 @PathVariable String file_name) {
         BaseResponse response = new BaseResponse();
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        String downloadFileURL = "/Users/hf/tmp/download/" + file_folder + "/" + file_name;
+
+        try {
+            ByteArrayOutputStream baos = FileUtils.getSingleDownloadFile(downloadFileURL);
+            org.springframework.core.io.Resource resource = new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+            headers.add("Pragma", "no-cache");
+            headers.add("Expires", "0");
+            headers.add("charset", "utf-8");
+            file_name = URLEncoder.encode(file_name, "UTF-8");
+            headers.add("Content-Disposition", "attachment;filename=\"" + file_name + "\"");
+
+
+            return ResponseEntity.ok().headers(headers).contentType(MediaType.parseMediaType("application/x-msdownload")).body(resource);
+
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @RequestMapping(value = "/group", method = RequestMethod.POST)

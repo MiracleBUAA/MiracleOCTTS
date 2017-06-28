@@ -40,7 +40,7 @@ public class TeacherController extends BaseController {
     @RequestMapping(value = "/student_list", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> student_list() {
         BaseResponse response = new BaseResponse();
-        teacherService.importStudentList();
+//        teacherService.importStudentList();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
