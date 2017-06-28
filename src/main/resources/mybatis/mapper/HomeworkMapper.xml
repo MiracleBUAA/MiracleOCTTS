@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.miracle.octts.dao.HomeworkDao">
+    <resultMap id="HomeworkInformation" type="Homework">
+        <id property="id" column="id"/>
+        <result property="homework_id" column="homework_id"/>
+        <result property="course_id" column="course_id"/>
+        <result property="teacher_id" column="teacher_id"/>
+        <result property="status" column="status"/>
+        <result property="title" column="title"/>
+        <result property="message" column="message"/>
+        <result property="start_time" column="start_time"/>
+        <result property="end_time" column="end_time"/>
+        <result property="resubmit_limit" column="resubmit_limit"/>
+        <result property="resubmit_limit_time" column="resubmit_limit_time"/>
+    </resultMap>
+</mapper>

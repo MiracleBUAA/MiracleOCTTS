@@ -85,17 +85,7 @@ public class TeacherController extends BaseController {
     public ResponseEntity<BaseResponse> student_list(@RequestParam(value = "file") MultipartFile student_list) {
 
         BaseResponse response = new BaseResponse();
-//        try {
-//            String student_list_path = FileUtils.saveSingleUploadFile(student_list); // 上传文件
-//
-//            int studentcount = teacherService.importStudentList(student_list_path); // 写入数据库
-//
-//            HashMap<String, Object> data = new HashMap<>();
-//            data.put("desc", "success");
-//            response = setCorrectResponse(data);
-//        } catch (IOException e) {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

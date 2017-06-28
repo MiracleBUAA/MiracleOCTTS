@@ -9,34 +9,38 @@ import java.sql.Date;
  * Created by Tony on 2017/6/27.
  */
 public class Homework extends BaseEntity{
-    private String homework_id;
-    private String course_id;
+    private Integer homework_id;
+    private Integer course_id;
     private String teacher_id;
     private String status;
     private String title;
     private String message;
     private Date start_time;
     private Date end_time;
-    private String resubmit_limit;
+    private Integer resubmit_limit;
     private Date resubmit_limit_time;
 
     public Homework() {
     }
 
-    public String getHomework_id() {
+    public Integer getHomework_id() {
         return homework_id;
     }
 
-    public void setHomework_id(String homework_id) {
+    public void setHomework_id(Integer homework_id) {
         this.homework_id = homework_id;
     }
 
-    public String getCourse_id() {
+    public Integer getCourse_id() {
         return course_id;
     }
 
-    public void setCourse_id(String course_id) {
+    public void setCourse_id(Integer course_id) {
         this.course_id = course_id;
+    }
+
+    public void setResubmit_limit(Integer resubmit_limit) {
+        this.resubmit_limit = resubmit_limit;
     }
 
     public String getTeacher_id() {
@@ -87,12 +91,8 @@ public class Homework extends BaseEntity{
         this.end_time = end_time;
     }
 
-    public String getResubmit_limit() {
+    public Integer getResubmit_limit() {
         return resubmit_limit;
-    }
-
-    public void setResubmit_limit(String resubmit_limit) {
-        this.resubmit_limit = resubmit_limit;
     }
 
     public Date getResubmit_limit_time() {

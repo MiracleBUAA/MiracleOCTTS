@@ -3,7 +3,9 @@ package cn.miracle.octts.controller;
 import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
 import cn.miracle.octts.entity.Course;
+import cn.miracle.octts.entity.Resource;
 import cn.miracle.octts.service.CourseService;
+import cn.miracle.octts.service.ResourceService;
 import cn.miracle.octts.service.StudentService;
 import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.Collections;
 import java.util.HashMap;
 
 
@@ -32,6 +33,9 @@ public class StudentController extends BaseController {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private ResourceService resourceService;
 
     @RequestMapping(value = "/course_information", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getCourseInformation(@RequestParam(value = "course_id") Integer course_id) {
@@ -59,11 +63,37 @@ public class StudentController extends BaseController {
     }
 
     @RequestMapping(value = "/resource", method = RequestMethod.GET)
-    public ResponseEntity<BaseResponse> getResource(@RequestParam(value = "course_id") Integer course_id,
-                                                    @RequestParam(value = "resource_id") Integer resource_id) {
+    public ResponseEntity<org.springframework.core.io.Resource> getResource(@RequestParam(value = "course_id", required = false) Integer course_id,
+                                                                            @RequestParam(value = "resource_id") Integer resource_id) {
         BaseResponse response = new BaseResponse();
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        Resource resource_download = resourceService.findByIdForDownload(resource_id);
+        if (resource_download == null) {
+            response = setParamError();
+        }
+        else {
+            String resource_url = resource_download.getResource_url();
+            String resource_title = resource_download.getTitle();
+            try {
+                ByteArrayOutputStream baos = FileUtils.getSingleDownloadFile(resource_url);
+                org.springframework.core.io.Resource resource = new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+                headers.add("Pragma", "no-cache");
+                headers.add("Expires", "0");
+                headers.add("charset", "utf-8");
+                String file_name = URLEncoder.encode(resource_title, "UTF-8");
+                headers.add("Content-Disposition", "attachment;filename=\"" + file_name + "\"");
+
+
+                return ResponseEntity.ok().headers(headers).contentType(MediaType.parseMediaType("application/x-msdownload")).body(resource);
+
+            } catch (IOException e) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        }
+        return null;
     }
 
     @RequestMapping(value = "/homework", method = RequestMethod.GET)
@@ -108,9 +138,14 @@ public class StudentController extends BaseController {
     }
 
     @RequestMapping(value = "/download/", method = RequestMethod.GET)
-    public ResponseEntity<org.springframework.core.io.Resource> DownloadHomework(@PathVariable String file_folder,
-                                                                                 @PathVariable String file_name) {
+    public ResponseEntity<org.springframework.core.io.Resource> DownloadHomework(@RequestParam(value = "course_id") Integer course_id,
+                                                                                 @RequestParam(value = "group_id") String group_id,
+                                                                                 @RequestParam(value = "homework_id") String homework_id) {
         BaseResponse response = new BaseResponse();
+
+        String file_folder = "test";
+
+        String file_name = "test.txt";
 
         String downloadFileURL = "/Users/hf/tmp/download/" + file_folder + "/" + file_name;
 

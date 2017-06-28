@@ -14,7 +14,7 @@ public interface ResourceDao extends BaseMapper<Resource> {
     @Select("SELECT resource_id, resource_url, title " +
             "from resource " +
             "where resource_id = #{resource_id}")
-    @ResultMap("cn.miracle.octts.dao.Resource.ResourceDownload")
+    @ResultMap("cn.miracle.octts.dao.ResourceDao.ResourceDownload")
     Resource findByIdForDownload(Integer resource_id);
 
 }
