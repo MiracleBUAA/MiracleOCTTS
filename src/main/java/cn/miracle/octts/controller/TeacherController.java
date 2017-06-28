@@ -9,10 +9,7 @@ import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -45,7 +42,8 @@ public class TeacherController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/course_information", method = RequestMethod.POST)
+//    @RequestMapping(value = "/course_information", method = RequestMethod.POST)
+    @PostMapping(value = "/course_information")
     public ResponseEntity<BaseResponse> setCourseInfomation(@RequestParam(value = "uid") String uid,
                                                             @RequestParam(value = "course_id", required = true) Integer course_id,
                                                             @RequestParam(value = "course_name") String course_name,
@@ -58,25 +56,30 @@ public class TeacherController extends BaseController {
                                                             @RequestParam(value = "teacher_information") String teacher_information,
                                                             @RequestParam(value = "course_information") String course_information) {
         BaseResponse response = new BaseResponse();
-        if (courseService.findCourseById(course_id) == null) {
-            response = setParamError();
-        } else {
-            Course course = new Course();
-            course.setCourse_id(course_id);
-            course.setCourse_name(course_name);
-            course.setCourse_start_time(course_start_time);
-            course.setCourse_end_time(course_end_time);
-            course.setCourse_hour(course_hours);
-            course.setCourse_location(course_location);
-            course.setCredit(credit);
-            course.setTeam_limit_information(team_limit_information);
-            course.setTeacher_information(teacher_information);
-            course.setCourse_information(course_information);
 
-            courseService.updateCourse(course, uid);
-            response = setCorrectUpdate();
+        try {
+            if (courseService.findCourseById(course_id) == null) {
+                response = setParamError();
+            } else {
+                Course course = new Course();
+                course.setCourse_id(course_id);
+                course.setCourse_name(course_name);
+                course.setCourse_start_time(course_start_time);
+                course.setCourse_end_time(course_end_time);
+                course.setCourse_hour(course_hours);
+                course.setCourse_location(course_location);
+                course.setCredit(credit);
+                course.setTeam_limit_information(team_limit_information);
+                course.setTeacher_information(teacher_information);
+                course.setCourse_information(course_information);
+
+                courseService.updateCourse(course, uid);
+                response = setCorrectUpdate();
+            }
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
