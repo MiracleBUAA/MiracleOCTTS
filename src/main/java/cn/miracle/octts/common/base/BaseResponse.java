@@ -13,6 +13,10 @@ public class BaseResponse {
 
     private String ErrorMsg;
 
+//    private String uid;
+//
+//    private Integer urank;
+
     private HashMap<String, Object> data;
 
     public BaseResponse() {
@@ -42,4 +46,19 @@ public class BaseResponse {
         this.data = data;
     }
 
+//    public String getUid() {
+//        return uid;
+//    }
+//
+//    public void setUid(String uid) {
+//        this.uid = uid;
+//    }
+//
+//    public Integer getUrank() {
+//        return urank;
+//    }
+//
+//    public void setUrank(Integer urank) {
+//        this.urank = urank;
+//    }
 }

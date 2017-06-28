@@ -27,9 +27,11 @@ public class BaseController {
 
     public static BaseResponse setFileUploadError() {
         BaseResponse response = new BaseResponse();
-        response.setErrorNo(3);
+        response.setErrorNo(4);
         response.setErrorMsg("文件为空");
         response.setData(new HashMap<>());
         return response;
+
+
     }
 }
