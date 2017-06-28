@@ -37,6 +37,7 @@ CREATE TABLE `announcement` (
   UNIQUE KEY `uk_announcement_id` (`announcement_id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -65,6 +66,7 @@ CREATE TABLE `course` (
   UNIQUE KEY `uk_course_id` (`course_id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -80,14 +82,16 @@ CREATE TABLE `group` (
   `gmt_create`     DATETIME            NOT NULL,
   `gmt_modified`   DATETIME            NOT NULL,
   `group_id`       TINYINT(4)          NOT NULL,
+  `course_id`      INT(11)             NOT NULL,
   `group_name`     VARCHAR(50)         NOT NULL,
-  `group_owner_id` TINYINT(4)          NOT NULL,
+  `group_owner_id` CHAR(8)             NOT NULL,
   `group_score`    DECIMAL(10, 0)               DEFAULT NULL,
   `group_status`   TINYINT(4)                   DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_group_id` (`group_id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -103,12 +107,14 @@ CREATE TABLE `group_member` (
   `gmt_create`   DATETIME            NOT NULL,
   `gmt_modified` DATETIME            NOT NULL,
   `group_id`     TINYINT(4)          NOT NULL,
+  `course_id`    INT(11)             NOT NULL,
   `student_id`   CHAR(8)             NOT NULL,
   `group_role`   TINYINT(4)          NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_student_id` (`student_id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -137,6 +143,7 @@ CREATE TABLE `homework` (
   UNIQUE KEY `uk_homework_id` (`homework_id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -152,6 +159,8 @@ CREATE TABLE `homework_upload` (
   `gmt_create`           DATETIME            NOT NULL,
   `gmt_modified`         DATETIME            NOT NULL,
   `homework_upload_id`   INT(11)             NOT NULL,
+  `course_id`            INT(11)             NOT NULL,
+  `homework_id`          INT(11)             NOT NULL,
   `group_id`             TINYINT(4)          NOT NULL,
   `homework_url`         VARCHAR(255)        NOT NULL,
   `message`              VARCHAR(255)                 DEFAULT NULL,
@@ -160,6 +169,7 @@ CREATE TABLE `homework_upload` (
   UNIQUE KEY `uk_homework_upload_id` (`homework_upload_id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -177,7 +187,6 @@ CREATE TABLE `resource` (
   `resource_id`      INT(11)             NOT NULL,
   `course_id`        INT(11)             NOT NULL,
   `teacher_id`       VARCHAR(20)         NOT NULL,
-  `resource_type`    TINYINT(4)          NOT NULL,
   `title`            VARCHAR(255)                 DEFAULT NULL,
   `resource_url`     VARCHAR(255)                 DEFAULT NULL,
   `resource_size`    INT(11)                      DEFAULT '0',
@@ -186,6 +195,7 @@ CREATE TABLE `resource` (
   UNIQUE KEY `uk_resource_id` (`resource_id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -201,9 +211,10 @@ CREATE TABLE `score` (
   `gmt_create`   DATETIME            NOT NULL,
   `gmt_modified` DATETIME            NOT NULL,
   `score_id`     INT(11)             NOT NULL,
-  `group_id`     TINYINT(4)          NOT NULL,
+  `course_id`    INT(11)             NOT NULL,
   `homework_id`  TINYINT(4)          NOT NULL,
-  `teacher_id`   VARCHAR(20)         NOT NULL,
+  `group_id`     TINYINT(4)          NOT NULL,
+  `grader_id`    VARCHAR(20)         NOT NULL,
   `score`        DECIMAL(10, 0)               DEFAULT '0',
   `message`      VARCHAR(255)                 DEFAULT NULL,
   `score_time`   DATETIME            NOT NULL,
@@ -211,6 +222,7 @@ CREATE TABLE `score` (
   UNIQUE KEY `uk_score_id` (`score_id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -241,6 +253,7 @@ CREATE TABLE `student` (
   UNIQUE KEY `uk_student_id` (`student_id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -277,4 +290,4 @@ CREATE TABLE `teacher` (
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-28  9:29:54
+-- Dump completed on 2017-06-28 11:37:53
