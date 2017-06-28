@@ -27,4 +27,11 @@ public class CourseServiceTest {
         Course course = courseService.findCourseById(1);
         assertNotNull(course);
     }
+
+    @Test
+    public void TestUpdateCourse() {
+        Course course = courseService.findCourseById(1);
+        course.setCredit(10);
+        courseService.updateCourse(course);
+    }
 }

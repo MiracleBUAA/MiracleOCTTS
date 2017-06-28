@@ -56,7 +56,7 @@ CREATE TABLE `course` (
   `course_start_time`      DATE                NOT NULL,
   `course_end_time`        DATE                NOT NULL,
   `course_name`            VARCHAR(20)         NOT NULL,
-  `course_hours`           TINYINT(4)          NOT NULL,
+  `course_hour`            TINYINT(4)          NOT NULL,
   `credit`                 DECIMAL(10, 0)      NOT NULL,
   `course_location`        VARCHAR(50)         NOT NULL,
   `team_limit_information` VARCHAR(255)        NOT NULL,
@@ -253,7 +253,7 @@ CREATE TABLE `student` (
   UNIQUE KEY `uk_student_id` (`student_id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 3
+  AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -290,4 +290,4 @@ CREATE TABLE `teacher` (
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-28 11:37:53
+-- Dump completed on 2017-06-28 19:14:16
