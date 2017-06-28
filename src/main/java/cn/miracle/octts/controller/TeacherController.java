@@ -9,10 +9,15 @@ import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -42,13 +47,12 @@ public class TeacherController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-//    @RequestMapping(value = "/course_information", method = RequestMethod.POST)
-    @PostMapping(value = "/course_information")
-    public ResponseEntity<BaseResponse> setCourseInfomation(@RequestParam(value = "uid") String uid,
+    @RequestMapping(value = "/course_information", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> setCourseInfomation(@RequestParam(value = "uid", required = true) String uid,
                                                             @RequestParam(value = "course_id", required = true) Integer course_id,
                                                             @RequestParam(value = "course_name") String course_name,
-                                                            @RequestParam(value = "course_start_time") Date course_start_time,
-                                                            @RequestParam(value = "course_end_time") Date course_end_time,
+                                                            @RequestParam(value = "course_start_time") String course_start_time,
+                                                            @RequestParam(value = "course_end_time") String course_end_time,
                                                             @RequestParam(value = "course_hours") Integer course_hours,
                                                             @RequestParam(value = "course_location") String course_location,
                                                             @RequestParam(value = "credit") Integer credit,
@@ -57,15 +61,19 @@ public class TeacherController extends BaseController {
                                                             @RequestParam(value = "course_information") String course_information) {
         BaseResponse response = new BaseResponse();
 
-        try {
-            if (courseService.findCourseById(course_id) == null) {
-                response = setParamError();
-            } else {
-                Course course = new Course();
-                course.setCourse_id(course_id);
+        Course course = courseService.findCourseById(course_id);
+        if (course == null) {
+            response = setParamError();
+            return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+        } else {
+            //修改课程信息
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date course_start_date = sdf.parse(course_start_time);
+                Date course_end_date = sdf.parse(course_end_time);
                 course.setCourse_name(course_name);
-                course.setCourse_start_time(course_start_time);
-                course.setCourse_end_time(course_end_time);
+                course.setCourse_start_time(course_start_date);
+                course.setCourse_end_time(course_end_date);
                 course.setCourse_hour(course_hours);
                 course.setCourse_location(course_location);
                 course.setCredit(credit);
@@ -75,11 +83,52 @@ public class TeacherController extends BaseController {
 
                 courseService.updateCourse(course, uid);
                 response = setCorrectUpdate();
+            } catch (ParseException parseExceptionse) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
             return new ResponseEntity<>(response, HttpStatus.OK);
-        }catch (Exception e) {
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @RequestMapping(value = "/new_course", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> initCourseInfomation(@RequestParam(value = "uid", required = true) String uid,
+                                                             @RequestParam(value = "course_name") String course_name,
+                                                             @RequestParam(value = "course_start_time") String course_start_time,
+                                                             @RequestParam(value = "course_end_time") String course_end_time,
+                                                             @RequestParam(value = "course_hours") Integer course_hours,
+                                                             @RequestParam(value = "course_location") String course_location,
+                                                             @RequestParam(value = "credit") Integer credit,
+                                                             @RequestParam(value = "team_limit_information") String team_limit_information,
+                                                             @RequestParam(value = "teacher_information") String teacher_information,
+                                                             @RequestParam(value = "course_information") String course_information) {
+        BaseResponse response = new BaseResponse();
+        Course course = new Course();
+        Integer cid = new Integer(1);
+        while (courseService.findCourseById(cid) != null) { //查找唯一course_id
+            cid++;
+        }
+        course.setCourse_id(cid);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date course_start_date = sdf.parse(course_start_time);
+            Date course_end_date = sdf.parse(course_end_time);
+            course.setCourse_name(course_name);
+            course.setCourse_start_time(course_start_date);
+            course.setCourse_end_time(course_end_date);
+            course.setCourse_hour(course_hours);
+            course.setCourse_location(course_location);
+            course.setCredit(credit);
+            course.setTeam_limit_information(team_limit_information);
+            course.setTeacher_information(teacher_information);
+            course.setCourse_information(course_information);
+
+            courseService.insertCourse(course, uid);
+            response = setCorrectUpdate();
+
+        } catch (ParseException parseExceptionse) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
