@@ -26,6 +26,7 @@ CREATE TABLE `announcement` (
   `id`              BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `gmt_create`      DATETIME            NOT NULL,
   `gmt_modified`    DATETIME            NOT NULL,
+  `uid`             VARCHAR(20)         NOT NULL,
   `announcement_id` INT(11)             NOT NULL,
   `course_id`       INT(11)             NOT NULL,
   `teacher_id`      VARCHAR(20)         NOT NULL,
@@ -52,6 +53,7 @@ CREATE TABLE `course` (
   `id`                     BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `gmt_create`             DATETIME            NOT NULL,
   `gmt_modified`           DATETIME            NOT NULL,
+  `uid`                    VARCHAR(20)         NOT NULL,
   `course_id`              INT(11)             NOT NULL,
   `course_start_time`      DATE                NOT NULL,
   `course_end_time`        DATE                NOT NULL,
@@ -81,6 +83,7 @@ CREATE TABLE `group` (
   `id`             BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `gmt_create`     DATETIME            NOT NULL,
   `gmt_modified`   DATETIME            NOT NULL,
+  `uid`            VARCHAR(20)         NOT NULL,
   `group_id`       TINYINT(4)          NOT NULL,
   `course_id`      INT(11)             NOT NULL,
   `group_name`     VARCHAR(50)         NOT NULL,
@@ -106,6 +109,7 @@ CREATE TABLE `group_member` (
   `id`           BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `gmt_create`   DATETIME            NOT NULL,
   `gmt_modified` DATETIME            NOT NULL,
+  `uid`          VARCHAR(20)         NOT NULL,
   `group_id`     TINYINT(4)          NOT NULL,
   `course_id`    INT(11)             NOT NULL,
   `student_id`   CHAR(8)             NOT NULL,
@@ -129,6 +133,7 @@ CREATE TABLE `homework` (
   `id`                  BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `gmt_create`          DATETIME            NOT NULL,
   `gmt_modified`        DATETIME            NOT NULL,
+  `uid`                 VARCHAR(20)         NOT NULL,
   `homework_id`         INT(11)             NOT NULL,
   `course_id`           INT(11)             NOT NULL,
   `teacher_id`          VARCHAR(20)         NOT NULL,
@@ -158,6 +163,7 @@ CREATE TABLE `homework_upload` (
   `id`                   BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `gmt_create`           DATETIME            NOT NULL,
   `gmt_modified`         DATETIME            NOT NULL,
+  `uid`                  VARCHAR(20)         NOT NULL,
   `homework_upload_id`   INT(11)             NOT NULL,
   `course_id`            INT(11)             NOT NULL,
   `homework_id`          INT(11)             NOT NULL,
@@ -184,6 +190,7 @@ CREATE TABLE `resource` (
   `id`               BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `gmt_create`       DATETIME            NOT NULL,
   `gmt_modified`     DATETIME            NOT NULL,
+  `uid`              VARCHAR(20)         NOT NULL,
   `resource_id`      INT(11)             NOT NULL,
   `course_id`        INT(11)             NOT NULL,
   `teacher_id`       VARCHAR(20)         NOT NULL,
@@ -210,6 +217,7 @@ CREATE TABLE `score` (
   `id`           BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `gmt_create`   DATETIME            NOT NULL,
   `gmt_modified` DATETIME            NOT NULL,
+  `uid`          VARCHAR(20)         NOT NULL,
   `score_id`     INT(11)             NOT NULL,
   `course_id`    INT(11)             NOT NULL,
   `homework_id`  TINYINT(4)          NOT NULL,
@@ -237,6 +245,7 @@ CREATE TABLE `student` (
   `id`             BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `gmt_create`     DATETIME            NOT NULL,
   `gmt_modified`   DATETIME            NOT NULL,
+  `uid`            VARCHAR(20)         NOT NULL,
   `student_id`     CHAR(8)             NOT NULL,
   `group_id`       TINYINT(4)                   DEFAULT NULL,
   `password`       VARCHAR(30)         NOT NULL,
@@ -253,7 +262,7 @@ CREATE TABLE `student` (
   UNIQUE KEY `uk_student_id` (`student_id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 2
+  AUTO_INCREMENT = 4
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -268,6 +277,7 @@ CREATE TABLE `teacher` (
   `id`           BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `gmt_create`   DATETIME            NOT NULL,
   `gmt_modified` DATETIME            NOT NULL,
+  `uid`          VARCHAR(20)         NOT NULL,
   `teacher_id`   VARCHAR(20)         NOT NULL,
   `password`     VARCHAR(30)         NOT NULL,
   `name`         VARCHAR(20)         NOT NULL,
@@ -290,4 +300,4 @@ CREATE TABLE `teacher` (
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-28 19:14:16
+-- Dump completed on 2017-06-28 20:41:42

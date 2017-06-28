@@ -2,15 +2,12 @@ package cn.miracle.octts.service;
 
 
 import cn.miracle.octts.dao.CourseDao;
-import cn.miracle.octts.dao.StudentDao;
 import cn.miracle.octts.entity.Course;
-import cn.miracle.octts.entity.Student;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Tony on 2017/6/27.
@@ -21,11 +18,13 @@ public class CourseService {
     @Autowired
     private CourseDao courseDao;
 
+    private Date currentTime = new Date(System.currentTimeMillis());
+
     public Course findCourseById(Integer course_id) {
         return courseDao.findById(course_id);
     }
 
-    public HashMap<String, Object> Dump2Data (Course course) {
+    public HashMap<String, Object> Dump2Data(Course course) {
         HashMap<String, Object> data = new HashMap<>();
         data.put("course_id", course.getCourse_id());
         data.put("course_name", course.getCourse_name());
@@ -40,7 +39,16 @@ public class CourseService {
         return data;
     }
 
-    public int updateCourse(Course course) {
+    public int updateCourse(Course course, String uid) {
+        course.setUpdatetime(currentTime);
+        course.setUid(uid);
         return courseDao.updateCourse(course);
+    }
+
+    public int insertCourse(Course course, String uid){
+        course.setCreatetime(currentTime);
+        course.setUpdatetime(currentTime);
+        course.setUid(uid);
+        return courseDao.insertCourse(course);
     }
 }
