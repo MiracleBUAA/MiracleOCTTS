@@ -40,7 +40,7 @@ public class LoginController extends BaseController{
     @RequestMapping("/login")
     public ResponseEntity<BaseResponse> login(@RequestParam(value = "uid", required = true) String uid,
                                               @RequestParam(value = "password", required = true) String password,
-                                              @RequestParam(value = "urank") Integer urank) {
+                                              @RequestParam(value = "urank", required = true) Integer urank) {
 
         BaseResponse response = new BaseResponse();
         HashMap<String, Object> data = new HashMap<>();
@@ -52,13 +52,8 @@ public class LoginController extends BaseController{
                 case 1:  // 学生
                     Integer student_id = Integer.parseInt(uid);
                     Student student = studentService.findStudentByIdForLogin(student_id);
-                    if (student == null) {  // 未授权
-                        response.setErrorNo(2);
-                        response.setErrorMsg("uid未授权");
-                        response.setData(data);
-                    }
-                    else {
-                        if(password.equals(student.getPassword())) { // 密码错误
+                    if (student != null) {
+                        if(!password.equals(student.getPassword())) { // 密码错误
                             response.setErrorNo(3);
                             response.setErrorMsg("密码错误");
                             response.setData(data);
@@ -69,6 +64,12 @@ public class LoginController extends BaseController{
                             response = setCorrectResponse(data);
                         }
                     }
+                    else { // 未授权
+                        response.setErrorNo(2);
+                        response.setErrorMsg("uid未授权");
+                        response.setData(data);
+                    }
+                    break;
                 case 2: // 教师
                     Teacher teacher = teacherService.findTeacherByIdForLogin(uid);
                     if (teacher == null) {
@@ -77,7 +78,7 @@ public class LoginController extends BaseController{
                         response.setData(data);
                     }
                     else {
-                        if (password.equals(teacher.getPassword())) {
+                        if (!password.equals(teacher.getPassword())) {
                             response.setErrorNo(3);
                             response.setErrorMsg("密码错误");
                             response.setData(data);
@@ -88,6 +89,7 @@ public class LoginController extends BaseController{
                             response = setCorrectResponse(data);
                         }
                     }
+                    break;
             }
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
