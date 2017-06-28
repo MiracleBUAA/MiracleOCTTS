@@ -35,13 +35,14 @@ public class StudentDaoTest {
         Date currentTime = new Date(System.currentTimeMillis());
 
         Student student = new Student();
-        student.setStudent_id("14212333");
+        student.setStudent_id("14211234");
         student.setPassword(student.getStudent_id());
         student.setStudent_class("142115");
         student.setGender('1');
-        student.setName("测试用户");
+        student.setName("测试用户1");
         student.setCreatetime(currentTime);
         student.setUpdatetime(currentTime);
+        student.setUid("T001");
 
         int sum = studentDao.insertStudent(student);
     }

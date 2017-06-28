@@ -8,12 +8,22 @@ import java.util.Date;
  * Created by hf on 2017/6/25.
  */
 public class BaseEntity {
-//    @Id
+    //    @Id
     private Integer id;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createtime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
+
+    private String uid;
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public BaseEntity() {
     }

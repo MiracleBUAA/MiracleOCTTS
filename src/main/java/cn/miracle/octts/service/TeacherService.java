@@ -26,16 +26,15 @@ public class TeacherService {
     @Autowired
     private TeacherDao teacherDao;
 
+    private Date currentTime = new Date(System.currentTimeMillis());
+
     public Teacher findTeacherByIdForLogin(String teacher_id) {
         return teacherDao.findByIdForLogin(teacher_id);
     }
 
-    public int importStudentList(String ListUrl) {
+    public int importStudentList(String ListUrl, String uid) {
         jxl.Workbook readwb = null;
-
-        Date currentTime = new Date(System.currentTimeMillis());
         int studentCount = 0;
-
         try {
             InputStream instream = new FileInputStream(ListUrl);
             readwb = Workbook.getWorkbook(instream);
@@ -59,6 +58,8 @@ public class TeacherService {
                 }
                 student.setCreatetime(currentTime);
                 student.setUpdatetime(currentTime);
+                student.setUid(uid);
+
                 studentCount += studentDao.insertStudent(student);
             }
         } catch (Exception e) {

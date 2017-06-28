@@ -2,9 +2,7 @@ package cn.miracle.octts.dao;
 
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.Course;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 /**
  * Created by Tony on 2017/6/27.
@@ -19,7 +17,9 @@ public interface CourseDao extends BaseMapper<Course> {
     Course findById(Integer course_id);
 
     @Update("UPDATE course " +
-            "SET course_name=#{course_name}, " +
+            "SET gmt_modified=#{updatetime}," +
+            "uid=#{uid}, " +
+            "course_name=#{course_name}, " +
             "course_start_time=#{course_start_time}, " +
             "course_end_time=#{course_end_time}, " +
             "course_hour=#{course_hour}, " +
@@ -30,4 +30,9 @@ public interface CourseDao extends BaseMapper<Course> {
             "course_information=#{course_information} " +
             "WHERE course_id=#{course_id}")
     int updateCourse(Course course);
+
+    @Insert("INSERT INTO course(gmt_create,gmt_modified,uid,course_id,course_name,course_start_time,course_end_time,course_hour,course_location,credit,team_limit_information,teacher_information,course_information)" +
+            "VALUES(#{createtime},#{updatetime},#{uid},#{course_id},#{course_name},#{course_start_time},#{course_end_time},#{course_hour},#{course_location},#{credit},#{team_limit_information},#{teacher_information},#{course_information})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    int insertCourse(Course course);
 }

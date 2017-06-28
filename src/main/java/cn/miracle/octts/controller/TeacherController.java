@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -47,7 +46,8 @@ public class TeacherController extends BaseController {
     }
 
     @RequestMapping(value = "/course_information", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> setCourseInfomation(@RequestParam(value = "course_id", required = true) Integer course_id,
+    public ResponseEntity<BaseResponse> setCourseInfomation(@RequestParam(value = "uid") String uid,
+                                                            @RequestParam(value = "course_id", required = true) Integer course_id,
                                                             @RequestParam(value = "course_name") String course_name,
                                                             @RequestParam(value = "course_start_time") Date course_start_time,
                                                             @RequestParam(value = "course_end_time") Date course_end_time,
@@ -73,8 +73,7 @@ public class TeacherController extends BaseController {
             course.setTeacher_information(teacher_information);
             course.setCourse_information(course_information);
 
-            courseService.updateCourse(course);
-
+            courseService.updateCourse(course, uid);
             response = setCorrectUpdate();
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -90,7 +89,8 @@ public class TeacherController extends BaseController {
     }
 
     @RequestMapping(value = "/student_list", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> student_list(@RequestParam(value = "file") MultipartFile student_list,
+    public ResponseEntity<BaseResponse> student_list(@RequestParam(value = "uid") String uid,
+                                                     @RequestParam(value = "file") MultipartFile student_list,
                                                      @RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
         if (course_id == null) {
@@ -101,7 +101,7 @@ public class TeacherController extends BaseController {
             try {
                 String student_list_path = FileUtils.saveSingleUploadFile(student_list); // 上传文件
 
-                int studentcount = teacherService.importStudentList(student_list_path); // 写入数据库
+                int studentcount = teacherService.importStudentList(student_list_path, uid); // 写入数据库
 
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("desc", "success");

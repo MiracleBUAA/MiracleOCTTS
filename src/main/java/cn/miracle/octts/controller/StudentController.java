@@ -45,7 +45,7 @@ public class StudentController extends BaseController {
             response = setParamError();
         } else {
             Course course = courseService.findCourseById(course_id);
-            if(course != null) {
+            if (course != null) {
                 HashMap<String, Object> data = courseService.Dump2Data(course);
                 response = setCorrectResponse(data);
             }
@@ -56,7 +56,6 @@ public class StudentController extends BaseController {
     @RequestMapping(value = "/announcement", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getAnnouncement(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
-
 
 
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -108,7 +107,8 @@ public class StudentController extends BaseController {
      * 上传作业文件
      */
     @RequestMapping(value = "/homework_upload", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> UploadHomework(@RequestParam(value = "file") MultipartFile uploadFile,
+    public ResponseEntity<BaseResponse> UploadHomework(@RequestParam(value = "uid") String uid,
+                                                       @RequestParam(value = "file") MultipartFile uploadFile,
                                                        @RequestParam(value = "course_id") Integer course_id,
                                                        @RequestParam(value = "homework_id") Integer homework_id,
                                                        @RequestParam(value = "group_id") Integer group_id) {
@@ -121,9 +121,9 @@ public class StudentController extends BaseController {
             // 完成文件上传
             try {
                 // 将文件写入服务器
-                String filePath =  FileUtils.saveSingleUploadFile(uploadFile);
+                String filePath = FileUtils.saveSingleUploadFile(uploadFile);
                 // TODO: WRITE DATABASE
-
+                //Uid included
 
 
                 HashMap<String, Object> data = new HashMap<>();
@@ -170,14 +170,16 @@ public class StudentController extends BaseController {
     }
 
     @RequestMapping(value = "/group", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> CreateGroup(@RequestParam(value = "student_id") Integer student_id) {
+    public ResponseEntity<BaseResponse> CreateGroup(@RequestParam(value = "uid") String uid,
+                                                    @RequestParam(value = "student_id") Integer student_id) {
         BaseResponse response = new BaseResponse();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/invitation", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> SendInvitation(@RequestParam(value = "student_id") Integer student_id,
+    public ResponseEntity<BaseResponse> SendInvitation(@RequestParam(value = "uid") String uid,
+                                                       @RequestParam(value = "student_id") Integer student_id,
                                                        @RequestParam(value = "group_id") Integer group_id) {
         BaseResponse response = new BaseResponse();
 
@@ -185,7 +187,8 @@ public class StudentController extends BaseController {
     }
 
     @RequestMapping(value = "/verify", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> VerifyInvitation(@RequestParam(value = "student_id") Integer student_id,
+    public ResponseEntity<BaseResponse> VerifyInvitation(@RequestParam(value = "uid") String uid,
+                                                         @RequestParam(value = "student_id") Integer student_id,
                                                          @RequestParam(value = "group_id") Integer group_id) {
         BaseResponse response = new BaseResponse();
 
@@ -193,21 +196,24 @@ public class StudentController extends BaseController {
     }
 
     @RequestMapping(value = "/application", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> SendApplication(@RequestParam(value = "group_id") Integer group_id) {
+    public ResponseEntity<BaseResponse> SendApplication(@RequestParam(value = "uid") String uid,
+                                                        @RequestParam(value = "group_id") Integer group_id) {
         BaseResponse response = new BaseResponse();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/dissolution", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> SendDissolution(@RequestParam(value = "group_id") Integer group_id) {
+    public ResponseEntity<BaseResponse> SendDissolution(@RequestParam(value = "uid") String uid,
+                                                        @RequestParam(value = "group_id") Integer group_id) {
         BaseResponse response = new BaseResponse();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "student_score", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> setSutdentScore(@RequestParam(value = "student_id") Integer student_id,
+    public ResponseEntity<BaseResponse> setSutdentScore(@RequestParam(value = "uid") String uid,
+                                                        @RequestParam(value = "student_id") Integer student_id,
                                                         @RequestParam(value = "homework_id") Integer homework_id,
                                                         @RequestParam(value = "iteration_id") Integer iteration_id,
                                                         @RequestParam(value = "score") Integer score) {
@@ -217,7 +223,8 @@ public class StudentController extends BaseController {
     }
 
     @RequestMapping(value = "group_score", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> setGroupScore(@RequestParam(value = "group_id") Integer group_id,
+    public ResponseEntity<BaseResponse> setGroupScore(@RequestParam(value = "uid") String uid,
+                                                      @RequestParam(value = "group_id") Integer group_id,
                                                       @RequestParam(value = "homework_id") Integer homework_id,
                                                       @RequestParam(value = "iteration_id") Integer iteration_id,
                                                       @RequestParam(value = "score") Integer score) {
