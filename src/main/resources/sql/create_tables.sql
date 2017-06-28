@@ -235,6 +235,8 @@ CREATE TABLE `student` (
   `telephone`    CHAR(14)                     DEFAULT NULL,
   `absent`       INT(11)                      DEFAULT '0',
   `rate`         DECIMAL(10, 0)               DEFAULT '0',
+  `personal_score` DECIMAL default 0,
+  `group_score` decimal default null,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_student_id` (`student_id`)
 )
