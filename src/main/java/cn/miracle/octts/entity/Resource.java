@@ -6,8 +6,8 @@ import cn.miracle.octts.common.base.BaseEntity;
  * Created by Tony on 2017/6/27.
  */
 public class Resource extends BaseEntity{
-    private String resource_id;
-    private String course_id;
+    private Integer resource_id;
+    private Integer course_id;
     private String teacher_id;
     private String resource_type;
     private String title;
@@ -18,19 +18,19 @@ public class Resource extends BaseEntity{
     public Resource() {
     }
 
-    public String getResource_id() {
+    public Integer getResource_id() {
         return resource_id;
     }
 
-    public void setResource_id(String resource_id) {
+    public void setResource_id(Integer resource_id) {
         this.resource_id = resource_id;
     }
 
-    public String getCourse_id() {
+    public Integer getCourse_id() {
         return course_id;
     }
 
-    public void setCourse_id(String course_id) {
+    public void setCourse_id(Integer course_id) {
         this.course_id = course_id;
     }
 

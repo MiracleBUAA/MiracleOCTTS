@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.miracle.octts.dao.ResourceDao">
+    <resultMap id="ResourceDownload" type="Resource">
+        <id property="id" column="id"/>
+        <result property="resource_id" column="resource_id"/>
+        <result property="resource_url" column="resource_url"/>
+        <result property="title" column="title"/>
+    </resultMap>
+</mapper>
