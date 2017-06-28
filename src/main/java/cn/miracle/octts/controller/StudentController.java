@@ -2,6 +2,8 @@ package cn.miracle.octts.controller;
 
 import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
+import cn.miracle.octts.entity.Course;
+import cn.miracle.octts.service.CourseService;
 import cn.miracle.octts.service.StudentService;
 import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +30,22 @@ public class StudentController extends BaseController {
     @Autowired
     private StudentService studentService;
 
-    @RequestMapping(value = "/course_infomation", method = RequestMethod.GET)
+    @Autowired
+    private CourseService courseService;
+
+    @RequestMapping(value = "/course_information", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getCourseInfomation(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
 
         if (course_id == null) {
             response = setParamError();
         } else {
-            HashMap<String, Object> data = new HashMap<>();
+            Course course = courseService.findCourseById(course_id);
+            if(course != null) {
+                HashMap<String, Object> data = courseService.Dump2Data(course);
+                response = setCorrectResponse(data);
+            }
         }
-
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -81,9 +89,12 @@ public class StudentController extends BaseController {
             // 完成文件上传
             try {
                 // 将文件写入服务器
-                FileUtils.saveUploadFiles(Collections.singletonList(uploadFile));
-
+                String filePath =  FileUtils.saveSingleUploadFile(uploadFile);
                 // TODO: WRITE DATABASE
+
+
+
+
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("desc", "OK");
                 response = setCorrectResponse(data);
@@ -95,7 +106,7 @@ public class StudentController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/download/{file_folder}/{file_name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/download/{file_folder}/{file_name:[a-zA-Z0-9\\\\.]+}", method = RequestMethod.GET)
     public ResponseEntity<org.springframework.core.io.Resource> DownloadHomework(@PathVariable String file_folder,
                                                                                  @PathVariable String file_name) {
         BaseResponse response = new BaseResponse();

@@ -1,6 +1,5 @@
 package cn.miracle.octts.controller;
 
-
 import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
 import cn.miracle.octts.service.TeacherService;
@@ -18,7 +17,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 
-
 /**
  * Created by Tony on 2017/6/27.
  */
@@ -33,8 +31,6 @@ public class TeacherController extends BaseController {
     public ResponseEntity<BaseResponse> course_information(@RequestParam(value = "course_id") String course_id) {
         BaseResponse response = setParamError();
         return new ResponseEntity<BaseResponse>(response, HttpStatus.ACCEPTED);
-
-
     }
 
     @RequestMapping(value = "/student_list", method = RequestMethod.GET)
@@ -57,6 +53,9 @@ public class TeacherController extends BaseController {
                 FileUtils.saveUploadFiles(Collections.singletonList(uploadFile));
 
                 // TODO: WRITE DATABASE
+
+
+
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("desc", "OK");
                 response = setCorrectResponse(data);
