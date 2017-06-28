@@ -18,4 +18,5 @@
         <result property="group_id" column="group_id"/>
         <result property="gender" column="gender"/>
     </resultMap>
+
 </mapper>

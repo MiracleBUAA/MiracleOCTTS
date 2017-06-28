@@ -82,7 +82,7 @@ CREATE TABLE `group` (
   `group_id`       TINYINT(4)          NOT NULL,
   `group_name`     VARCHAR(50)         NOT NULL,
   `group_owner_id` TINYINT(4)          NOT NULL,
-  `group_score`    TINYINT(4)                   DEFAULT NULL,
+  `group_score`    DECIMAL(10, 0)               DEFAULT NULL,
   `group_status`   TINYINT(4)                   DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_group_id` (`group_id`)
@@ -222,21 +222,21 @@ DROP TABLE IF EXISTS `student`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `student` (
-  `id`           BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `gmt_create`   DATETIME            NOT NULL,
-  `gmt_modified` DATETIME            NOT NULL,
-  `student_id`   CHAR(8)             NOT NULL,
-  `group_id`     TINYINT(4)                   DEFAULT NULL,
-  `password`     VARCHAR(30)         NOT NULL,
-  `name`         VARCHAR(20)         NOT NULL,
-  `gender`       CHAR(1)             NOT NULL,
-  `class`        CHAR(6)             NOT NULL,
-  `email`        VARCHAR(50)                  DEFAULT NULL,
-  `telephone`    CHAR(14)                     DEFAULT NULL,
-  `absent`       INT(11)                      DEFAULT '0',
-  `rate`         DECIMAL(10, 0)               DEFAULT '0',
-  `personal_score` DECIMAL default 0,
-  `group_score` decimal default null,
+  `id`             BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `gmt_create`     DATETIME            NOT NULL,
+  `gmt_modified`   DATETIME            NOT NULL,
+  `student_id`     CHAR(8)             NOT NULL,
+  `group_id`       TINYINT(4)                   DEFAULT NULL,
+  `password`       VARCHAR(30)         NOT NULL,
+  `name`           VARCHAR(20)         NOT NULL,
+  `gender`         CHAR(1)             NOT NULL,
+  `class`          CHAR(6)             NOT NULL,
+  `email`          VARCHAR(50)                  DEFAULT NULL,
+  `telephone`      CHAR(14)                     DEFAULT NULL,
+  `absent`         INT(11)                      DEFAULT '0',
+  `rate`           DECIMAL(10, 0)               DEFAULT '0',
+  `personal_score` DECIMAL(10, 0)               DEFAULT '0',
+  `group_score`    DECIMAL(10, 0)               DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_student_id` (`student_id`)
 )
@@ -264,6 +264,7 @@ CREATE TABLE `teacher` (
   UNIQUE KEY `uk_teacher_id` (`teacher_id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
@@ -276,4 +277,4 @@ CREATE TABLE `teacher` (
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-27 23:36:40
+-- Dump completed on 2017-06-28  9:29:54

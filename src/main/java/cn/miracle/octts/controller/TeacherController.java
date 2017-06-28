@@ -3,7 +3,9 @@ package cn.miracle.octts.controller;
 
 import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
+import cn.miracle.octts.service.TeacherService;
 import cn.miracle.octts.util.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +26,8 @@ import java.util.HashMap;
 @RequestMapping("/teacher")
 public class TeacherController extends BaseController {
 
-    private static final String template = "/course_information<br/>/personal_information<br/>/announcement<br/>/course_resources";
+    @Autowired
+    private TeacherService teacherService;
 
     @RequestMapping("/course_information")
     public ResponseEntity<BaseResponse> course_information(@RequestParam(value = "course_id") String course_id) {
@@ -32,6 +35,13 @@ public class TeacherController extends BaseController {
         return new ResponseEntity<BaseResponse>(response, HttpStatus.ACCEPTED);
 
 
+    }
+
+    @RequestMapping(value = "/student_list", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> student_list() {
+        BaseResponse response = new BaseResponse();
+        teacherService.importStudentList();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/student_list", method = RequestMethod.POST)
