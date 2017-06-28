@@ -1,3 +1,4 @@
+-- 清表
 TRUNCATE TABLE `announcement`;
 TRUNCATE TABLE `course`;
 TRUNCATE TABLE `group`;

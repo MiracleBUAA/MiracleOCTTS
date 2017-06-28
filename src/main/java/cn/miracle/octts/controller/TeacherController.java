@@ -26,51 +26,50 @@ public class TeacherController extends BaseController {
     @Autowired
     private TeacherService teacherService;
 
-    //返回课程的基本信息
-    @RequestMapping("/course_information", method = RequestMethod.GET)
-    public ResponseEntity<BaseResponse> course_information(@RequestParam(value = "course_id") String course_id) {
-        BaseResponse response = setParamError();
-        return new ResponseEntity<BaseResponse>(response, HttpStatus.ACCEPTED);
-    }
-
-    //修改课程的基本信息
-    @RequestMapping("/course_information", method = RequestMethod.POST)
-    public String course_information(@RequestParam(value = "course_id") String course_id, @RequestBody String body) {
-        return body;
-        BaseResponse response = setParamError();
-        //return new ResponseEntity<BaseResponse>(response, HttpStatus.ACCEPTED);
-    }
-
-    @RequestMapping(value = "/student_list", method = RequestMethod.GET)
-    public ResponseEntity<BaseResponse> student_list() {
-        BaseResponse response = new BaseResponse();
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/student_list", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> student_list(@RequestParam(value = "file") MultipartFile uploadFile,
-                                                     @RequestParam(value = "course_id") Integer course_id) {
-        BaseResponse response = new BaseResponse();
-        if (course_id == null) {
-            response = setParamError();
-        } else if (uploadFile.isEmpty()) {
-            response = setFileUploadError();
-        } else {
-            try {
-                FileUtils.saveUploadFiles(Collections.singletonList(uploadFile));
-
-                teacherService.importStudentList();
-                HashMap<String, Object> data = new HashMap<>();
-                data.put("desc", "OK");
-                response = setCorrectResponse(data);
-
-            } catch (IOException e) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-        }
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+//    //返回课程的基本信息
+//    @RequestMapping("/course_information", method = RequestMethod.GET)
+//    public ResponseEntity<BaseResponse> course_information(@RequestParam(value = "course_id") String course_id) {
+//        BaseResponse response = setParamError();
+//        return new ResponseEntity<BaseResponse>(response, HttpStatus.ACCEPTED);
+//    }
+//
+//    //修改课程的基本信息
+//    @RequestMapping("/course_information", method = RequestMethod.POST)
+//    public ResponseEntity<BaseResponse> course_information(@RequestBody List<User> users) {
+//        BaseResponse response = setParamError();
+//        return new ResponseEntity<BaseResponse>(response, HttpStatus.ACCEPTED);
+//    }
+//
+//    @RequestMapping(value = "/student_list", method = RequestMethod.GET)
+//    public ResponseEntity<BaseResponse> student_list() {
+//        BaseResponse response = new BaseResponse();
+//
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
+//
+//    @RequestMapping(value = "/student_list", method = RequestMethod.POST)
+//    public ResponseEntity<BaseResponse> student_list(@RequestParam(value = "file") MultipartFile uploadFile,
+//                                                     @RequestParam(value = "course_id") Integer course_id) {
+//        BaseResponse response = new BaseResponse();
+//        if (course_id == null) {
+//            response = setParamError();
+//        } else if (uploadFile.isEmpty()) {
+//            response = setFileUploadError();
+//        } else {
+//            try {
+//                FileUtils.saveUploadFiles(Collections.singletonList(uploadFile));
+//
+//                teacherService.importStudentList();
+//                HashMap<String, Object> data = new HashMap<>();
+//                data.put("desc", "OK");
+//                response = setCorrectResponse(data);
+//
+//            } catch (IOException e) {
+//                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//            }
+//        }
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
 
 
 }
