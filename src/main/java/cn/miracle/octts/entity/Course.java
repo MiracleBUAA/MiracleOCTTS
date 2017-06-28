@@ -2,11 +2,9 @@ package cn.miracle.octts.entity;
 
 import cn.miracle.octts.common.base.BaseEntity;
 
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import java.util.Date;
+
 //import java.util.Date;
-import java.sql.Date;
-import java.math.BigDecimal;
 
 /**
  * Created by Tony on 2017/6/27.
@@ -16,8 +14,8 @@ public class Course extends BaseEntity {
     private String course_name;
     private Date course_start_time;
     private Date course_end_time;
-    private Integer course_hours;
-    private BigDecimal credit;
+    private Integer course_hour;
+    private double credit;
     private String course_location;
     private String team_limit_information;
     private String teacher_information;
@@ -58,19 +56,19 @@ public class Course extends BaseEntity {
         this.course_end_time = course_end_time;
     }
 
-    public Integer getCourse_hours() {
-        return course_hours;
+    public Integer getCourse_hour() {
+        return course_hour;
     }
 
-    public void setCourse_hours(Integer course_hours) {
-        this.course_hours = course_hours;
+    public void setCourse_hour(Integer course_hour) {
+        this.course_hour = course_hour;
     }
 
-    public BigDecimal getCredit() {
+    public double getCredit() {
         return credit;
     }
 
-    public void setCredit(BigDecimal credit) {
+    public void setCredit(double credit) {
         this.credit = credit;
     }
 

@@ -31,12 +31,16 @@ public class CourseService {
         data.put("course_name", course.getCourse_name());
         data.put("course_start_time", course.getCourse_start_time());
         data.put("course_end_time", course.getCourse_end_time());
-        data.put("course_hour", course.getCourse_hours());
+        data.put("course_hour", course.getCourse_hour());
         data.put("course_location", course.getCourse_location());
         data.put("credit", course.getCredit());
         data.put("team_limit_information", course.getTeam_limit_information());
         data.put("teacher_information", course.getTeacher_information());
         data.put("course_information", course.getCourse_information());
         return data;
+    }
+
+    public int updateCourse(Course course) {
+        return courseDao.updateCourse(course);
     }
 }

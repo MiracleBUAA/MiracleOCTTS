@@ -34,4 +34,11 @@ public class BaseController {
 
 
     }
+
+    public static BaseResponse setCorrectUpdate() {
+        BaseResponse response = new BaseResponse();
+        response.setErrorNo(0);
+        response.setErrorMsg("OK");
+        return response;
+    }
 }
