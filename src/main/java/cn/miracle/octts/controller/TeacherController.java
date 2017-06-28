@@ -85,41 +85,39 @@ public class TeacherController extends BaseController {
     public ResponseEntity<BaseResponse> student_list(@RequestParam(value = "file") MultipartFile student_list) {
 
         BaseResponse response = new BaseResponse();
-        try {
-            String student_list_path = FileUtils.saveSingleUploadFile(student_list); // 上传文件
-
-            int studentcount = teacherService.importStudentList(student_list_path); // 写入数据库
-
-            HashMap<String, Object> data = new HashMap<>();
-            data.put("desc", "success");
-            response = setCorrectResponse(data);
-        } catch (IOException e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        try {
+//            String student_list_path = FileUtils.saveSingleUploadFile(student_list); // 上传文件
+//
+//            int studentcount = teacherService.importStudentList(student_list_path); // 写入数据库
+//
+//            HashMap<String, Object> data = new HashMap<>();
+//            data.put("desc", "success");
+//            response = setCorrectResponse(data);
+//        } catch (IOException e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/student_list", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> student_list(@RequestParam(value = "file") MultipartFile uploadFile,
+    public ResponseEntity<BaseResponse> student_list(@RequestParam(value = "file") MultipartFile student_list,
                                                      @RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
         if (course_id == null) {
             response = setParamError();
-        } else if (uploadFile.isEmpty()) {
+        } else if (student_list.isEmpty()) {
             response = setFileUploadError();
         } else {
             try {
-                FileUtils.saveUploadFiles(Collections.singletonList(uploadFile));
+                String student_list_path = FileUtils.saveSingleUploadFile(student_list); // 上传文件
 
-                // TODO: WRITE DATABASE
-
+                int studentcount = teacherService.importStudentList(student_list_path); // 写入数据库
 
                 HashMap<String, Object> data = new HashMap<>();
-                data.put("desc", "OK");
+                data.put("desc", "success");
                 response = setCorrectResponse(data);
-
             } catch (IOException e) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
         return new ResponseEntity<>(response, HttpStatus.OK);

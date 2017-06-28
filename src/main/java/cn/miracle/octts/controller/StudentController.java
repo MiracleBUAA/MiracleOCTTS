@@ -34,7 +34,7 @@ public class StudentController extends BaseController {
     private CourseService courseService;
 
     @RequestMapping(value = "/course_information", method = RequestMethod.GET)
-    public ResponseEntity<BaseResponse> getCourseInfomation(@RequestParam(value = "course_id") Integer course_id) {
+    public ResponseEntity<BaseResponse> getCourseInformation(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
 
         if (course_id == null) {
@@ -52,6 +52,8 @@ public class StudentController extends BaseController {
     @RequestMapping(value = "/announcement", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getAnnouncement(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
+
+
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -94,7 +96,6 @@ public class StudentController extends BaseController {
 
 
 
-
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("desc", "OK");
                 response = setCorrectResponse(data);
@@ -106,7 +107,7 @@ public class StudentController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/download/{file_folder}/{file_name:[a-zA-Z0-9\\\\.]+}", method = RequestMethod.GET)
+    @RequestMapping(value = "/download/", method = RequestMethod.GET)
     public ResponseEntity<org.springframework.core.io.Resource> DownloadHomework(@PathVariable String file_folder,
                                                                                  @PathVariable String file_name) {
         BaseResponse response = new BaseResponse();

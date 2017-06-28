@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -59,6 +61,8 @@ public class StudentServiceTest {
 
     @Test
     public void testUploadFile() throws Exception {
+
+
 
         MockMultipartFile file = new MockMultipartFile("file", "test2333.txt",
                                             "text/plain", "上传测试2333".getBytes());
