@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class FileUtils {
 
-    private static final String UPLOAD_SAVE_FOLDER = "/Users/hf/tmp/upload/";
+    public static final String UPLOAD_SAVE_FOLDER = "/Users/hf/tmp/upload/";
 
-    private static final String DOWNLOAD_FILES_FOLDER = "/Users/hf/tmp/download/";
+    public static final String DOWNLOAD_FILES_FOLDER = "/Users/hf/tmp/download/";
 
     public static String saveSingleUploadFile(MultipartFile file) throws IOException {
         byte[] filebytes = file.getBytes();
