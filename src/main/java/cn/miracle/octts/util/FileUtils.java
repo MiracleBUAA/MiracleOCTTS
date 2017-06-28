@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class FileUtils {
 
-    private static final String UPLOAD_SAVE_FOLDER = "/Users/hf/tmp/";
+    private static final String UPLOAD_SAVE_FOLDER = "C:\\Users\\Tony\\Documents\\";
 
     public static void saveUploadFiles(List<MultipartFile> files) throws IOException {
         for (MultipartFile file : files) {

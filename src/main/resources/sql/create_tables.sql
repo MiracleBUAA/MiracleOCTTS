@@ -41,17 +41,6 @@ CREATE TABLE `announcement` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `announcement`
---
-
-LOCK TABLES `announcement` WRITE;
-/*!40000 ALTER TABLE `announcement`
-  DISABLE KEYS */;
-/*!40000 ALTER TABLE `announcement`
-  ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `course`
 --
 
@@ -80,17 +69,6 @@ CREATE TABLE `course` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `course`
---
-
-LOCK TABLES `course` WRITE;
-/*!40000 ALTER TABLE `course`
-  DISABLE KEYS */;
-/*!40000 ALTER TABLE `course`
-  ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `group`
 --
 
@@ -114,17 +92,6 @@ CREATE TABLE `group` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `group`
---
-
-LOCK TABLES `group` WRITE;
-/*!40000 ALTER TABLE `group`
-  DISABLE KEYS */;
-/*!40000 ALTER TABLE `group`
-  ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `group_member`
 --
 
@@ -144,17 +111,6 @@ CREATE TABLE `group_member` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `group_member`
---
-
-LOCK TABLES `group_member` WRITE;
-/*!40000 ALTER TABLE `group_member`
-  DISABLE KEYS */;
-/*!40000 ALTER TABLE `group_member`
-  ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `homework`
@@ -185,17 +141,6 @@ CREATE TABLE `homework` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `homework`
---
-
-LOCK TABLES `homework` WRITE;
-/*!40000 ALTER TABLE `homework`
-  DISABLE KEYS */;
-/*!40000 ALTER TABLE `homework`
-  ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `homework_upload`
 --
 
@@ -217,17 +162,6 @@ CREATE TABLE `homework_upload` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `homework_upload`
---
-
-LOCK TABLES `homework_upload` WRITE;
-/*!40000 ALTER TABLE `homework_upload`
-  DISABLE KEYS */;
-/*!40000 ALTER TABLE `homework_upload`
-  ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `resource`
@@ -256,17 +190,6 @@ CREATE TABLE `resource` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `resource`
---
-
-LOCK TABLES `resource` WRITE;
-/*!40000 ALTER TABLE `resource`
-  DISABLE KEYS */;
-/*!40000 ALTER TABLE `resource`
-  ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `score`
 --
 
@@ -292,17 +215,6 @@ CREATE TABLE `score` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `score`
---
-
-LOCK TABLES `score` WRITE;
-/*!40000 ALTER TABLE `score`
-  DISABLE KEYS */;
-/*!40000 ALTER TABLE `score`
-  ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `student`
 --
 
@@ -317,27 +229,18 @@ CREATE TABLE `student` (
   `group_id`     TINYINT(4)                   DEFAULT NULL,
   `password`     VARCHAR(30)         NOT NULL,
   `name`         VARCHAR(20)         NOT NULL,
-  `gender`       TINYINT(1)          NOT NULL,
+  `gender`       CHAR(1)             NOT NULL,
   `class`        CHAR(6)             NOT NULL,
   `email`        VARCHAR(50)                  DEFAULT NULL,
   `telephone`    CHAR(14)                     DEFAULT NULL,
+  `absent`       INT(11)                      DEFAULT '0',
+  `rate`         DECIMAL(10, 0)               DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_student_id` (`student_id`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `student`
---
-
-LOCK TABLES `student` WRITE;
-/*!40000 ALTER TABLE `student`
-  DISABLE KEYS */;
-/*!40000 ALTER TABLE `student`
-  ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `teacher`
@@ -361,17 +264,6 @@ CREATE TABLE `teacher` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `teacher`
---
-
-LOCK TABLES `teacher` WRITE;
-/*!40000 ALTER TABLE `teacher`
-  DISABLE KEYS */;
-/*!40000 ALTER TABLE `teacher`
-  ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE = @OLD_SQL_MODE */;
@@ -382,4 +274,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-27 18:49:08
+-- Dump completed on 2017-06-27 23:36:40

@@ -8,13 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by Tony on 2017/6/27.
@@ -38,14 +36,13 @@ public class LoginController {
         HashMap<String, Object> data = new HashMap<>();
         response.setData(data);
 
-        if(uid == null || password == null) {
+        if (uid == null || password == null) {
             response.setErrorNo(1);
             response.setErrorMsg("参数错误");
-        }
-        else {
+        } else {
             Student student = studentService.findStudentById(uid);
             if (student != null) {
-                if(password.equals(student.getPassword())){
+                if (password.equals(student.getPassword())) {
 
                     data.put("uid", student.getStudent_id());
                     data.put("desc", "success");
@@ -54,13 +51,11 @@ public class LoginController {
                     data.put("login_status", httpSession.getAttribute(student.getStudent_id()));
 
                     response.setData(data);
-                }
-                else {
+                } else {
                     response.setErrorNo(3);
                     response.setErrorMsg("密码错误");
                 }
-            }
-            else{
+            } else {
                 response.setErrorNo(2);
                 response.setErrorMsg("uid未授权");
             }

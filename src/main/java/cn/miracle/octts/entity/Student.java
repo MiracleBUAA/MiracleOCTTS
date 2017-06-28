@@ -4,6 +4,7 @@ import cn.miracle.octts.common.base.BaseEntity;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 
 /**
  * Created by hf on 2017/6/25.
@@ -19,7 +20,7 @@ public class Student extends BaseEntity {
     @Size(max = PASSWORD_MAX_LENGTH, min = PASSWORD_MIN_LENGTH)
     private String password;
 
-    private boolean gender;
+    private char gender;
     private String group_id;
 
     private String name;
@@ -31,7 +32,35 @@ public class Student extends BaseEntity {
     @Pattern(regexp = PHONE_PATTERN)
     private String telephone;
 
+    private Integer absent;
+    private BigDecimal rate;
+
+    public char getGender() {
+        return gender;
+    }
+
+    public void setGender(char gender) {
+        this.gender = gender;
+    }
+
+    public Integer getAbsent() {
+        return absent;
+    }
+
+    public void setAbsent(Integer absent) {
+        this.absent = absent;
+    }
+
+    public BigDecimal getRate() {
+        return rate;
+    }
+
+    public void setRate(BigDecimal rate) {
+        this.rate = rate;
+    }
+
     public Student() {
+
     }
 
     public static int getPasswordMaxLength() {
@@ -66,6 +95,14 @@ public class Student extends BaseEntity {
         this.password = password;
     }
 
+    public String getGroup_id() {
+        return group_id;
+    }
+
+    public void setGroup_id(String group_id) {
+        this.group_id = group_id;
+    }
+
     public String getName() {
         return name;
     }
@@ -96,21 +133,5 @@ public class Student extends BaseEntity {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
-    }
-
-    public Boolean getGender() {
-        return gender;
-    }
-
-    public void setGender(Boolean gender) {
-        this.gender = gender;
-    }
-
-    public String getGroup_id() {
-        return group_id;
-    }
-
-    public void setGroup_id(String group_id) {
-        this.group_id = group_id;
     }
 }
