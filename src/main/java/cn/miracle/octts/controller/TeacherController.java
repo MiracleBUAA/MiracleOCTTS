@@ -8,10 +8,7 @@ import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -29,18 +26,25 @@ public class TeacherController extends BaseController {
     @Autowired
     private TeacherService teacherService;
 
-    @RequestMapping("/course_information")
+    //返回课程的基本信息
+    @RequestMapping("/course_information", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> course_information(@RequestParam(value = "course_id") String course_id) {
         BaseResponse response = setParamError();
         return new ResponseEntity<BaseResponse>(response, HttpStatus.ACCEPTED);
+    }
 
-
+    //修改课程的基本信息
+    @RequestMapping("/course_information", method = RequestMethod.POST)
+    public String course_information(@RequestParam(value = "course_id") String course_id, @RequestBody String body) {
+        return body;
+        BaseResponse response = setParamError();
+        //return new ResponseEntity<BaseResponse>(response, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/student_list", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> student_list() {
         BaseResponse response = new BaseResponse();
-        teacherService.importStudentList();
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -56,7 +60,7 @@ public class TeacherController extends BaseController {
             try {
                 FileUtils.saveUploadFiles(Collections.singletonList(uploadFile));
 
-                // TODO: WRITE DATABASE
+                teacherService.importStudentList();
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("desc", "OK");
                 response = setCorrectResponse(data);

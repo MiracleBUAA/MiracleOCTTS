@@ -80,6 +80,7 @@ CREATE TABLE `group` (
   `gmt_create`     DATETIME            NOT NULL,
   `gmt_modified`   DATETIME            NOT NULL,
   `group_id`       TINYINT(4)          NOT NULL,
+  `course_id`      INT(11)             NOT NULL,
   `group_name`     VARCHAR(50)         NOT NULL,
   `group_owner_id` TINYINT(4)          NOT NULL,
   `group_score`    DECIMAL(10, 0)               DEFAULT NULL,
@@ -264,7 +265,6 @@ CREATE TABLE `teacher` (
   UNIQUE KEY `uk_teacher_id` (`teacher_id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
@@ -277,4 +277,4 @@ CREATE TABLE `teacher` (
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-28  9:29:54
+-- Dump completed on 2017-06-28 10:43:28
