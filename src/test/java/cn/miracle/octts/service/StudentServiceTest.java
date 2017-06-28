@@ -50,6 +50,14 @@ public class StudentServiceTest {
     }
 
     @Test
+    public void testFindByIdWhenLogin() {
+        String uid = "14212333";
+        Student student = studentService.findStudentByIdForLogin(Integer.parseInt(uid));
+        assertNotNull(student);
+        assertEquals(student.getPassword(), "123456");
+    }
+
+    @Test
     public void testUploadFile() throws Exception {
 
         MockMultipartFile file = new MockMultipartFile("file", "test2333.txt",
