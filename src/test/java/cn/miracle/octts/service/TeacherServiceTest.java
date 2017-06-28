@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -46,7 +47,8 @@ public class TeacherServiceTest {
     @Test
     public void TestImportStudentList() {
         String file_url = "/Users/hf/tmp/upload/student_list";
-        int count = teacherService.importStudentList(file_url);
+        String uid = "T001";
+        int count = teacherService.importStudentList(file_url, uid);
         assertNotNull(count);
     }
 

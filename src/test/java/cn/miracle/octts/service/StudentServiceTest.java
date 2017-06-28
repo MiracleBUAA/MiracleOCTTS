@@ -54,7 +54,7 @@ public class StudentServiceTest {
     @Test
     public void testFindByIdWhenLogin() {
         String uid = "14212333";
-        Student student = studentService.findStudentByIdForLogin(Integer.parseInt(uid));
+        Student student = studentService.findStudentByIdForLogin(uid);
         assertNotNull(student);
         assertEquals(student.getPassword(), "123456");
     }
@@ -75,6 +75,5 @@ public class StudentServiceTest {
                         .param("homework_id", "1")
                         .param("group_id", "1"))
                 .andExpect(status().is(200));
-//                .andExpect(jsonPath("$.data").value("\"desc\":\"OK\""));
     }
 }

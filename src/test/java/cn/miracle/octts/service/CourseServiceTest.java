@@ -32,6 +32,6 @@ public class CourseServiceTest {
     public void TestUpdateCourse() {
         Course course = courseService.findCourseById(1);
         course.setCredit(10);
-        courseService.updateCourse(course);
+        courseService.updateCourse(course, "T001");
     }
 }

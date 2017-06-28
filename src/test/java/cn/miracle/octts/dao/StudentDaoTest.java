@@ -24,7 +24,7 @@ public class StudentDaoTest {
 
     @Test
     public void testDaoMapping() {
-        Student student = studentDao.findByIdforLogin(14212333);
+        Student student = studentDao.findByIdforLogin("14212333");
         assertNotNull(student);
         assertEquals(student.getStudent_id(), "14212333");
         assertEquals(student.getPassword(), "14212333");
