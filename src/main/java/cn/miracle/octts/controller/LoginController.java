@@ -50,8 +50,8 @@ public class LoginController extends BaseController{
         } else {
             switch (urank) {
                 case 1:  // 学生
-                    Integer student_id = Integer.parseInt(uid);
-                    Student student = studentService.findStudentByIdForLogin(student_id);
+//                    Integer student_id = Integer.parseInt(uid);
+                    Student student = studentService.findStudentByIdForLogin(uid);
                     if (student != null) {
                         if(!password.equals(student.getPassword())) { // 密码错误
                             response.setErrorNo(3);
