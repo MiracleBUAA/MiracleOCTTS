@@ -54,7 +54,7 @@ public class TeacherController extends BaseController {
                                                             @RequestParam(value = "course_name", required = false) String course_name,
                                                             @RequestParam(value = "course_start_time", required = false) String course_start_time,
                                                             @RequestParam(value = "course_end_time", required = false) String course_end_time,
-                                                            @RequestParam(value = "course_hours", required = false) Integer course_hours,
+                                                            @RequestParam(value = "course_hour", required = false) Integer course_hour,
                                                             @RequestParam(value = "course_location", required = false) String course_location,
                                                             @RequestParam(value = "credit", required = false) Integer credit,
                                                             @RequestParam(value = "team_limit_information", required = false) String team_limit_information,
@@ -82,8 +82,8 @@ public class TeacherController extends BaseController {
                 if (course_name != null) {
                     course.setCourse_name(CodeConvert.unicode2String(course_name));
                 }
-                if (course_hours != null) {
-                    course.setCourse_hour(course_hours);
+                if (course_hour != null) {
+                    course.setCourse_hour(course_hour);
                 }
                 if (course_location != null) {
                     course.setCourse_location(CodeConvert.unicode2String(course_location));
@@ -152,8 +152,7 @@ public class TeacherController extends BaseController {
 
 
     @RequestMapping(value = "/student_list", method = RequestMethod.GET)
-    public ResponseEntity<BaseResponse> student_list(@RequestParam(value = "file") MultipartFile student_list) {
-
+    public ResponseEntity<BaseResponse> student_list() {
         BaseResponse response = new BaseResponse();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
