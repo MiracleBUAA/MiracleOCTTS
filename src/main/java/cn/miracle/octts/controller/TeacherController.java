@@ -92,18 +92,17 @@ public class TeacherController extends BaseController {
     }
 
     @RequestMapping(value = "/student_list", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> student_list(@RequestParam(value = "uid") String uid,
+    public ResponseEntity<BaseResponse> student_list(@RequestParam(value = "uid", required = false) String uid,
                                                      @RequestParam(value = "file") MultipartFile student_list,
-                                                     @RequestParam(value = "course_id") Integer course_id) {
+                                                     @RequestParam(value = "course_id", required = false) Integer course_id) {
         BaseResponse response = new BaseResponse();
-        if (course_id == null) {
-            response = setParamError();
-        } else if (student_list.isEmpty()) {
+        if (student_list.isEmpty()) {
             response = setFileUploadError();
         } else {
             try {
                 String student_list_path = FileUtils.saveSingleUploadFile(student_list); // 上传文件
-
+                if (uid == null)
+                    uid = "T001";
                 int studentcount = teacherService.importStudentList(student_list_path, uid); // 写入数据库
 
                 HashMap<String, Object> data = new HashMap<>();
