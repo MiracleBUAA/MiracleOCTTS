@@ -6,6 +6,7 @@ import cn.miracle.octts.entity.Course;
 import cn.miracle.octts.service.CourseService;
 import cn.miracle.octts.service.TeacherService;
 import cn.miracle.octts.util.FileUtils;
+import cn.miracle.octts.util.CodeConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,25 +80,25 @@ public class TeacherController extends BaseController {
                     course.setCourse_end_time(course_end_date);
                 }
                 if (course_name != null) {
-                    course.setCourse_name(course_name);
+                    course.setCourse_name(CodeConvert.unicode2String(course_name));
                 }
                 if (course_hours != null) {
                     course.setCourse_hour(course_hours);
                 }
                 if (course_location != null) {
-                    course.setCourse_location(course_location);
+                    course.setCourse_location(CodeConvert.unicode2String(course_location));
                 }
                 if (credit != null) {
                     course.setCredit(credit);
                 }
                 if (team_limit_information != null) {
-                    course.setTeam_limit_information(team_limit_information);
+                    course.setTeam_limit_information(CodeConvert.unicode2String(team_limit_information));
                 }
                 if (teacher_information != null) {
-                    course.setTeacher_information(teacher_information);
+                    course.setTeacher_information(CodeConvert.unicode2String(teacher_information));
                 }
                 if (course_information != null) {
-                    course.setCourse_information(course_information);
+                    course.setCourse_information(CodeConvert.unicode2String(course_information));
                 }
                 courseService.updateCourse(course, uid);
                 response = setCorrectUpdate();
@@ -130,15 +131,15 @@ public class TeacherController extends BaseController {
         try {
             Date course_start_date = sdf.parse(course_start_time);
             Date course_end_date = sdf.parse(course_end_time);
-            course.setCourse_name(course_name);
+            course.setCourse_name(CodeConvert.unicode2String(course_name));
             course.setCourse_start_time(course_start_date);
             course.setCourse_end_time(course_end_date);
             course.setCourse_hour(course_hours);
-            course.setCourse_location(course_location);
+            course.setCourse_location(CodeConvert.unicode2String(course_location));
             course.setCredit(credit);
-            course.setTeam_limit_information(team_limit_information);
-            course.setTeacher_information(teacher_information);
-            course.setCourse_information(course_information);
+            course.setTeam_limit_information(CodeConvert.unicode2String(team_limit_information));
+            course.setTeacher_information(CodeConvert.unicode2String(teacher_information));
+            course.setCourse_information(CodeConvert.unicode2String(course_information));
 
             courseService.insertCourse(course, uid);
             response = setCorrectUpdate();
