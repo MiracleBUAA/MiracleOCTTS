@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class FileUtils {
 
-    public static final String UPLOAD_SAVE_FOLDER = "/Users/hf/tmp/upload/";
+    public static final String UPLOAD_SAVE_FOLDER = "C:\\Users\\刘柘林\\Desktop\\upload\\";
 
     public static final String DOWNLOAD_FILES_FOLDER = "/Users/hf/tmp/download/";
 
