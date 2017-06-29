@@ -55,7 +55,7 @@ CREATE TABLE `course` (
   `course_start_time` date NOT NULL,
   `course_end_time` date NOT NULL,
   `course_name` varchar(20) NOT NULL,
-  `course_hour` tinyint(4) NOT NULL,
+  `course_hour` int(11) NOT NULL,
   `credit` decimal(10,0) NOT NULL,
   `course_location` varchar(50) NOT NULL,
   `team_limit_information` varchar(255) DEFAULT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE `course` (
   `course_information` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_course_id` (`course_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,4 +270,4 @@ CREATE TABLE `teacher` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-28 23:24:20
+-- Dump completed on 2017-06-29  9:52:44
