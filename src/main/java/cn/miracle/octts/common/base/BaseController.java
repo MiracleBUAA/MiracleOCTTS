@@ -41,4 +41,11 @@ public class BaseController {
         response.setErrorMsg("OK");
         return response;
     }
+
+    public static BaseResponse setCorrectInsert() {
+        BaseResponse response = new BaseResponse();
+        response.setErrorNo(0);
+        response.setErrorMsg("OK");
+        return response;
+    }
 }
