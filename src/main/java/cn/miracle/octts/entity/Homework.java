@@ -8,7 +8,7 @@ import java.sql.Date;
 /**
  * Created by Tony on 2017/6/27.
  */
-public class Homework extends BaseEntity{
+public class Homework extends BaseEntity {
     private Integer homework_id;
     private Integer course_id;
     private String teacher_id;
@@ -18,7 +18,7 @@ public class Homework extends BaseEntity{
     private Date start_time;
     private Date end_time;
     private Integer resubmit_limit;
-    private Date resubmit_limit_time;
+//    private Date resubmit_limit_time;
 
     public Homework() {
     }
@@ -95,11 +95,4 @@ public class Homework extends BaseEntity{
         return resubmit_limit;
     }
 
-    public Date getResubmit_limit_time() {
-        return resubmit_limit_time;
-    }
-
-    public void setResubmit_limit_time(Date resubmit_limit_time) {
-        this.resubmit_limit_time = resubmit_limit_time;
-    }
 }
