@@ -61,9 +61,6 @@ public class StudentServiceTest {
 
     @Test
     public void testUploadFile() throws Exception {
-
-
-
         MockMultipartFile file = new MockMultipartFile("file", "test2333.txt",
                                             "text/plain", "上传测试2333".getBytes());
 

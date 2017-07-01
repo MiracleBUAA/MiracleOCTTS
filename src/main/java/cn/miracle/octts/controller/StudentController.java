@@ -3,10 +3,12 @@ package cn.miracle.octts.controller;
 import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
 import cn.miracle.octts.entity.Course;
-import cn.miracle.octts.entity.Homework;
 import cn.miracle.octts.entity.HomeworkUpload;
 import cn.miracle.octts.entity.Resource;
-import cn.miracle.octts.service.*;
+import cn.miracle.octts.service.CourseService;
+import cn.miracle.octts.service.HomeworkUploadService;
+import cn.miracle.octts.service.ResourceService;
+import cn.miracle.octts.service.StudentService;
 import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -14,13 +16,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 
 
@@ -69,7 +73,6 @@ public class StudentController extends BaseController {
         BaseResponse response = new BaseResponse();
 
 
-
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -82,8 +85,7 @@ public class StudentController extends BaseController {
         Resource resource_download = resourceService.findByIdForDownload(resource_id);
         if (resource_download == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        else {
+        } else {
             String resource_url = resource_download.getResource_url();
             String resource_title = resource_download.getResource_title();
             try {

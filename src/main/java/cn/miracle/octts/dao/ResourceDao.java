@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface ResourceDao extends BaseMapper<Resource> {
 
-    @Select("SELECT resource_id, course_id, teacher_id, resource_title, resource_url, resource_type" +
+    @Select("SELECT resource_id, course_id, teacher_id, resource_title, resource_url, resource_type " +
             "FROM resource " +
             "WHERE resource_id = #{resource_id}")
     @ResultMap("cn.miracle.octts.dao.ResourceDao.ResourceDetail")
