@@ -54,7 +54,6 @@ CREATE TABLE `course` (
   `course_id`              INT(11)             NOT NULL,
   `course_year`            INT(11)             NOT NULL,
   `course_start_time`      DATE                NOT NULL,
-  `course_end_time`        DATE                NOT NULL,
   `course_status`          TINYINT(4)          NOT NULL,
   `course_name`            VARCHAR(20)         NOT NULL,
   `course_hour`            INT(11)             NOT NULL,
