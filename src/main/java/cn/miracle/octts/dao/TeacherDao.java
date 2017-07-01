@@ -29,4 +29,7 @@ public interface TeacherDao extends BaseMapper<Teacher> {
             "WHERE TEACHER_ID = #{teacher_id}")
     @ResultMap("cn.miracle.octts.dao.TeacherDao.TeacherLogin")
     Teacher findByIdForLogin(String teacher_id);
+
+    @Select("SELECT teacher_name FROM teacher WHERE teacher_id = #{teacher_id}")
+    String findTeacherNameById(String teacher_id);
 }

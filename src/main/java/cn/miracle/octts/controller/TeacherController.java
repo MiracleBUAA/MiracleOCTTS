@@ -4,6 +4,7 @@ import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
 import cn.miracle.octts.entity.Course;
 import cn.miracle.octts.service.CourseService;
+import cn.miracle.octts.service.ResourceService;
 import cn.miracle.octts.service.TeacherService;
 import cn.miracle.octts.util.FileUtils;
 import cn.miracle.octts.util.CodeConvert;
@@ -21,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Tony on 2017/6/27.
@@ -34,6 +36,9 @@ public class TeacherController extends BaseController {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private ResourceService resourceService;
 
     @RequestMapping(value = "/course_information", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getCourseInfomation(@RequestParam(value = "course_id") Integer course_id) {
@@ -105,8 +110,6 @@ public class TeacherController extends BaseController {
     }
 
 
-
-
     @RequestMapping(value = "/student_list", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> student_list() {
         BaseResponse response = new BaseResponse();
@@ -156,5 +159,28 @@ public class TeacherController extends BaseController {
         BaseResponse response = new BaseResponse();
         return new ResponseEntity<>(response, HttpStatus.OK);
 
+    }
+
+    /**
+     * 教师获取课程资源
+    * @param course_id 课程id
+    * */
+    @RequestMapping(value = "/resource", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getResource(@RequestParam(value = "course_id")Integer course_id) {
+        BaseResponse response = new BaseResponse();
+
+        HashMap<String, Object> data = new HashMap<>();
+
+        List<HashMap<String, Object>> resource_list = resourceService.getResourceList(course_id);
+
+        data.put("resource_list", resource_list);
+
+        List<String> resource_types = resourceService.findResourceType(course_id);
+
+        data.put("resource_type_list", resource_types);
+
+        response = setCorrectResponse(data);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

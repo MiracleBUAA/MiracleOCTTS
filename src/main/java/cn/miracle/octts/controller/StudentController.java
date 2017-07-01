@@ -164,14 +164,7 @@ public class StudentController extends BaseController {
             ByteArrayOutputStream baos = FileUtils.getSingleDownloadFile(downloadFileURL);
             org.springframework.core.io.Resource resource = new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-            headers.add("Pragma", "no-cache");
-            headers.add("Expires", "0");
-            headers.add("charset", "utf-8");
-            file_name = URLEncoder.encode(file_name, "UTF-8");
-            headers.add("Content-Disposition", "attachment;filename=\"" + file_name + "\"");
-
+            HttpHeaders headers = getFileDownloadHeaders(file_name);
 
             return ResponseEntity.ok().headers(headers).contentType(MediaType.parseMediaType("application/x-msdownload")).body(resource);
 
