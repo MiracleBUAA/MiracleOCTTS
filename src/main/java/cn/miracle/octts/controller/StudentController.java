@@ -6,10 +6,7 @@ import cn.miracle.octts.entity.Course;
 import cn.miracle.octts.entity.Homework;
 import cn.miracle.octts.entity.HomeworkUpload;
 import cn.miracle.octts.entity.Resource;
-import cn.miracle.octts.service.CourseService;
-import cn.miracle.octts.service.HomeworkUploadService;
-import cn.miracle.octts.service.ResourceService;
-import cn.miracle.octts.service.StudentService;
+import cn.miracle.octts.service.*;
 import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -42,6 +39,9 @@ public class StudentController extends BaseController {
 
     @Autowired
     private HomeworkUploadService homeworkUploadService;
+
+    @Autowired
+    private FileService fileService;
 
     @RequestMapping(value = "/course_information", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getCourseInformation(@RequestParam(value = "course_id") Integer course_id) {
@@ -77,13 +77,12 @@ public class StudentController extends BaseController {
     }
 
     @RequestMapping(value = "/resource_download", method = RequestMethod.GET)
-    public ResponseEntity<org.springframework.core.io.Resource> downloadResource(@RequestParam(value = "course_id", required = false) Integer course_id,
-                                                                            @RequestParam(value = "resource_id") Integer resource_id) {
+    public ResponseEntity<org.springframework.core.io.Resource> downloadResource(@RequestParam(value = "resource_id") Integer resource_id) {
         BaseResponse response = new BaseResponse();
 
         Resource resource_download = resourceService.findByIdForDownload(resource_id);
         if (resource_download == null) {
-            response = setParamError();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         else {
             String resource_url = resource_download.getResource_url();
@@ -92,14 +91,7 @@ public class StudentController extends BaseController {
                 ByteArrayOutputStream baos = FileUtils.getSingleDownloadFile(resource_url);
                 org.springframework.core.io.Resource resource = new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));
 
-                HttpHeaders headers = new HttpHeaders();
-                headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-                headers.add("Pragma", "no-cache");
-                headers.add("Expires", "0");
-                headers.add("charset", "utf-8");
-                String file_name = URLEncoder.encode(resource_title, "UTF-8");
-                headers.add("Content-Disposition", "attachment;filename=\"" + file_name + "\"");
-
+                HttpHeaders headers = fileService.getFileDownloadHeaders(resource_title);
 
                 return ResponseEntity.ok().headers(headers).contentType(MediaType.parseMediaType("application/x-msdownload")).body(resource);
 
@@ -107,7 +99,6 @@ public class StudentController extends BaseController {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         }
-        return null;
     }
 
     @RequestMapping(value = "/homework", method = RequestMethod.GET)
