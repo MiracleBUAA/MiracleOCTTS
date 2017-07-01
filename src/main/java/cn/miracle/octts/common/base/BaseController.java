@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
  * Created by hf on 2017/6/27.
  */
 public class BaseController {
-    public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     protected static BaseResponse setParamError() {
         BaseResponse response = new BaseResponse();
@@ -22,7 +22,7 @@ public class BaseController {
         return response;
     }
 
-    public static BaseResponse setCorrectResponse(HashMap<String, Object> data) {
+    protected static BaseResponse setCorrectResponse(HashMap<String, Object> data) {
         BaseResponse response = new BaseResponse();
         response.setErrorNo(0);
         response.setErrorMsg("OK");
@@ -30,7 +30,7 @@ public class BaseController {
         return response;
     }
 
-    public static BaseResponse setFileUploadError() {
+    protected static BaseResponse setFileUploadError() {
         BaseResponse response = new BaseResponse();
         response.setErrorNo(4);
         response.setErrorMsg("文件为空");
@@ -40,21 +40,21 @@ public class BaseController {
 
     }
 
-    public static BaseResponse setCorrectUpdate() {
+    protected static BaseResponse setCorrectUpdate() {
         BaseResponse response = new BaseResponse();
         response.setErrorNo(0);
         response.setErrorMsg("OK");
         return response;
     }
 
-    public static BaseResponse setCorrectInsert() {
+    protected static BaseResponse setCorrectInsert() {
         BaseResponse response = new BaseResponse();
         response.setErrorNo(0);
         response.setErrorMsg("OK");
         return response;
     }
 
-    public static HttpHeaders getFileDownloadHeaders(String file_title) throws UnsupportedEncodingException {
+    protected static HttpHeaders getFileDownloadHeaders(String file_title) throws UnsupportedEncodingException {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");

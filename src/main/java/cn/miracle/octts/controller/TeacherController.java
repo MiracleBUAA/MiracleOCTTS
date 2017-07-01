@@ -8,6 +8,7 @@ import cn.miracle.octts.service.CourseService;
 import cn.miracle.octts.service.ResourceService;
 import cn.miracle.octts.service.TeacherService;
 import cn.miracle.octts.util.CodeConvert;
+import cn.miracle.octts.util.DateConvert;
 import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -74,7 +75,7 @@ public class TeacherController extends BaseController {
             //修改课程信息
             try {
                 if (course_start_time != null) {
-                    Date course_start_date = dateFormat.parse(course_start_time);
+                    Date course_start_date = DateConvert.string2Date(course_start_time);
                     course.setCourse_start_time(course_start_date);
                 }
 

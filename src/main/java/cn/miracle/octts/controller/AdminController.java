@@ -10,6 +10,7 @@ import cn.miracle.octts.service.StudentService;
 import cn.miracle.octts.service.TeacherService;
 import cn.miracle.octts.util.CodeConvert;
 import cn.miracle.octts.util.FileUtils;
+import cn.miracle.octts.util.DateConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,7 +61,7 @@ public class AdminController extends BaseController {
 
         courseService.endAllCourse();
         try {
-            Date course_start_date = dateFormat.parse(course_start_time);
+            Date course_start_date = DateConvert.string2Date(course_start_time);
 
             course.setCourse_year(course_year);
             course.setCourse_name(CodeConvert.unicode2String(course_name));
@@ -106,7 +107,7 @@ public class AdminController extends BaseController {
                     course.setCourse_name(CodeConvert.unicode2String(course_name));
                 }
                 if (course_start_time != null) {
-                    Date course_start_date = dateFormat.parse(course_start_time);
+                    Date course_start_date = DateConvert.string2Date(course_start_time);
                     course.setCourse_start_time(course_start_date);
                 }
                 if (course_hour != null) {
