@@ -1,9 +1,9 @@
 DROP TABLE IF EXISTS `announcement`;
 DROP TABLE IF EXISTS `course`;
-DROP TABLE IF EXISTS `group`;
+DROP TABLE IF EXISTS `group_confirm`;
 DROP TABLE IF EXISTS `group_apply`;
 DROP TABLE IF EXISTS `group_apply_member`;
-DROP TABLE IF EXISTS `group_member`;
+DROP TABLE IF EXISTS `group_confirm_member`;
 DROP TABLE IF EXISTS `homework`;
 DROP TABLE IF EXISTS `homework_upload`;
 DROP TABLE IF EXISTS `invitation`;

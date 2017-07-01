@@ -1,10 +1,10 @@
 -- 清表
 TRUNCATE TABLE `announcement`;
 TRUNCATE TABLE `course`;
-TRUNCATE TABLE `group`;
+TRUNCATE TABLE `group_confirm`;
 TRUNCATE TABLE `group_apply`;
 TRUNCATE TABLE `group_apply_member`;
-TRUNCATE TABLE `group_member`;
+TRUNCATE TABLE `group_confirm_member`;
 TRUNCATE TABLE `homework`;
 TRUNCATE TABLE `homework_upload`;
 TRUNCATE TABLE `invitation`;
