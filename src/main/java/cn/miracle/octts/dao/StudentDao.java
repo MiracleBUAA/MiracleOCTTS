@@ -33,8 +33,8 @@ public interface StudentDao extends BaseMapper<Student> {
     @ResultMap("cn.miracle.octts.dao.StudentDao.StudentLogin")
     Student findByIdforLogin(String student_id);
 
-    @Insert("INSERT INTO STUDENT (gmt_create, gmt_modified, uid, student_id, password, name, gender, class)" +
-            "VALUES (#{createtime},#{updatetime},#{uid},#{student_id},#{password},#{name},#{gender},#{student_class})")
+    @Insert("INSERT INTO STUDENT (gmt_create, gmt_modified, uid, student_id, password, student_name, student_gender, student_class)" +
+            "VALUES (#{createtime},#{updatetime},#{uid},#{student_id},#{password},#{student_name},#{student_gender},#{student_class})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertStudent(Student student);
 

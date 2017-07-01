@@ -1,6 +1,7 @@
 package cn.miracle.octts.controller;
 
 import cn.miracle.octts.common.base.BaseController;
+import cn.miracle.octts.common.base.BaseEntity;
 import cn.miracle.octts.common.base.BaseResponse;
 import cn.miracle.octts.entity.Course;
 import cn.miracle.octts.entity.Student;
@@ -8,6 +9,7 @@ import cn.miracle.octts.service.CourseService;
 import cn.miracle.octts.service.TeacherService;
 import cn.miracle.octts.service.StudentService;
 import cn.miracle.octts.util.CodeConvert;
+import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -189,5 +193,32 @@ public class AdminController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+    * 上传学生名单
+     *
+    * */
+    @RequestMapping(value = "/student_list", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> uploadStudentList (@RequestParam(value = "uid", required = false) String uid,
+                                                         @RequestParam(value = "course_id") Integer course_id,
+                                                         @RequestParam(value = "file") MultipartFile student_list) {
+        BaseResponse response = new BaseResponse();
+        if (student_list.isEmpty()) {
+            response = setFileUploadError();
+        } else {
+            try {
+                String student_list_path = FileUtils.saveSingleUploadFile(student_list); // 上传文件
+                if (uid == null)
+                    uid = "T000";
+                int studentcount = teacherService.importStudentList(student_list_path, uid); // 写入数据库
 
+                HashMap<String, Object> data = new HashMap<>();
+                data.put("desc", "success");
+                response = setCorrectResponse(data);
+
+            } catch (IOException e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
