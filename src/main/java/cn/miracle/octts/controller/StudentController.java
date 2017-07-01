@@ -40,9 +40,6 @@ public class StudentController extends BaseController {
     @Autowired
     private HomeworkUploadService homeworkUploadService;
 
-    @Autowired
-    private FileService fileService;
-
     @RequestMapping(value = "/course_information", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getCourseInformation(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
@@ -91,7 +88,7 @@ public class StudentController extends BaseController {
                 ByteArrayOutputStream baos = FileUtils.getSingleDownloadFile(resource_url);
                 org.springframework.core.io.Resource resource = new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));
 
-                HttpHeaders headers = fileService.getFileDownloadHeaders(resource_title);
+                HttpHeaders headers = getFileDownloadHeaders(resource_title);
 
                 return ResponseEntity.ok().headers(headers).contentType(MediaType.parseMediaType("application/x-msdownload")).body(resource);
 

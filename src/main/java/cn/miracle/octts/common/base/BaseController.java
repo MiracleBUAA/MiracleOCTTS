@@ -1,7 +1,10 @@
 package cn.miracle.octts.common.base;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 /**
@@ -47,5 +50,18 @@ public class BaseController {
         response.setErrorNo(0);
         response.setErrorMsg("OK");
         return response;
+    }
+
+    public static HttpHeaders getFileDownloadHeaders(String file_title) throws UnsupportedEncodingException {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+        headers.add("charset", "utf-8");
+        String file_name = URLEncoder.encode(file_title, "UTF-8");
+        headers.add("Content-Disposition", "attachment;filename=\"" + file_name + "\"");
+
+        return headers;
     }
 }
