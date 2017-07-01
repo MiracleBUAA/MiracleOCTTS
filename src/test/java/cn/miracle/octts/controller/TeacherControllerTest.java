@@ -1,14 +1,6 @@
 package cn.miracle.octts.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-
 import cn.miracle.octts.util.CodeConvert;
-import org.aspectj.apache.bcel.classfile.Code;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,8 +90,8 @@ public class TeacherControllerTest {
         this.mockMvc.perform(
                 post("/teacher/new_announcement")
                         .param("uid", "T001")
-                        .param("course_id","1")
-                        .param("announcement_title","\\u8fd9\\u662f\\u4e00\\u4e2a\\u901a\\u77e5\\u20\\u31\\u32\\u33")
+                        .param("course_id", "1")
+                        .param("announcement_title", "\\u8fd9\\u662f\\u4e00\\u4e2a\\u901a\\u77e5\\u20\\u31\\u32\\u33")
                         .param("announcement_message", "\\u8fd9\\u662f\\u901a\\u77e5\\u5185\\u5bb9\\u20\\u31\\u32\\u33"))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -110,9 +102,9 @@ public class TeacherControllerTest {
         this.mockMvc.perform(
                 post("/teacher/announcement_update")
                         .param("uid", "T001")
-                        .param("course_id","1")
-                        .param("announcement_id","2")
-                        .param("announcement_title","\\u8fd9\\u662f\\u4e00\\u4e2a\\u901a\\u77e5\\u20\\u31\\u32\\u33")
+                        .param("course_id", "1")
+                        .param("announcement_id", "2")
+                        .param("announcement_title", "\\u8fd9\\u662f\\u4e00\\u4e2a\\u901a\\u77e5\\u20\\u31\\u32\\u33")
                         .param("announcement_message", "\\u8fd9\\u662f\\u901a\\u77e5\\u5185\\u5bb9\\u20\\u31\\u32\\u33"))
                 .andDo(print())
                 .andExpect(status().isOk());

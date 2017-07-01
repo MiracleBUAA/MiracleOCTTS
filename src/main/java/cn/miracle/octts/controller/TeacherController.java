@@ -2,20 +2,11 @@ package cn.miracle.octts.controller;
 
 import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
-import cn.miracle.octts.entity.Announcement;
-import cn.miracle.octts.entity.Course;
-import cn.miracle.octts.entity.Homework;
-import cn.miracle.octts.entity.Resource;
-import cn.miracle.octts.service.CourseService;
-import cn.miracle.octts.service.HomeworkService;
-import cn.miracle.octts.service.ResourceService;
-import cn.miracle.octts.service.TeacherService;
-import cn.miracle.octts.entity.Student;
+import cn.miracle.octts.entity.*;
 import cn.miracle.octts.service.*;
 import cn.miracle.octts.util.CodeConvert;
-import cn.miracle.octts.util.FileUtils;
 import cn.miracle.octts.util.DateConvert;
-import org.aspectj.apache.bcel.classfile.Code;
+import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -31,11 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Date;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * Created by Tony on 2017/6/27.
@@ -179,16 +167,16 @@ public class TeacherController extends BaseController {
 
     /**
      * 教师创建新作业
-    * */
+     */
     @RequestMapping(value = "/new_homework", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> newHomework (@RequestParam(value = "uid") String uid,
-                                                      @RequestParam(value = "course_id", required = true) Integer course_id,
-                                                      @RequestParam(value = "homework_title") String homework_title,
-                                                      @RequestParam(value = "homework_start_time") String homework_start_time,
-                                                      @RequestParam(value = "homework_end_time") String homework_end_time,
-                                                      @RequestParam(value = "homework_score") Integer homework_score,
-                                                      @RequestParam(value = "homework_message") String homework_message,
-                                                      @RequestParam(value = "resubmit_limit") Integer resubmit_limit) {
+    public ResponseEntity<BaseResponse> newHomework(@RequestParam(value = "uid") String uid,
+                                                    @RequestParam(value = "course_id", required = true) Integer course_id,
+                                                    @RequestParam(value = "homework_title") String homework_title,
+                                                    @RequestParam(value = "homework_start_time") String homework_start_time,
+                                                    @RequestParam(value = "homework_end_time") String homework_end_time,
+                                                    @RequestParam(value = "homework_score") Integer homework_score,
+                                                    @RequestParam(value = "homework_message") String homework_message,
+                                                    @RequestParam(value = "resubmit_limit") Integer resubmit_limit) {
         BaseResponse response = new BaseResponse();
 
         Homework new_homework = new Homework();
@@ -230,10 +218,10 @@ public class TeacherController extends BaseController {
     }
 
     /**
-    * 教师——查看学生作业列表
-    **/
+     * 教师——查看学生作业列表
+     **/
     @RequestMapping(value = "homework_list", method = RequestMethod.GET)
-    public ResponseEntity<BaseResponse> getHomeworkList (@RequestParam(value = "course_id") Integer course_id) {
+    public ResponseEntity<BaseResponse> getHomeworkList(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
 
         HashMap<String, Object> data = new HashMap<>();
@@ -247,11 +235,11 @@ public class TeacherController extends BaseController {
     }
 
     /**
-    * 教师——查看学生作业
-     * */
+     * 教师——查看学生作业
+     */
     @RequestMapping(value = "homework_information", method = RequestMethod.GET)
-    public ResponseEntity<BaseResponse> getHomeworkinformation (@RequestParam(value = "course_id") Integer course_id,
-                                                                @RequestParam(value = "homework_id") Integer homework_id) {
+    public ResponseEntity<BaseResponse> getHomeworkinformation(@RequestParam(value = "course_id") Integer course_id,
+                                                               @RequestParam(value = "homework_id") Integer homework_id) {
         BaseResponse response = new BaseResponse();
         HashMap<String, Object> data = new HashMap<>();
 
@@ -264,9 +252,6 @@ public class TeacherController extends BaseController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-
-
 
 
     /**
