@@ -6,8 +6,8 @@ import cn.miracle.octts.common.base.BaseResponse;
 import cn.miracle.octts.entity.Course;
 import cn.miracle.octts.entity.Student;
 import cn.miracle.octts.service.CourseService;
-import cn.miracle.octts.service.TeacherService;
 import cn.miracle.octts.service.StudentService;
+import cn.miracle.octts.service.TeacherService;
 import cn.miracle.octts.util.CodeConvert;
 import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,7 +146,7 @@ public class AdminController extends BaseController {
             response = setParamError();
             return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
         } else {
-            course.setCourse_status(new Integer(0));
+            course.setCourse_status(0);
             courseService.updateCourse(course, uid);
             response = setCorrectUpdate();
         }
