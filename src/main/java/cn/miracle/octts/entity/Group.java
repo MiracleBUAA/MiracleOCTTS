@@ -10,21 +10,29 @@ import javax.validation.constraints.Size;
  * Created by Tony on 2017/6/27.
  */
 public class Group extends BaseEntity {
-    private String group_id;
+    private Integer group_id;
+    private Integer course_id;
     private String group_name;
     private String group_owner_id;
-    private String group_score;
-    private String group_status;
+    private Double group_score;
 
     public Group() {
     }
 
-    public String getGroup_id() {
+    public Integer getGroup_id() {
         return group_id;
     }
 
-    public void setGroup_id(String group_id) {
+    public void setGroup_id(Integer group_id) {
         this.group_id = group_id;
+    }
+
+    public Integer getCourse_id() {
+        return course_id;
+    }
+
+    public void setCourse_id(Integer course_id) {
+        this.course_id = course_id;
     }
 
     public String getGroup_name() {
@@ -43,19 +51,11 @@ public class Group extends BaseEntity {
         this.group_owner_id = group_owner_id;
     }
 
-    public String getGroup_score() {
+    public Double getGroup_score() {
         return group_score;
     }
 
-    public void setGroup_score(String group_score) {
+    public void setGroup_score(Double group_score) {
         this.group_score = group_score;
-    }
-
-    public String getGroup_status() {
-        return group_status;
-    }
-
-    public void setGroup_status(String group_status) {
-        this.group_status = group_status;
     }
 }

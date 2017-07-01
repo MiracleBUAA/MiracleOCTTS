@@ -3,23 +3,23 @@ package cn.miracle.octts.entity;
 import cn.miracle.octts.common.base.BaseEntity;
 
 /**
- * Created by Tony on 2017/6/29.
+ * Created by hf on 2017/7/1.
  */
-public class GroupMember extends BaseEntity {
-    private Integer group_id;
+public class GroupApplyMember extends BaseEntity {
+    private Integer group_apply_id;
     private Integer course_id;
     private String student_id;
     private Integer group_role;
 
-    public GroupMember() {
+    public GroupApplyMember() {
     }
 
-    public Integer getGroup_id() {
-        return group_id;
+    public Integer getGroup_apply_id() {
+        return group_apply_id;
     }
 
-    public void setGroup_id(Integer group_id) {
-        this.group_id = group_id;
+    public void setGroup_apply_id(Integer group_apply_id) {
+        this.group_apply_id = group_apply_id;
     }
 
     public Integer getCourse_id() {

@@ -11,11 +11,13 @@ import java.util.Date;
  */
 public class Course extends BaseEntity {
     private Integer course_id;
-    private String course_name;
+    private Integer course_year;
     private Date course_start_time;
     private Date course_end_time;
+    private Integer course_status; // 课程状态，0为结束，1位开始
+    private String course_name;
     private Integer course_hour;
-    private double credit;
+    private Double course_credit;
     private String course_location;
     private String team_limit_information;
     private String teacher_information;
@@ -32,12 +34,12 @@ public class Course extends BaseEntity {
         this.course_id = course_id;
     }
 
-    public String getCourse_name() {
-        return course_name;
+    public Integer getCourse_year() {
+        return course_year;
     }
 
-    public void setCourse_name(String course_name) {
-        this.course_name = course_name;
+    public void setCourse_year(Integer course_year) {
+        this.course_year = course_year;
     }
 
     public Date getCourse_start_time() {
@@ -56,6 +58,22 @@ public class Course extends BaseEntity {
         this.course_end_time = course_end_time;
     }
 
+    public Integer getCourse_status() {
+        return course_status;
+    }
+
+    public void setCourse_status(Integer course_status) {
+        this.course_status = course_status;
+    }
+
+    public String getCourse_name() {
+        return course_name;
+    }
+
+    public void setCourse_name(String course_name) {
+        this.course_name = course_name;
+    }
+
     public Integer getCourse_hour() {
         return course_hour;
     }
@@ -64,12 +82,12 @@ public class Course extends BaseEntity {
         this.course_hour = course_hour;
     }
 
-    public double getCredit() {
-        return credit;
+    public Double getCourse_credit() {
+        return course_credit;
     }
 
-    public void setCredit(double credit) {
-        this.credit = credit;
+    public void setCourse_credit(Double course_credit) {
+        this.course_credit = course_credit;
     }
 
     public String getCourse_location() {

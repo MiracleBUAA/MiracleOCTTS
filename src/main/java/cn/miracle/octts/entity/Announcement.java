@@ -12,30 +12,28 @@ import java.sql.Date;
  * Created by Tony on 2017/6/27.
  */
 public class Announcement extends BaseEntity{
-    private String announcement_id;
-    private String course_id;
+    private Integer announcement_id;
+    private Integer course_id;
     private String teacher_id;
-    private String title;
-    private String message;
-    private Date start_time;
-    private Date end_time;
+    private String announcement_title;
+    private String announcement_message;
 
     public Announcement() {
     }
 
-    public String getAnnouncement_id() {
+    public Integer getAnnouncement_id() {
         return announcement_id;
     }
 
-    public void setAnnouncement_id(String announcement_id) {
+    public void setAnnouncement_id(Integer announcement_id) {
         this.announcement_id = announcement_id;
     }
 
-    public String getCourse_id() {
+    public Integer getCourse_id() {
         return course_id;
     }
 
-    public void setCourse_id(String course_id) {
+    public void setCourse_id(Integer course_id) {
         this.course_id = course_id;
     }
 
@@ -47,35 +45,19 @@ public class Announcement extends BaseEntity{
         this.teacher_id = teacher_id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getAnnouncement_title() {
+        return announcement_title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setAnnouncement_title(String announcement_title) {
+        this.announcement_title = announcement_title;
     }
 
-    public String getMessage() {
-        return message;
+    public String getAnnouncement_message() {
+        return announcement_message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Date getStart_time() {
-        return start_time;
-    }
-
-    public void setStart_time(Date start_time) {
-        this.start_time = start_time;
-    }
-
-    public Date getEnd_time() {
-        return end_time;
-    }
-
-    public void setEnd_time(Date end_time) {
-        this.end_time = end_time;
+    public void setAnnouncement_message(String announcement_message) {
+        this.announcement_message = announcement_message;
     }
 }
