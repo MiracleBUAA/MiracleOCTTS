@@ -1,6 +1,6 @@
 package cn.miracle.octts.service;
 
-import cn.miracle.octts.dao.GroupDao;
+import cn.miracle.octts.dao.GroupConfirmDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +13,9 @@ import java.util.List;
 public class GroupConfirmService {
 
     @Autowired
-    private GroupDao groupDao;
+    private GroupConfirmDao groupConfirmDao;
 
     public List<String> findGroupOwner() {
-        return groupDao.findGroupOwner();
+        return groupConfirmDao.findGroupOwner();
     }
 }
