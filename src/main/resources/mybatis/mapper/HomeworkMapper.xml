@@ -12,8 +12,8 @@
         <result property="homework_status" column="homework_status"/>
         <result property="homework_title" column="homework_title"/>
         <result property="homework_message" column="homework_message"/>
-        <result property="homework_start_time" column="start_time"/>
-        <result property="homework_end_time" column="end_time"/>
+        <result property="homework_start_time" column="homework_start_time"/>
+        <result property="homework_end_time" column="homework_end_time"/>
         <result property="resubmit_limit" column="resubmit_limit"/>
     </resultMap>
 </mapper>

@@ -4,11 +4,18 @@ import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
 import cn.miracle.octts.entity.Announcement;
 import cn.miracle.octts.entity.Course;
+import cn.miracle.octts.entity.Homework;
 import cn.miracle.octts.entity.Resource;
+import cn.miracle.octts.service.CourseService;
+import cn.miracle.octts.service.HomeworkService;
+import cn.miracle.octts.service.ResourceService;
+import cn.miracle.octts.service.TeacherService;
 import cn.miracle.octts.entity.Student;
 import cn.miracle.octts.service.*;
 import cn.miracle.octts.util.CodeConvert;
 import cn.miracle.octts.util.FileUtils;
+import cn.miracle.octts.util.DateConvert;
+import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Date;
 
 /**
  * Created by Tony on 2017/6/27.
@@ -50,6 +58,9 @@ public class TeacherController extends BaseController {
 
     @Autowired
     private ResourceService resourceService;
+
+    @Autowired
+    private HomeworkService homeworkService;
 
     /**
      * API7: 课程信息
@@ -129,28 +140,28 @@ public class TeacherController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/student_list", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> student_list(@RequestParam(value = "uid") String uid,
-                                                     @RequestParam(value = "file") MultipartFile student_list) {
-        BaseResponse response = new BaseResponse();
-        if (student_list.isEmpty()) {
-            response = setFileUploadError();
-        } else {
-            try {
-                String student_list_path = FileUtils.saveSingleUploadFile(student_list); // 上传文件
-                if (uid == null)
-                    uid = "T001";
-                Integer studentcount = teacherService.importStudentList(student_list_path, uid); // 写入数据库
-
-                HashMap<String, Object> data = new HashMap<>();
-                data.put("desc", "success");
-                response = setCorrectResponse(data);
-            } catch (IOException e) {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+//    @RequestMapping(value = "/student_list", method = RequestMethod.POST)
+//    public ResponseEntity<BaseResponse> student_list(@RequestParam(value = "uid") String uid,
+//                                                     @RequestParam(value = "file") MultipartFile student_list) {
+//        BaseResponse response = new BaseResponse();
+//        if (student_list.isEmpty()) {
+//            response = setFileUploadError();
+//        } else {
+//            try {
+//                String student_list_path = FileUtils.saveSingleUploadFile(student_list); // 上传文件
+//                if (uid == null)
+//                    uid = "T001";
+//                Integer studentcount = teacherService.importStudentList(student_list_path, uid); // 写入数据库
+//
+//                HashMap<String, Object> data = new HashMap<>();
+//                data.put("desc", "success");
+//                response = setCorrectResponse(data);
+//            } catch (IOException e) {
+//                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//            }
+//        }
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
 
     @RequestMapping(value = "/homework", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getHomework(@RequestParam(value = "course_id", required = true) Integer course_id) {
@@ -159,22 +170,107 @@ public class TeacherController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/homework", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> setHomework(@RequestParam(value = "course_id", required = true) Integer course_id) {
-        BaseResponse response = new BaseResponse();
+//    @RequestMapping(value = "/homework", method = RequestMethod.POST)
+//    public ResponseEntity<BaseResponse> setHomework(@RequestParam(value = "course_id", required = true) Integer course_id) {
+//        BaseResponse response = new BaseResponse();
+//
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
+    /**
+     * 教师创建新作业
+    * */
     @RequestMapping(value = "/new_homework", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> initHomework(@RequestParam(value = "course_id", required = true) Integer course_id) {
+    public ResponseEntity<BaseResponse> newHomework (@RequestParam(value = "uid") String uid,
+                                                      @RequestParam(value = "course_id", required = true) Integer course_id,
+                                                      @RequestParam(value = "homework_title") String homework_title,
+                                                      @RequestParam(value = "homework_start_time") String homework_start_time,
+                                                      @RequestParam(value = "homework_end_time") String homework_end_time,
+                                                      @RequestParam(value = "homework_score") Integer homework_score,
+                                                      @RequestParam(value = "homework_message") String homework_message,
+                                                      @RequestParam(value = "resubmit_limit") Integer resubmit_limit) {
         BaseResponse response = new BaseResponse();
+
+        Homework new_homework = new Homework();
+
+        Integer homework_id = homeworkService.findMaxHomeworkId() + 1;
+        new_homework.setHomework_id(homework_id);
+
+        new_homework.setUid(uid);
+        new_homework.setTeacher_id(uid);
+
+        new_homework.setCourse_id(course_id);
+        homework_title = CodeConvert.unicode2String(homework_title);
+        new_homework.setHomework_title(homework_title);
+        Date start_time = null;
+        Date end_time = null;
+        try {
+            homework_start_time = CodeConvert.unicode2String(homework_start_time);
+            homework_end_time = CodeConvert.unicode2String(homework_end_time);
+            start_time = DateConvert.string2Datetime(homework_start_time);
+            end_time = DateConvert.string2Datetime(homework_end_time);
+        } catch (ParseException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        new_homework.setHomework_start_time(start_time);
+        new_homework.setHomework_end_time(end_time);
+        new_homework.setHomework_score(homework_score);
+        new_homework.setResubmit_limit(resubmit_limit);
+        homework_message = CodeConvert.unicode2String(homework_message);
+        new_homework.setHomework_message(homework_message);
+
+        homeworkService.InsertHomework(new_homework);
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("desc", "OK");
+        response = setCorrectResponse(data);
+
         return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
 
     /**
-     * 教师获取课程资源
+    * 教师——查看学生作业列表
+    **/
+    @RequestMapping(value = "homework_list", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getHomeworkList (@RequestParam(value = "course_id") Integer course_id) {
+        BaseResponse response = new BaseResponse();
+
+        HashMap<String, Object> data = new HashMap<>();
+
+        List<HashMap<String, Object>> homework_list = homeworkService.getHomeworkList(course_id);
+        data.put("homework_list", homework_list);
+
+        response = setCorrectResponse(data);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    /**
+    * 教师——查看学生作业
+     * */
+    @RequestMapping(value = "homework_information", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getHomeworkinformation (@RequestParam(value = "course_id") Integer course_id,
+                                                                @RequestParam(value = "homework_id") Integer homework_id) {
+        BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<>();
+
+        Homework homework = homeworkService.findHomeworkById(homework_id);
+        data.put("homework_id", homework.getHomework_id());
+        data.put("course_id", homework.getCourse_id());
+        data.put("homework_title", homework.getHomework_title());
+
+        data.put("homework_start_time", homework.getHomework_start_time());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+
+
+
+    /**
+     * 教师获取课程资源列表
      *
      * @param course_id 课程id
      */
