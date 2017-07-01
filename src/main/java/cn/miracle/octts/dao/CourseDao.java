@@ -4,6 +4,8 @@ import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.Course;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 /**
  * Created by Tony on 2017/6/27.
  */
@@ -36,4 +38,10 @@ public interface CourseDao extends BaseMapper<Course> {
             "#{team_limit_information}, #{teacher_information}, #{course_information})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertCourse(Course course);
+
+    @Select("SELECT course_id, course_year, course_status, course_name, course_start_time, " +
+            "course_hour, course_location, course_credit, teacher_information " +
+            "FROM course;")
+    @ResultMap("cn.miracle.octts.dao.CourseDao.FindAllCourse")
+    List<Course> selectAllCourse();
 }

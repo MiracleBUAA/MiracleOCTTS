@@ -42,7 +42,7 @@ public class TeacherController extends BaseController {
         if (course == null) {
             response = setParamError();
         } else {
-            HashMap<String, Object> data = courseService.Dump2Data(course);
+            HashMap<String, Object> data = courseService.teacherCourse2Json(course);
             response = setCorrectResponse(data);
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
