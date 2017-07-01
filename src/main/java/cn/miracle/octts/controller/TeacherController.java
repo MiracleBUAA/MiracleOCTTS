@@ -207,7 +207,7 @@ public class TeacherController extends BaseController {
         homework_message = CodeConvert.unicode2String(homework_message);
         new_homework.setHomework_message(homework_message);
 
-        homeworkService.InsertHomwork(new_homework);
+        homeworkService.InsertHomework(new_homework);
 
         HashMap<String, Object> data = new HashMap<>();
         data.put("desc", "OK");
@@ -224,7 +224,12 @@ public class TeacherController extends BaseController {
     public ResponseEntity<BaseResponse> getHomeworkList (@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
 
+        HashMap<String, Object> data = new HashMap<>();
 
+        List<HashMap<String, Object>> homework_list = homeworkService.getHomeworkList(course_id);
+        data.put("homework_list", homework_list);
+
+        response = setCorrectResponse(data);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -236,7 +241,14 @@ public class TeacherController extends BaseController {
     public ResponseEntity<BaseResponse> getHomeworkinformation (@RequestParam(value = "course_id") Integer course_id,
                                                                 @RequestParam(value = "homework_id") Integer homework_id) {
         BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<>();
 
+        Homework homework = homeworkService.findHomeworkById(homework_id);
+        data.put("homework_id", homework.getHomework_id());
+        data.put("course_id", homework.getCourse_id());
+        data.put("homework_title", homework.getHomework_title());
+        
+        data.put("homework_start_time", homework.getHomework_start_time());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -246,7 +258,7 @@ public class TeacherController extends BaseController {
 
 
     /**
-     * 教师获取课程资源
+     * 教师获取课程资源列表
      *
      * @param course_id 课程id
      */
