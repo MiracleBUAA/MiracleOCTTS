@@ -18,4 +18,17 @@
         <result property="teacher_information" column="teacher_information"/>
         <result property="course_information" column="course_information"/>
     </resultMap>
+
+    <resultMap id="FindAllCourse" type="Course">
+        <id property="id" column="id"/>
+        <result property="course_id" column="course_id"/>
+        <result property="course_year" column="course_year"/>
+        <result property="course_status" column="course_status"/>
+        <result property="course_name" column="course_name"/>
+        <result property="course_start_time" column="course_start_time"/>
+        <result property="course_hour" column="course_hour"/>
+        <result property="course_location" column="course_location"/>
+        <result property="course_credit" column="course_credit"/>
+        <result property="teacher_information" column="teacher_information"/>
+    </resultMap>
 </mapper>

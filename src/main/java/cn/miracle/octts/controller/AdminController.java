@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by Tony on 2017/7/1.
@@ -141,6 +141,26 @@ public class AdminController extends BaseController {
             courseService.updateCourse(course, uid);
             response = setCorrectUpdate();
         }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    //API5: 显示课程信息
+    @RequestMapping(value = "/course_information", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getCourseInformation() {
+        BaseResponse response = new BaseResponse();
+        List<HashMap<String, Object>> course_list = new ArrayList<HashMap<String, Object>>();
+
+        List<Course> course_result = courseService.findAllCourse();
+        Iterator<Course> course_iter = course_result.iterator();
+        while (course_iter.hasNext()) {
+            HashMap<String, Object> course = courseService.teacherCourse2Json(course_iter.next());
+            course_list.add(course);
+        }
+
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put("course_list", course_list);
+        response = setCorrectResponse(data);
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

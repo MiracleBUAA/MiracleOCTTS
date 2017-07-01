@@ -49,7 +49,7 @@ public class StudentController extends BaseController {
         } else {
             Course course = courseService.findCourseById(course_id);
             if (course != null) {
-                HashMap<String, Object> data = courseService.Dump2Data(course);
+                HashMap<String, Object> data = courseService.teacherCourse2Json(course);
                 response = setCorrectResponse(data);
             }
         }
