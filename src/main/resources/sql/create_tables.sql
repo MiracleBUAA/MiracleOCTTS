@@ -208,8 +208,8 @@ CREATE TABLE `homework_upload` (
   `course_id`          INT(11)             NOT NULL,
   `homework_id`        INT(11)             NOT NULL,
   `group_id`           TINYINT(4)          NOT NULL,
+  `file_name`          VARCHAR(255)        NOT NULL,
   `homework_url`       VARCHAR(255)        NOT NULL,
-  `message`            VARCHAR(255)                 DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_homework_upload_id` (`homework_upload_id`)
 )
@@ -347,4 +347,4 @@ CREATE TABLE `teacher` (
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-01 10:06:48
+-- Dump completed on 2017-07-01 10:42:17
