@@ -3,8 +3,11 @@ package cn.miracle.octts.controller;
 import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
 import cn.miracle.octts.entity.Course;
+import cn.miracle.octts.entity.Homework;
+import cn.miracle.octts.entity.HomeworkUpload;
 import cn.miracle.octts.entity.Resource;
 import cn.miracle.octts.service.CourseService;
+import cn.miracle.octts.service.HomeworkUploadService;
 import cn.miracle.octts.service.ResourceService;
 import cn.miracle.octts.service.StudentService;
 import cn.miracle.octts.util.FileUtils;
@@ -37,6 +40,9 @@ public class StudentController extends BaseController {
     @Autowired
     private ResourceService resourceService;
 
+    @Autowired
+    private HomeworkUploadService homeworkUploadService;
+
     @RequestMapping(value = "/course_information", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getCourseInformation(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
@@ -62,7 +68,16 @@ public class StudentController extends BaseController {
     }
 
     @RequestMapping(value = "/resource", method = RequestMethod.GET)
-    public ResponseEntity<org.springframework.core.io.Resource> getResource(@RequestParam(value = "course_id", required = false) Integer course_id,
+    public ResponseEntity<BaseResponse> getResource(@RequestParam(value = "course_id") Integer course_id) {
+        BaseResponse response = new BaseResponse();
+
+
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/resource_download", method = RequestMethod.GET)
+    public ResponseEntity<org.springframework.core.io.Resource> downloadResource(@RequestParam(value = "course_id", required = false) Integer course_id,
                                                                             @RequestParam(value = "resource_id") Integer resource_id) {
         BaseResponse response = new BaseResponse();
 
@@ -124,7 +139,15 @@ public class StudentController extends BaseController {
                 String filePath = FileUtils.saveSingleUploadFile(uploadFile);
                 // TODO: WRITE DATABASE
                 //Uid included
+                HomeworkUpload homeworkUpload = new HomeworkUpload();
+                homeworkUpload.setHomework_upload_id(233);
+                homeworkUpload.setCourse_id(course_id);
+                homeworkUpload.setHomework_id(homework_id);
+                homeworkUpload.setGroup_id(group_id);
+                homeworkUpload.setUid(uid);
+                homeworkUpload.setHomework_url(filePath);
 
+                homeworkUploadService.InsertHomeworkUpload(homeworkUpload);
 
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("desc", "OK");

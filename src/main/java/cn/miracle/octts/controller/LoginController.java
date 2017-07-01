@@ -41,7 +41,6 @@ public class LoginController extends BaseController{
     public ResponseEntity<BaseResponse> login(@RequestParam(value = "uid", required = true) String uid,
                                               @RequestParam(value = "password", required = true) String password,
                                               @RequestParam(value = "urank", required = true) Integer urank) {
-
         BaseResponse response = new BaseResponse();
         HashMap<String, Object> data = new HashMap<>();
 
@@ -61,6 +60,8 @@ public class LoginController extends BaseController{
                         else {
                             setLoginSession(uid, urank);
                             data.put("desc", "success");
+                            data.put("uid", student.getStudent_id());
+                            // TODO: 判断学生是否是团队负责人
                             response = setCorrectResponse(data);
                         }
                     }
@@ -70,7 +71,7 @@ public class LoginController extends BaseController{
                         response.setData(data);
                     }
                     break;
-                case 2: // 教师
+                case 3: // 教师
                     Teacher teacher = teacherService.findTeacherByIdForLogin(uid);
                     if (teacher == null) {
                         response.setErrorNo(2);
@@ -86,6 +87,30 @@ public class LoginController extends BaseController{
                         else {
                             setLoginSession(uid, urank);
                             data.put("desc", "success");
+                            data.put("uid", teacher.getTeacher_id());
+                            data.put("urank", urank);
+                            response = setCorrectResponse(data);
+                        }
+                    }
+                    break;
+                case 4: // 教师
+                    Teacher teacherAdmin = teacherService.findTeacherByIdForLogin(uid);
+                    if (teacherAdmin == null) {
+                        response.setErrorNo(2);
+                        response.setErrorMsg("uid未授权");
+                        response.setData(data);
+                    }
+                    else {
+                        if (!password.equals(teacherAdmin.getPassword())) {
+                            response.setErrorNo(3);
+                            response.setErrorMsg("密码错误");
+                            response.setData(data);
+                        }
+                        else {
+                            setLoginSession(uid, urank);
+                            data.put("desc", "success");
+                            data.put("uid", teacherAdmin.getTeacher_id());
+                            data.put("urank", urank);
                             response = setCorrectResponse(data);
                         }
                     }
