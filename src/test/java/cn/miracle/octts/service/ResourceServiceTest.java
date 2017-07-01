@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -38,4 +39,19 @@ public class ResourceServiceTest {
         }
     }
 
+    @Test
+    public void TestInsert() {
+        Resource resource = new Resource();
+        resource.setCourse_id(1);
+        resource.setResource_id(5);
+        resource.setResource_title("upload_test.txt");
+        resource.setTeacher_id("T001");
+        resource.setResource_type("test");
+        resource.setResource_url("/Users/hf/tmp/upload/upload_test.txt");
+        resource.setUid("T001");
+        Date currenttime = new Date(System.currentTimeMillis());
+        resource.setCreatetime(currenttime);
+        resource.setUpdatetime(currenttime);
+        resourceService.InsertResource(resource);
+    }
 }
