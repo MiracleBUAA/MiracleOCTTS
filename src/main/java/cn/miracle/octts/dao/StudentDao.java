@@ -38,5 +38,4 @@ public interface StudentDao extends BaseMapper<Student> {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertStudent(Student student);
 
-
 }

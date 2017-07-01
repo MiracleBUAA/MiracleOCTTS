@@ -44,14 +44,16 @@ public class CourseService {
         return data;
     }
 
+    //导出教师课程信息
     public HashMap<String, Object> teacherCourse2Json(Course course) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        return adminCourse2Json(course);
+        HashMap<String, Object> data = adminCourse2Json(course);
 
-        //TODO 以后改
+        data.put("team_limit_information", course.getTeam_limit_information());
+        data.put("course_information", course.getCourse_information());
 
-        //return data;
+        return data;
     }
 
     public Integer updateCourse(Course course, String uid) {

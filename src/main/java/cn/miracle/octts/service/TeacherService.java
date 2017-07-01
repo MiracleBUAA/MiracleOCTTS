@@ -26,8 +26,6 @@ public class TeacherService {
     @Autowired
     private TeacherDao teacherDao;
 
-    private Date currentTime = new Date();
-
     public Teacher findTeacherByIdForLogin(String teacher_id) {
         return teacherDao.findByIdForLogin(teacher_id);
     }
@@ -71,5 +69,9 @@ public class TeacherService {
             }
         }
         return studentCount;
+    }
+
+    public String findTeacherNameById(String teacher_id) {
+        return teacherDao.findTeacherNameById(teacher_id);
     }
 }

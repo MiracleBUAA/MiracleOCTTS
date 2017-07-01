@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.miracle.octts.dao.AnnouncementDao">
+    <resultMap id="AnnouncementDetail" type="Announcement">
+        <id property="id" column="id"/>
+        <result property="updatetime" column="gmt_modified"/>
+        <result property="uid" column="uid"/>
+        <result property="announcement_id" column="announcement_id"/>
+        <result property="course_id" column="course_id"/>
+        <result property="teacher_id" column="teacher_id"/>
+        <result property="announcement_title" column="announcement_title"/>
+        <result property="announcement_message" column="announcement_message"/>
+    </resultMap>
+</mapper>

@@ -2,13 +2,12 @@ package cn.miracle.octts.controller;
 
 import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
+import cn.miracle.octts.entity.Announcement;
 import cn.miracle.octts.entity.Course;
 import cn.miracle.octts.entity.Resource;
-import cn.miracle.octts.service.CourseService;
-import cn.miracle.octts.service.ResourceService;
-import cn.miracle.octts.service.TeacherService;
+import cn.miracle.octts.entity.Student;
+import cn.miracle.octts.service.*;
 import cn.miracle.octts.util.CodeConvert;
-import cn.miracle.octts.util.DateConvert;
 import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -25,9 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -38,20 +37,33 @@ import java.util.List;
 public class TeacherController extends BaseController {
 
     @Autowired
+    private AnnouncementService announcementService;
+
+    @Autowired
     private TeacherService teacherService;
 
     @Autowired
     private CourseService courseService;
 
     @Autowired
+    private StudentService studentService;
+
+    @Autowired
     private ResourceService resourceService;
 
+    /**
+     * API7: 课程信息
+     *
+     * @param course_id
+     * @return
+     */
     @RequestMapping(value = "/course_information", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getCourseInfomation(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
         Course course = courseService.findCourseById(course_id);
         if (course == null) {
             response = setParamError();
+            return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
         } else {
             HashMap<String, Object> data = courseService.teacherCourse2Json(course);
             response = setCorrectResponse(data);
@@ -59,16 +71,19 @@ public class TeacherController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * API7: 课程信息
+     *
+     * @param uid
+     * @param course_id
+     * @param team_limit_information
+     * @param course_information
+     * @return
+     */
     @RequestMapping(value = "/course_information", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> setCourseInfomation(@RequestParam(value = "uid") String uid,
                                                             @RequestParam(value = "course_id") Integer course_id,
-                                                            @RequestParam(value = "course_name", required = false) String course_name,
-                                                            @RequestParam(value = "course_start_time", required = false) String course_start_time,
-                                                            @RequestParam(value = "course_hour", required = false) Integer course_hour,
-                                                            @RequestParam(value = "course_location", required = false) String course_location,
-                                                            @RequestParam(value = "course_credit", required = false) Double course_credit,
                                                             @RequestParam(value = "team_limit_information", required = false) String team_limit_information,
-                                                            @RequestParam(value = "teacher_information", required = false) String teacher_information,
                                                             @RequestParam(value = "course_information", required = false) String course_information) {
         BaseResponse response = new BaseResponse();
 
@@ -77,47 +92,39 @@ public class TeacherController extends BaseController {
             response = setParamError();
             return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
         } else {
-            //修改课程信息
-            try {
-                if (course_start_time != null) {
-                    Date course_start_date = DateConvert.string2Date(course_start_time);
-                    course.setCourse_start_time(course_start_date);
-                }
-
-                if (course_name != null) {
-                    course.setCourse_name(CodeConvert.unicode2String(course_name));
-                }
-                if (course_hour != null) {
-                    course.setCourse_hour(course_hour);
-                }
-                if (course_location != null) {
-                    course.setCourse_location(CodeConvert.unicode2String(course_location));
-                }
-                if (course_credit != null) {
-                    course.setCourse_credit(course_credit);
-                }
-                if (team_limit_information != null) {
-                    course.setTeam_limit_information(CodeConvert.unicode2String(team_limit_information));
-                }
-                if (teacher_information != null) {
-                    course.setTeacher_information(CodeConvert.unicode2String(teacher_information));
-                }
-                if (course_information != null) {
-                    course.setCourse_information(CodeConvert.unicode2String(course_information));
-                }
-                courseService.updateCourse(course, uid);
-                response = setCorrectUpdate();
-            } catch (ParseException parseExceptionse) {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            if (team_limit_information != null) {
+                course.setTeam_limit_information(CodeConvert.unicode2String(team_limit_information));
             }
+            if (course_information != null) {
+                course.setCourse_information(CodeConvert.unicode2String(course_information));
+            }
+            courseService.updateCourse(course, uid);
+            response = setCorrectUpdate();
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
 
 
+    /**
+     * API8: 查看学生名单
+     *
+     * @return
+     */
     @RequestMapping(value = "/student_list", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> student_list() {
         BaseResponse response = new BaseResponse();
+        List<HashMap<String, Object>> student_list = new ArrayList<HashMap<String, Object>>();
+
+        List<Student> student_result = studentService.findAllStudent();
+        Iterator<Student> student_iter = student_result.iterator();
+        while (student_iter.hasNext()) {
+            HashMap<String, Object> student = studentService.adminStudent2Json(student_iter.next());
+            student_list.add(student);
+        }
+
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put("student_list", student_list);
+        response = setCorrectResponse(data);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -192,8 +199,9 @@ public class TeacherController extends BaseController {
 
     /**
      * 教师上传课程资源
+     *
      * @param course_id 课程id
-     * */
+     */
     @RequestMapping(value = "/resource_upload", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> UploadResource(@RequestParam(value = "uid", required = false) String uid,
                                                        @RequestParam(value = "course_id") Integer course_id,
@@ -234,8 +242,8 @@ public class TeacherController extends BaseController {
     }
 
     /**
-    * 教师下载资源
-    * */
+     * 教师下载资源
+     */
     @RequestMapping(value = "/resource_download", method = RequestMethod.GET)
     public ResponseEntity<org.springframework.core.io.Resource> downloadResource(
             @RequestParam(value = "resource_id") Integer resource_id) {
@@ -244,8 +252,7 @@ public class TeacherController extends BaseController {
         Resource resource_download = resourceService.findByIdForDownload(resource_id);
         if (resource_download == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        else {
+        } else {
             String resource_url = resource_download.getResource_url();
             String resource_title = resource_download.getResource_title();
             try {
@@ -263,10 +270,10 @@ public class TeacherController extends BaseController {
     }
 
     /**
-    * 教师删除资源
-    * */
+     * 教师删除资源
+     */
     @RequestMapping(value = "/resource_delete", method = RequestMethod.POST)
-    public  ResponseEntity<BaseResponse> deleteResource(@RequestParam(value = "resource_id") Integer resource_id) {
+    public ResponseEntity<BaseResponse> deleteResource(@RequestParam(value = "resource_id") Integer resource_id) {
         BaseResponse response = new BaseResponse();
 
         resourceService.deleteResource(resource_id);
@@ -277,4 +284,69 @@ public class TeacherController extends BaseController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    /**
+     * API21: 发布通知
+     *
+     * @param uid
+     * @param course_id
+     * @param announcement_title
+     * @param announcement_message
+     * @return
+     */
+    @RequestMapping(value = "/new_announcement", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> initAnnouncement(@RequestParam(value = "uid") String uid,
+                                                         @RequestParam(value = "course_id") Integer course_id,
+                                                         @RequestParam(value = "announcement_title") String announcement_title,
+                                                         @RequestParam(value = "announcement_message") String announcement_message) {
+        BaseResponse response = new BaseResponse();
+        Announcement announcement = new Announcement();
+
+        announcement.setAnnouncement_id(announcementService.findMaxAnnouncementId());
+        announcement.setTeacher_id(uid);
+        announcement.setCourse_id(course_id);
+        announcement.setAnnouncement_title(CodeConvert.unicode2String(announcement_title));
+        announcement.setAnnouncement_message(CodeConvert.unicode2String(announcement_message));
+
+        announcementService.insertAnnouncement(announcement, uid);
+        setCorrectInsert();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    /**
+     * API22: 修改通知
+     *
+     * @param uid
+     * @param course_id
+     * @param announcement_id
+     * @param announcement_title
+     * @param announcement_message
+     * @return
+     */
+    @RequestMapping(value = "/announcement_update", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> updateAnnouncement(@RequestParam(value = "uid") String uid,
+                                                           @RequestParam(value = "course_id") Integer course_id,
+                                                           @RequestParam(value = "announcement_id") Integer announcement_id,
+                                                           @RequestParam(value = "announcement_title") String announcement_title,
+                                                           @RequestParam(value = "announcement_message") String announcement_message) {
+        BaseResponse response = new BaseResponse();
+
+        Announcement announcement = announcementService.findAnnouncementById(announcement_id);
+        if (announcement == null || announcement.getCourse_id() != course_id) {
+            setParamError();
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        announcement.setTeacher_id(uid);
+        announcement.setAnnouncement_title(CodeConvert.unicode2String(announcement_title));
+        announcement.setAnnouncement_message(CodeConvert.unicode2String(announcement_message));
+
+        announcementService.updateAnnouncement(announcement, uid);
+        setCorrectInsert();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
 }
