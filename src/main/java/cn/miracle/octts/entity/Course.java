@@ -13,7 +13,6 @@ public class Course extends BaseEntity {
     private Integer course_id;
     private Integer course_year;
     private Date course_start_time;
-    private Date course_end_time;
     private Integer course_status; // 课程状态，0为结束，1位开始
     private String course_name;
     private Integer course_hour;
@@ -48,14 +47,6 @@ public class Course extends BaseEntity {
 
     public void setCourse_start_time(Date course_start_time) {
         this.course_start_time = course_start_time;
-    }
-
-    public Date getCourse_end_time() {
-        return course_end_time;
-    }
-
-    public void setCourse_end_time(Date course_end_time) {
-        this.course_end_time = course_end_time;
     }
 
     public Integer getCourse_status() {
