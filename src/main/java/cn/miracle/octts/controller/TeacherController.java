@@ -267,10 +267,14 @@ public class TeacherController extends BaseController {
     * 教师删除资源
     * */
     @RequestMapping(value = "/resource_delete", method = RequestMethod.POST)
-    public  ResponseEntity<BaseResponse> deleteResource() {
+    public  ResponseEntity<BaseResponse> deleteResource(@RequestParam(value = "resource_id") Integer resource_id) {
         BaseResponse response = new BaseResponse();
 
+        resourceService.deleteResource(resource_id);
 
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("desc", "success");
+        response = setCorrectResponse(data);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
