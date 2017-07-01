@@ -13,7 +13,7 @@ public interface CourseDao extends BaseMapper<Course> {
 
     @Select("SELECT uid, course_id, course_year, course_start_time, course_status, course_name, course_hour, " +
             "course_credit, course_location, team_limit_information, teacher_information, course_information " +
-            "FROM course" +
+            "FROM course " +
             "ORDER BY course_year DESC")
     @ResultMap("cn.miracle.octts.dao.CourseDao.CourseDetail")
     List<Course> findAllCourse();
@@ -52,4 +52,7 @@ public interface CourseDao extends BaseMapper<Course> {
 
     @Select("SELECT course_id FROM course WHERE course_status=1;")
     Integer findCurrentCourse();
+
+    @Update("UPDATE course SET course_status = 0")
+    int endAllCourse();
 }

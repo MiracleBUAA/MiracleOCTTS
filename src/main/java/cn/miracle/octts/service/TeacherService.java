@@ -26,13 +26,13 @@ public class TeacherService {
     @Autowired
     private TeacherDao teacherDao;
 
-    private Date currentTime = new Date(System.currentTimeMillis());
+    private Date currentTime = new Date();
 
     public Teacher findTeacherByIdForLogin(String teacher_id) {
         return teacherDao.findByIdForLogin(teacher_id);
     }
 
-    public int importStudentList(String ListUrl, String uid) {
+    public Integer importStudentList(String ListUrl, String uid) {
         jxl.Workbook readwb = null;
         int studentCount = 0;
         try {
@@ -56,6 +56,7 @@ public class TeacherService {
                     cell = readsheet.getCell(3, row);
                     student.setStudent_class(cell.getContents());
                 }
+                Date currentTime = new Date(System.currentTimeMillis());
                 student.setCreatetime(currentTime);
                 student.setUpdatetime(currentTime);
                 student.setUid(uid);

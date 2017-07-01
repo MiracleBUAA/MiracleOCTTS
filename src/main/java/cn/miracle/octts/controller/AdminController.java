@@ -10,6 +10,7 @@ import cn.miracle.octts.service.StudentService;
 import cn.miracle.octts.service.TeacherService;
 import cn.miracle.octts.util.CodeConvert;
 import cn.miracle.octts.util.FileUtils;
+import cn.miracle.octts.util.DateConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -58,9 +58,10 @@ public class AdminController extends BaseController {
             cid++;
         }
         course.setCourse_id(cid);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        courseService.endAllCourse();
         try {
-            Date course_start_date = sdf.parse(course_start_time);
+            Date course_start_date = DateConvert.string2Date(course_start_time);
 
             course.setCourse_year(course_year);
             course.setCourse_name(CodeConvert.unicode2String(course_name));
@@ -98,7 +99,6 @@ public class AdminController extends BaseController {
             response = setParamError();
             return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
         } else {//修改课程信息
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             try {
                 if (course_year != null) {
                     course.setCourse_year(course_year);
@@ -107,7 +107,7 @@ public class AdminController extends BaseController {
                     course.setCourse_name(CodeConvert.unicode2String(course_name));
                 }
                 if (course_start_time != null) {
-                    Date course_start_date = sdf.parse(course_start_time);
+                    Date course_start_date = DateConvert.string2Date(course_start_time);
                     course.setCourse_start_time(course_start_date);
                 }
                 if (course_hour != null) {
@@ -209,7 +209,7 @@ public class AdminController extends BaseController {
                 String student_list_path = FileUtils.saveSingleUploadFile(student_list); // 上传文件
                 if (uid == null)
                     uid = "T000";
-                int studentcount = teacherService.importStudentList(student_list_path, uid); // 写入数据库
+                Integer studentcount = teacherService.importStudentList(student_list_path, uid); // 写入数据库
 
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("desc", "success");

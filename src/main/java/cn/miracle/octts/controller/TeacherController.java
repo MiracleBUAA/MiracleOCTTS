@@ -7,8 +7,9 @@ import cn.miracle.octts.entity.Resource;
 import cn.miracle.octts.service.CourseService;
 import cn.miracle.octts.service.ResourceService;
 import cn.miracle.octts.service.TeacherService;
-import cn.miracle.octts.util.FileUtils;
 import cn.miracle.octts.util.CodeConvert;
+import cn.miracle.octts.util.DateConvert;
+import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -25,7 +26,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -78,10 +78,9 @@ public class TeacherController extends BaseController {
             return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
         } else {
             //修改课程信息
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             try {
                 if (course_start_time != null) {
-                    Date course_start_date = sdf.parse(course_start_time);
+                    Date course_start_date = DateConvert.string2Date(course_start_time);
                     course.setCourse_start_time(course_start_date);
                 }
 
@@ -134,7 +133,7 @@ public class TeacherController extends BaseController {
                 String student_list_path = FileUtils.saveSingleUploadFile(student_list); // 上传文件
                 if (uid == null)
                     uid = "T001";
-                int studentcount = teacherService.importStudentList(student_list_path, uid); // 写入数据库
+                Integer studentcount = teacherService.importStudentList(student_list_path, uid); // 写入数据库
 
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("desc", "success");
@@ -169,10 +168,11 @@ public class TeacherController extends BaseController {
 
     /**
      * 教师获取课程资源
-    * @param course_id 课程id
-    * */
+     *
+     * @param course_id 课程id
+     */
     @RequestMapping(value = "/resource", method = RequestMethod.GET)
-    public ResponseEntity<BaseResponse> getResource(@RequestParam(value = "course_id")Integer course_id) {
+    public ResponseEntity<BaseResponse> getResource(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
 
         HashMap<String, Object> data = new HashMap<>();
@@ -195,16 +195,15 @@ public class TeacherController extends BaseController {
      * @param course_id 课程id
      * */
     @RequestMapping(value = "/resource_upload", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> UploadResource (@RequestParam(value = "uid", required = false) String uid,
-                                                        @RequestParam(value = "course_id") Integer course_id,
-                                                        @RequestParam(value = "resource_type") String resource_type,
-                                                        @RequestParam(value = "title") String resource_title,
-                                                        @RequestParam(value = "file") MultipartFile resource_file) {
+    public ResponseEntity<BaseResponse> UploadResource(@RequestParam(value = "uid", required = false) String uid,
+                                                       @RequestParam(value = "course_id") Integer course_id,
+                                                       @RequestParam(value = "resource_type") String resource_type,
+                                                       @RequestParam(value = "title") String resource_title,
+                                                       @RequestParam(value = "file") MultipartFile resource_file) {
         BaseResponse response = new BaseResponse();
         if (resource_file.isEmpty()) {
             response = setFileUploadError();
-        }
-        else {  // 文件存在
+        } else {  // 文件存在
             try {
                 String resource_url = FileUtils.saveSingleUploadFile(resource_file);
 
