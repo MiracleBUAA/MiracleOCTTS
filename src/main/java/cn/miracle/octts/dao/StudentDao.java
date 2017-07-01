@@ -14,13 +14,13 @@ import java.util.List;
 @Component
 public interface StudentDao extends BaseMapper<Student> {
 
-    @Select("SELECT student_id, group_id, student_name, student_gender, studnet_class, " +
+    @Select("SELECT student_id, group_id, student_name, student_gender, student_class, " +
             "student_absent, student_rate, personal_score, group_score " +
             "FROM student ")
     @ResultMap("cn.miracle.octts.dao.StudentDao.StudentDetail")
     List<Student> findAllStudent();
 
-    @Select("SELECT student_id, group_id, student_name, student_gender, studnet_class, " +
+    @Select("SELECT student_id, group_id, student_name, student_gender, student_class, " +
             "student_absent, student_rate, personal_score, group_score " +
             "FROM student " +
             "Where student_id = #{stud_id}")
