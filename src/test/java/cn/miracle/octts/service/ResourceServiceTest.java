@@ -54,4 +54,9 @@ public class ResourceServiceTest {
         resource.setUpdatetime(currenttime);
         resourceService.InsertResource(resource);
     }
+
+    @Test
+    public void TestDeleteResource() {
+        resourceService.deleteResource(100);
+    }
 }
