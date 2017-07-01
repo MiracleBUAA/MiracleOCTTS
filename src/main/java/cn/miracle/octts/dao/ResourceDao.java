@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by hf on 2017/6/28.
  */
@@ -17,4 +19,6 @@ public interface ResourceDao extends BaseMapper<Resource> {
     @ResultMap("cn.miracle.octts.dao.ResourceDao.ResourceDetail")
     Resource findResourceById(Integer resource_id);
 
+    @Select("SELECT DISTINCT resource_type FROM resource;")
+    List<String> findResourceType();
 }
