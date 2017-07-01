@@ -2,6 +2,8 @@ package cn.miracle.octts.dao;
 
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.Resource;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Service;
@@ -28,5 +30,11 @@ public interface ResourceDao extends BaseMapper<Resource> {
     @ResultMap("cn.miracle.octts.dao.ResourceDao.ResourceDetail")
     List<Resource> findResourceByCourseId(Integer course_id);
 
+    @Insert("INSERT INTO resource(gmt_create, gmt_modified, uid, resource_id, course_id, teacher_id, resource_title, resource_url, resource_type) " +
+            "VALUES(#{createtime}, #{updatetime}, #{uid}, #{resource_id}, #{course_id}, #{teacher_id}, #{resource_title}, #{resource_url}, #{resource_type}) ")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void InsertResource(Resource resource);
 
+    @Select("SELECT max(resource_id) FROM resource ")
+    Integer findMAxResourceId();
 }

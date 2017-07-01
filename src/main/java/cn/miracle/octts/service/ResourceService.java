@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -48,5 +49,16 @@ public class ResourceService {
             resource_list.add(resource_item);
         }
         return resource_list;
+    }
+
+    public void InsertResource(Resource resource) {
+        Date currenttime = new Date(System.currentTimeMillis());
+        resource.setCreatetime(currenttime);
+        resource.setUpdatetime(currenttime);
+        resourceDao.InsertResource(resource);
+    }
+
+    public Integer findMaxResource() {
+        return resourceDao.findMAxResourceId();
     }
 }

@@ -3,6 +3,7 @@ package cn.miracle.octts.controller;
 import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
 import cn.miracle.octts.entity.Course;
+import cn.miracle.octts.entity.Resource;
 import cn.miracle.octts.service.CourseService;
 import cn.miracle.octts.service.ResourceService;
 import cn.miracle.octts.service.TeacherService;
@@ -181,6 +182,46 @@ public class TeacherController extends BaseController {
 
         response = setCorrectResponse(data);
 
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/resource_upload", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> UploadResource (@RequestParam(value = "uid", required = false) String uid,
+                                                        @RequestParam(value = "course_id") Integer course_id,
+                                                        @RequestParam(value = "resource_type") String resource_type,
+                                                        @RequestParam(value = "title") String resource_title,
+                                                        @RequestParam(value = "file") MultipartFile resource_file) {
+        BaseResponse response = new BaseResponse();
+        if (resource_file.isEmpty()) {
+            response = setFileUploadError();
+        }
+        else {  // 文件存在
+            try {
+                String resource_url = FileUtils.saveSingleUploadFile(resource_file);
+
+                Integer resource_id = resourceService.findMaxResource() + 1;
+
+                resource_title = resource_file.getOriginalFilename();
+
+                Resource resource_upload = new Resource();
+                resource_upload.setResource_id(resource_id);
+                resource_upload.setUid(uid);
+                resource_upload.setCourse_id(course_id);
+                resource_upload.setResource_type(resource_type);
+                resource_upload.setResource_title(resource_title);
+                resource_upload.setTeacher_id(uid);
+                resource_upload.setResource_url(resource_url);
+
+                resourceService.InsertResource(resource_upload);
+
+                HashMap<String, Object> data = new HashMap<>();
+                data.put("desc", "OK");
+                response = setCorrectResponse(data);
+
+            } catch (IOException e) {
+                return new ResponseEntity<BaseResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
