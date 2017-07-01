@@ -32,7 +32,7 @@ public class ResourceServiceTest {
     @Test
     public void TestFindResourceType() {
         ArrayList<String> resource_types = new ArrayList<>();
-        resource_types.addAll(resourceService.findResourceType());
+        resource_types.addAll(resourceService.findResourceType(1));
         for (String type : resource_types) {
             System.out.println(type);
         }
