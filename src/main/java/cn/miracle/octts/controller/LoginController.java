@@ -25,7 +25,7 @@ import java.util.HashMap;
  * Created by Tony on 2017/6/27.
  */
 @RestController
-public class LoginController extends BaseController{
+public class LoginController extends BaseController {
 
     @Autowired
     private StudentService studentService;
@@ -59,12 +59,11 @@ public class LoginController extends BaseController{
 //                    Integer student_id = Integer.parseInt(uid);
                     Student student = studentService.findStudentByIdForLogin(uid);
                     if (student != null) {
-                        if(!password.equals(student.getPassword())) { // 密码错误
+                        if (!password.equals(student.getPassword())) { // 密码错误
                             response.setErrorNo(3);
                             response.setErrorMsg("密码错误");
                             response.setData(data);
-                        }
-                        else {
+                        } else {
                             setLoginSession(uid, urank);
                             data.put("desc", "success");
                             data.put("uid", student.getStudent_id());
@@ -91,8 +90,7 @@ public class LoginController extends BaseController{
                             data.put("urank", student_role);
                             response = setCorrectResponse(data);
                         }
-                    }
-                    else { // 未授权
+                    } else { // 未授权
                         response.setErrorNo(2);
                         response.setErrorMsg("uid未授权");
                         response.setData(data);
@@ -104,14 +102,12 @@ public class LoginController extends BaseController{
                         response.setErrorNo(2);
                         response.setErrorMsg("uid未授权");
                         response.setData(data);
-                    }
-                    else {
+                    } else {
                         if (!password.equals(teacher.getPassword())) {
                             response.setErrorNo(3);
                             response.setErrorMsg("密码错误");
                             response.setData(data);
-                        }
-                        else {
+                        } else {
                             setLoginSession(uid, urank);
                             data.put("desc", "success");
                             data.put("uid", teacher.getTeacher_id());
@@ -126,14 +122,12 @@ public class LoginController extends BaseController{
                         response.setErrorNo(2);
                         response.setErrorMsg("uid未授权");
                         response.setData(data);
-                    }
-                    else {
+                    } else {
                         if (!password.equals(teacherAdmin.getPassword())) {
                             response.setErrorNo(3);
                             response.setErrorMsg("密码错误");
                             response.setData(data);
-                        }
-                        else {
+                        } else {
                             setLoginSession(uid, urank);
                             data.put("desc", "success");
                             data.put("uid", teacherAdmin.getTeacher_id());
@@ -151,7 +145,6 @@ public class LoginController extends BaseController{
     public ResponseEntity<BaseResponse> Logout(@RequestParam(value = "uid", required = true) String uid,
                                                @RequestParam(value = "urank") Integer urank) {
         BaseResponse response = new BaseResponse();
-
 
 
         return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);

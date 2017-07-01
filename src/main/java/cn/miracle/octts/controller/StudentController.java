@@ -87,7 +87,7 @@ public class StudentController extends BaseController {
         }
         else {
             String resource_url = resource_download.getResource_url();
-            String resource_title = resource_download.getTitle();
+            String resource_title = resource_download.getResource_title();
             try {
                 ByteArrayOutputStream baos = FileUtils.getSingleDownloadFile(resource_url);
                 org.springframework.core.io.Resource resource = new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));

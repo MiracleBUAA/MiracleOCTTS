@@ -53,10 +53,9 @@ public class TeacherController extends BaseController {
                                                             @RequestParam(value = "course_id") Integer course_id,
                                                             @RequestParam(value = "course_name", required = false) String course_name,
                                                             @RequestParam(value = "course_start_time", required = false) String course_start_time,
-                                                            @RequestParam(value = "course_end_time", required = false) String course_end_time,
                                                             @RequestParam(value = "course_hour", required = false) Integer course_hour,
                                                             @RequestParam(value = "course_location", required = false) String course_location,
-                                                            @RequestParam(value = "credit", required = false) Integer credit,
+                                                            @RequestParam(value = "course_credit", required = false) Double course_credit,
                                                             @RequestParam(value = "team_limit_information", required = false) String team_limit_information,
                                                             @RequestParam(value = "teacher_information", required = false) String teacher_information,
                                                             @RequestParam(value = "course_information", required = false) String course_information) {
@@ -75,10 +74,6 @@ public class TeacherController extends BaseController {
                     course.setCourse_start_time(course_start_date);
                 }
 
-                if (course_end_time != null) {
-                    Date course_end_date = sdf.parse(course_end_time);
-                    course.setCourse_end_time(course_end_date);
-                }
                 if (course_name != null) {
                     course.setCourse_name(CodeConvert.unicode2String(course_name));
                 }
@@ -88,8 +83,8 @@ public class TeacherController extends BaseController {
                 if (course_location != null) {
                     course.setCourse_location(CodeConvert.unicode2String(course_location));
                 }
-                if (credit != null) {
-                    course.setCredit(credit);
+                if (course_credit != null) {
+                    course.setCourse_credit(course_credit);
                 }
                 if (team_limit_information != null) {
                     course.setTeam_limit_information(CodeConvert.unicode2String(team_limit_information));
@@ -109,46 +104,7 @@ public class TeacherController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "/new_course", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> initCourseInfomation(@RequestParam(value = "uid") String uid,
-                                                             @RequestParam(value = "course_name") String course_name,
-                                                             @RequestParam(value = "course_start_time") String course_start_time,
-                                                             @RequestParam(value = "course_end_time") String course_end_time,
-                                                             @RequestParam(value = "course_hours") Integer course_hours,
-                                                             @RequestParam(value = "course_location") String course_location,
-                                                             @RequestParam(value = "credit") Integer credit,
-                                                             @RequestParam(value = "team_limit_information") String team_limit_information,
-                                                             @RequestParam(value = "teacher_information") String teacher_information,
-                                                             @RequestParam(value = "course_information") String course_information) {
-        BaseResponse response = new BaseResponse();
-        Course course = new Course();
-        Integer cid = new Integer(1);
-        while (courseService.findCourseById(cid) != null) { //查找唯一course_id
-            cid++;
-        }
-        course.setCourse_id(cid);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date course_start_date = sdf.parse(course_start_time);
-            Date course_end_date = sdf.parse(course_end_time);
-            course.setCourse_name(CodeConvert.unicode2String(course_name));
-            course.setCourse_start_time(course_start_date);
-            course.setCourse_end_time(course_end_date);
-            course.setCourse_hour(course_hours);
-            course.setCourse_location(CodeConvert.unicode2String(course_location));
-            course.setCredit(credit);
-            course.setTeam_limit_information(CodeConvert.unicode2String(team_limit_information));
-            course.setTeacher_information(CodeConvert.unicode2String(teacher_information));
-            course.setCourse_information(CodeConvert.unicode2String(course_information));
 
-            courseService.insertCourse(course, uid);
-            response = setCorrectUpdate();
-
-        } catch (ParseException parseExceptionse) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
 
 
     @RequestMapping(value = "/student_list", method = RequestMethod.GET)

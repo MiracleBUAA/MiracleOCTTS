@@ -29,7 +29,6 @@ public class CourseDaoTest {
     public void testInsertCourse(){
         Course course = new Course();
         course.setCourse_start_time(currentTime);
-        course.setCourse_end_time(currentTime);
         course.setCourse_name("软工");
         course.setCourse_hour(20);
         course.setCourse_location("317");
@@ -38,6 +37,7 @@ public class CourseDaoTest {
         course.setUid("T001");
         course.setCourse_credit(100.0);
         courseDao.insertCourse(course);
+
     }
 
 }

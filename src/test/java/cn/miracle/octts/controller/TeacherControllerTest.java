@@ -46,21 +46,5 @@ public class TeacherControllerTest {
         .andExpect(status().isOk());
     }
 
-    @Test
-    public void TestCourseInfoInsert() throws Exception {
-        this.mockMvc.perform(
-                post("/teacher/new_course")
-                        .param("uid", "T001")
-                        .param("course_name", "春季软件开发实践上学期")
-                        .param("course_start_time", "2017-06-25")
-                        .param("course_end_time", "2017-07-05")
-                        .param("course_hour", "120")
-                        .param("course_location", "工训317")
-                        .param("credit", "2 学分")
-                        .param("team_limit_information", "6-8人")
-                        .param("teacher_information", "林广艳")
-                        .param("course_information", "签到很严格"))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
+
 }

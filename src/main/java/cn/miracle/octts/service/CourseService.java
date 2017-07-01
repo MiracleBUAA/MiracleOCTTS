@@ -22,23 +22,21 @@ public class CourseService {
     private Date currentTime = new Date(System.currentTimeMillis());
 
     public Course findCourseById(Integer course_id) {
-        return courseDao.findById(course_id);
+        return courseDao.findCourseById(course_id);
     }
 
     public HashMap<String, Object> Dump2Data(Course course) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         String course_start_date = sdf.format(course.getCourse_start_time());
-        String course_end_date = sdf.format(course.getCourse_end_time());
 
         HashMap<String, Object> data = new HashMap<>();
         data.put("course_id", course.getCourse_id());
         data.put("course_name", course.getCourse_name());
         data.put("course_start_time", course_start_date);
-        data.put("course_end_time", course_end_date);
         data.put("course_hour", course.getCourse_hour());
         data.put("course_location", course.getCourse_location());
-        data.put("credit", course.getCredit());
+        data.put("credit", course.getCourse_credit());
         data.put("team_limit_information", course.getTeam_limit_information());
         data.put("teacher_information", course.getTeacher_information());
         data.put("course_information", course.getCourse_information());

@@ -50,9 +50,9 @@ public class TeacherService {
                     student.setStudent_id(cell.getContents());
                     student.setPassword(student.getStudent_id());
                     cell = readsheet.getCell(1, row);
-                    student.setName(cell.getContents());
+                    student.setStudent_name(cell.getContents());
                     cell = readsheet.getCell(2, row);
-                    student.setGender(cell.getContents().charAt(0));
+                    student.setStudent_gender(cell.getContents());
                     cell = readsheet.getCell(3, row);
                     student.setStudent_class(cell.getContents());
                 }
