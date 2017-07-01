@@ -5,12 +5,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 /**
  * Created by hf on 2017/6/27.
  */
 public class BaseController {
+    public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     protected static BaseResponse setParamError() {
         BaseResponse response = new BaseResponse();

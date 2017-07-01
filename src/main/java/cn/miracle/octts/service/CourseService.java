@@ -20,8 +20,6 @@ public class CourseService {
     @Autowired
     private CourseDao courseDao;
 
-    private Date currentTime = new Date(System.currentTimeMillis());
-
     public Course findCourseById(Integer course_id) {
         return courseDao.findCourseById(course_id);
     }
@@ -35,13 +33,13 @@ public class CourseService {
 
         data.put("course_id", course.getCourse_id());
         data.put("course_year", course.getCourse_year());
-        data.put("course_status",course.getCourse_status());
-        data.put("course_name",course.getCourse_name());
-        data.put("course_start_time",course_start_date);
-        data.put("course_hour",course.getCourse_hour());
-        data.put("course_location",course.getCourse_hour());
-        data.put("course_credit",course.getCourse_credit());
-        data.put("teacher_information",course.getTeacher_information());
+        data.put("course_status", course.getCourse_status());
+        data.put("course_name", course.getCourse_name());
+        data.put("course_start_time", course_start_date);
+        data.put("course_hour", course.getCourse_hour());
+        data.put("course_location", course.getCourse_hour());
+        data.put("course_credit", course.getCourse_credit());
+        data.put("teacher_information", course.getTeacher_information());
 
         return data;
     }
@@ -56,24 +54,30 @@ public class CourseService {
         //return data;
     }
 
-    public int updateCourse(Course course, String uid) {
+    public Integer updateCourse(Course course, String uid) {
+        Date currentTime = new Date(System.currentTimeMillis());
         course.setUpdatetime(currentTime);
         course.setUid(uid);
         return courseDao.updateCourse(course);
     }
 
-    public int insertCourse(Course course, String uid) {
+    public Integer insertCourse(Course course, String uid) {
+        Date currentTime = new Date(System.currentTimeMillis());
         course.setCreatetime(currentTime);
         course.setUpdatetime(currentTime);
         course.setUid(uid);
         return courseDao.insertCourse(course);
     }
 
-    public List<Course> findAllCourse(){
+    public List<Course> findAllCourse() {
         return courseDao.findAllCourse();
     }
 
     public Integer findCurrentCourse() {
         return courseDao.findCurrentCourse();
+    }
+
+    public Integer endAllCourse() {
+        return courseDao.endAllCourse();
     }
 }

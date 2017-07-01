@@ -52,4 +52,7 @@ public interface CourseDao extends BaseMapper<Course> {
 
     @Select("SELECT course_id FROM course WHERE course_status=1;")
     Integer findCurrentCourse();
+
+    @Update("UPDATE course SET course_status = 0")
+    int endAllCourse();
 }

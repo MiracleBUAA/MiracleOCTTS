@@ -48,7 +48,7 @@ public class TeacherServiceTest {
     public void TestImportStudentList() {
         String file_url = "/Users/hf/tmp/upload/student_list";
         String uid = "T001";
-        int count = teacherService.importStudentList(file_url, uid);
+        Integer count = teacherService.importStudentList(file_url, uid);
         assertNotNull(count);
     }
 
