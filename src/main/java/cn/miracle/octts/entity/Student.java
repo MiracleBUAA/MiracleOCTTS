@@ -2,10 +2,6 @@ package cn.miracle.octts.entity;
 
 import cn.miracle.octts.common.base.BaseEntity;
 
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import java.math.BigDecimal;
-
 /**
  * Created by hf on 2017/6/25.
  */

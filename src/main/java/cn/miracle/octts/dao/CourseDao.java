@@ -13,6 +13,12 @@ public interface CourseDao extends BaseMapper<Course> {
 
     @Select("SELECT uid, course_id, course_year, course_start_time, course_status, course_name, course_hour, " +
             "course_credit, course_location, team_limit_information, teacher_information, course_information " +
+            "FROM course")
+    @ResultMap("cn.miracle.octts.dao.CourseDao.CourseDetail")
+    List<Course> findAllCourse();
+
+    @Select("SELECT uid, course_id, course_year, course_start_time, course_status, course_name, course_hour, " +
+            "course_credit, course_location, team_limit_information, teacher_information, course_information " +
             "FROM course " +
             "WHERE course_id = #{course_id}")
     @ResultMap("cn.miracle.octts.dao.CourseDao.CourseDetail")
@@ -38,10 +44,4 @@ public interface CourseDao extends BaseMapper<Course> {
             "#{team_limit_information}, #{teacher_information}, #{course_information})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertCourse(Course course);
-
-    @Select("SELECT course_id, course_year, course_status, course_name, course_start_time, " +
-            "course_hour, course_location, course_credit, teacher_information " +
-            "FROM course;")
-    @ResultMap("cn.miracle.octts.dao.CourseDao.FindAllCourse")
-    List<Course> selectAllCourse();
 }

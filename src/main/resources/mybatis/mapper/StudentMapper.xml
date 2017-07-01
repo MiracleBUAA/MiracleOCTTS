@@ -11,12 +11,14 @@
     <resultMap id="StudentDetail" type="Student">
         <id property="id" column="id"/>
         <result property="student_id" column="student_id"/>
-        <result property="name" column="name"/>
-        <result property="student_class" column="class"/>
-        <result property="email" column="email"/>
-        <result property="telephone" column="telephone"/>
         <result property="group_id" column="group_id"/>
-        <result property="gender" column="gender"/>
+        <result property="student_name" column="student_name"/>
+        <result property="student_gender" column="student_gender"/>
+        <result property="student_class" column="studnet_class"/>
+        <result property="student_absent" column="student_absent"/>
+        <result property="student_rate" column="student_rate"/>
+        <result property="personal_score" column="personal_score"/>
+        <result property="group_score" column="group_score"/>
     </resultMap>
 
 </mapper>

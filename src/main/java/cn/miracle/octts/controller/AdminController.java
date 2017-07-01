@@ -3,8 +3,10 @@ package cn.miracle.octts.controller;
 import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
 import cn.miracle.octts.entity.Course;
+import cn.miracle.octts.entity.Student;
 import cn.miracle.octts.service.CourseService;
 import cn.miracle.octts.service.TeacherService;
+import cn.miracle.octts.service.StudentService;
 import cn.miracle.octts.util.CodeConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,9 @@ import java.util.*;
 @RestController
 @RequestMapping("/admin")
 public class AdminController extends BaseController {
+
+    @Autowired
+    private StudentService studentService;
 
     @Autowired
     private TeacherService teacherService;
@@ -159,6 +164,26 @@ public class AdminController extends BaseController {
 
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("course_list", course_list);
+        response = setCorrectResponse(data);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    //API6: 上传学生名单
+    @RequestMapping(value = "/student_list", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getStudentList() {
+        BaseResponse response = new BaseResponse();
+        List<HashMap<String, Object>> student_list = new ArrayList<HashMap<String, Object>>();
+
+        List<Student> student_result = studentService.findAllStudent();
+        Iterator<Student> student_iter = student_result.iterator();
+        while (student_iter.hasNext()) {
+            HashMap<String, Object> student = studentService.adminStudent2Json(student_iter.next());
+            student_list.add(student);
+        }
+
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put("student_list", student_list);
         response = setCorrectResponse(data);
 
         return new ResponseEntity<>(response, HttpStatus.OK);

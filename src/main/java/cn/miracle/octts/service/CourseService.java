@@ -29,7 +29,6 @@ public class CourseService {
     //导出教务课程信息
     public HashMap<String, Object> adminCourse2Json(Course course) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
         String course_start_date = sdf.format(course.getCourse_start_time());
 
         HashMap<String, Object> data = new HashMap<>();
@@ -71,6 +70,6 @@ public class CourseService {
     }
 
     public List<Course> findAllCourse(){
-        return courseDao.selectAllCourse();
+        return courseDao.findAllCourse();
     }
 }

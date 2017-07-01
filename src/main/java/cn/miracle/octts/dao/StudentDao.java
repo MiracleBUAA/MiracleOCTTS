@@ -3,7 +3,6 @@ package cn.miracle.octts.dao;
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.Student;
 import org.apache.ibatis.annotations.*;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,20 +14,18 @@ import java.util.List;
 @Component
 public interface StudentDao extends BaseMapper<Student> {
 
-    @Select("SELECT student_id, group_id, name, gender, class, email, telephone " +
+    @Select("SELECT student_id, group_id, student_name, student_gender, studnet_class, " +
+            "student_absent, student_rate, personal_score, group_score " +
+            "FROM student ")
+    @ResultMap("cn.miracle.octts.dao.StudentDao.StudentDetail")
+    List<Student> findAllStudent();
+
+    @Select("SELECT student_id, group_id, student_name, student_gender, studnet_class, " +
+            "student_absent, student_rate, personal_score, group_score " +
             "FROM student " +
             "Where student_id = #{stud_id}")
-    @Results({
-            @Result(id = true, column = "id", property = "id"),
-            @Result(column = "student_id", property = "student_id"),
-            @Result(column = "group_id", property = "group_id"),
-            @Result(column = "name", property = "name"),
-            @Result(column = "gender", property = "gender"),
-            @Result(column = "class", property = "student_class"),
-            @Result(column = "email", property = "email"),
-            @Result(column = "telephone", property = "telephone")
-    })
-    Student findById(Integer stud_id);
+    @ResultMap("cn.miracle.octts.dao.StudentDao.StudentDetail")
+    Student findStudentById(Integer student_id);
 
     @Select(("SELECT STUDENT_ID, PASSWORD " +
             "FROM STUDENT " +
@@ -40,4 +37,6 @@ public interface StudentDao extends BaseMapper<Student> {
             "VALUES (#{createtime},#{updatetime},#{uid},#{student_id},#{password},#{name},#{gender},#{student_class})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertStudent(Student student);
+
+
 }
