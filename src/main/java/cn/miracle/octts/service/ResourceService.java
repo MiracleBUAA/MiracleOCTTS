@@ -61,4 +61,8 @@ public class ResourceService {
     public Integer findMaxResource() {
         return resourceDao.findMAxResourceId();
     }
+
+    public void deleteResource(Integer resource_id) {
+        resourceDao.deleteResourceById(resource_id);
+    }
 }

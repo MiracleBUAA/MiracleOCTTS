@@ -74,7 +74,9 @@ public class StudentController extends BaseController {
     }
 
     @RequestMapping(value = "/resource_download", method = RequestMethod.GET)
-    public ResponseEntity<org.springframework.core.io.Resource> downloadResource(@RequestParam(value = "resource_id") Integer resource_id) {
+    public ResponseEntity<org.springframework.core.io.Resource> downloadResource(
+            @RequestParam(value = "resource_id") Integer resource_id) {
+
         BaseResponse response = new BaseResponse();
 
         Resource resource_download = resourceService.findByIdForDownload(resource_id);

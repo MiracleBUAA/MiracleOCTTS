@@ -10,7 +10,10 @@ import cn.miracle.octts.service.TeacherService;
 import cn.miracle.octts.util.FileUtils;
 import cn.miracle.octts.util.CodeConvert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -185,6 +190,10 @@ public class TeacherController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * 教师上传课程资源
+     * @param course_id 课程id
+     * */
     @RequestMapping(value = "/resource_upload", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> UploadResource (@RequestParam(value = "uid", required = false) String uid,
                                                         @RequestParam(value = "course_id") Integer course_id,
@@ -222,6 +231,47 @@ public class TeacherController extends BaseController {
                 return new ResponseEntity<BaseResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    /**
+    * 教师下载资源
+    * */
+    @RequestMapping(value = "/resource_download", method = RequestMethod.GET)
+    public ResponseEntity<org.springframework.core.io.Resource> downloadResource(
+            @RequestParam(value = "resource_id") Integer resource_id) {
+        BaseResponse response = new BaseResponse();
+
+        Resource resource_download = resourceService.findByIdForDownload(resource_id);
+        if (resource_download == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        else {
+            String resource_url = resource_download.getResource_url();
+            String resource_title = resource_download.getResource_title();
+            try {
+                ByteArrayOutputStream baos = FileUtils.getSingleDownloadFile(resource_url);
+                org.springframework.core.io.Resource resource = new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));
+
+                HttpHeaders headers = getFileDownloadHeaders(resource_title);
+
+                return ResponseEntity.ok().headers(headers).contentType(MediaType.parseMediaType("application/x-msdownload")).body(resource);
+
+            } catch (IOException e) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        }
+    }
+
+    /**
+    * 教师删除资源
+    * */
+    @RequestMapping(value = "/resource_delete", method = RequestMethod.POST)
+    public  ResponseEntity<BaseResponse> deleteResource() {
+        BaseResponse response = new BaseResponse();
+
+
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

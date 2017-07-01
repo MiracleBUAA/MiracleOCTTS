@@ -2,10 +2,7 @@ package cn.miracle.octts.dao;
 
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.Resource;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,4 +34,7 @@ public interface ResourceDao extends BaseMapper<Resource> {
 
     @Select("SELECT max(resource_id) FROM resource ")
     Integer findMAxResourceId();
+
+    @Delete("DELETE FROM resource WHERE resource_id=#{resource_id}")
+    void deleteResourceById(Integer resource_id);
 }
