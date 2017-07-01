@@ -36,7 +36,7 @@ public class CourseDaoTest {
         course.setCreatetime(currentTime);
         course.setUpdatetime(currentTime);
         course.setUid("T001");
-        course.setCredit(100);
+        course.setCourse_credit(100.0);
         courseDao.insertCourse(course);
     }
 

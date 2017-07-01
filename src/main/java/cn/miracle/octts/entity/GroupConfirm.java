@@ -9,14 +9,14 @@ import javax.validation.constraints.Size;
 /**
  * Created by Tony on 2017/6/27.
  */
-public class Group extends BaseEntity {
+public class GroupConfirm extends BaseEntity {
     private Integer group_id;
     private Integer course_id;
     private String group_name;
     private String group_owner_id;
     private Double group_score;
 
-    public Group() {
+    public GroupConfirm() {
     }
 
     public Integer getGroup_id() {

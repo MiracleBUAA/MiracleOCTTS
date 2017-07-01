@@ -38,8 +38,8 @@ public class StudentDaoTest {
         student.setStudent_id("14211234");
         student.setPassword(student.getStudent_id());
         student.setStudent_class("142115");
-        student.setGender('1');
-        student.setName("测试用户1");
+        student.setStudent_gender("1");
+        student.setStudent_name("测试用户1");
         student.setCreatetime(currentTime);
         student.setUpdatetime(currentTime);
         student.setUid("T001");

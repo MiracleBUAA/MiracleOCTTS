@@ -5,13 +5,13 @@ import cn.miracle.octts.common.base.BaseEntity;
 /**
  * Created by Tony on 2017/6/29.
  */
-public class GroupMember extends BaseEntity {
+public class GroupConfirmMember extends BaseEntity {
     private Integer group_id;
     private Integer course_id;
     private String student_id;
     private Integer group_role;
 
-    public GroupMember() {
+    public GroupConfirmMember() {
     }
 
     public Integer getGroup_id() {
