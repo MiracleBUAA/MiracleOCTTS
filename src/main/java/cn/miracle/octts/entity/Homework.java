@@ -1,8 +1,9 @@
 package cn.miracle.octts.entity;
 
 import cn.miracle.octts.common.base.BaseEntity;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
+import java.util.Date;
 
 
 /**
@@ -12,16 +13,23 @@ public class Homework extends BaseEntity {
     private Integer homework_id;
     private Integer course_id;
     private String teacher_id;
-    private String status;
-    private String title;
-    private String message;
-    private Date start_time;
-    private Date end_time;
+    private Integer homework_score;
+    private Integer homework_status;
+    private String homework_title;
+    private String homework_message;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date homework_start_time;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date homework_end_time;
+
     private Integer resubmit_limit;
-//    private Date resubmit_limit_time;
+
 
     public Homework() {
     }
+
 
     public Integer getHomework_id() {
         return homework_id;
@@ -39,10 +47,6 @@ public class Homework extends BaseEntity {
         this.course_id = course_id;
     }
 
-    public void setResubmit_limit(Integer resubmit_limit) {
-        this.resubmit_limit = resubmit_limit;
-    }
-
     public String getTeacher_id() {
         return teacher_id;
     }
@@ -51,48 +55,59 @@ public class Homework extends BaseEntity {
         this.teacher_id = teacher_id;
     }
 
-    public String getStatus() {
-        return status;
+    public Integer getHomework_score() {
+        return homework_score;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setHomework_score(Integer homework_score) {
+        this.homework_score = homework_score;
     }
 
-    public String getTitle() {
-        return title;
+    public Integer getHomework_status() {
+        return homework_status;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setHomework_status(Integer homework_status) {
+        this.homework_status = homework_status;
     }
 
-    public String getMessage() {
-        return message;
+    public String getHomework_title() {
+        return homework_title;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setHomework_title(String homework_title) {
+        this.homework_title = homework_title;
     }
 
-    public Date getStart_time() {
-        return start_time;
+    public String getHomework_message() {
+        return homework_message;
     }
 
-    public void setStart_time(Date start_time) {
-        this.start_time = start_time;
+    public void setHomework_message(String homework_message) {
+        this.homework_message = homework_message;
     }
 
-    public Date getEnd_time() {
-        return end_time;
+    public Date getHomework_start_time() {
+        return homework_start_time;
     }
 
-    public void setEnd_time(Date end_time) {
-        this.end_time = end_time;
+    public void setHomework_start_time(Date homework_start_time) {
+        this.homework_start_time = homework_start_time;
+    }
+
+    public Date getHomework_end_time() {
+        return homework_end_time;
+    }
+
+    public void setHomework_end_time(Date homework_end_time) {
+        this.homework_end_time = homework_end_time;
     }
 
     public Integer getResubmit_limit() {
         return resubmit_limit;
     }
 
+    public void setResubmit_limit(Integer resubmit_limit) {
+        this.resubmit_limit = resubmit_limit;
+    }
 }

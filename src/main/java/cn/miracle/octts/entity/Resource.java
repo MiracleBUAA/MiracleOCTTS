@@ -9,11 +9,9 @@ public class Resource extends BaseEntity{
     private Integer resource_id;
     private Integer course_id;
     private String teacher_id;
-    private String resource_type;
-    private String title;
+    private String resource_title;
     private String resource_url;
-    private String resource_size;
-    private String last_update_time;
+    private String resource_type;
 
     public Resource() {
     }
@@ -42,20 +40,12 @@ public class Resource extends BaseEntity{
         this.teacher_id = teacher_id;
     }
 
-    public String getResource_type() {
-        return resource_type;
+    public String getResource_title() {
+        return resource_title;
     }
 
-    public void setResource_type(String resource_type) {
-        this.resource_type = resource_type;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setResource_title(String resource_title) {
+        this.resource_title = resource_title;
     }
 
     public String getResource_url() {
@@ -66,19 +56,11 @@ public class Resource extends BaseEntity{
         this.resource_url = resource_url;
     }
 
-    public String getResource_size() {
-        return resource_size;
+    public String getResource_type() {
+        return resource_type;
     }
 
-    public void setResource_size(String resource_size) {
-        this.resource_size = resource_size;
-    }
-
-    public String getLast_update_time() {
-        return last_update_time;
-    }
-
-    public void setLast_update_time(String last_update_time) {
-        this.last_update_time = last_update_time;
+    public void setResource_type(String resource_type) {
+        this.resource_type = resource_type;
     }
 }

@@ -8,12 +8,11 @@ import cn.miracle.octts.common.base.BaseEntity;
  */
 public class HomeworkUpload extends BaseEntity {
     private Integer homework_upload_id;
-    private Integer rcourse_id;
+    private Integer course_id;
     private Integer homework_id;
     private Integer group_id;
+    private String file_name;
     private String homework_url;
-    private String message;
-    private String homework_upload_time;
 
     public HomeworkUpload() {
     }
@@ -26,12 +25,12 @@ public class HomeworkUpload extends BaseEntity {
         this.homework_upload_id = homework_upload_id;
     }
 
-    public Integer getRcourse_id() {
-        return rcourse_id;
+    public Integer getCourse_id() {
+        return course_id;
     }
 
-    public void setRcourse_id(Integer rcourse_id) {
-        this.rcourse_id = rcourse_id;
+    public void setCourse_id(Integer course_id) {
+        this.course_id = course_id;
     }
 
     public Integer getHomework_id() {
@@ -50,27 +49,19 @@ public class HomeworkUpload extends BaseEntity {
         this.group_id = group_id;
     }
 
+    public String getFile_name() {
+        return file_name;
+    }
+
+    public void setFile_name(String file_name) {
+        this.file_name = file_name;
+    }
+
     public String getHomework_url() {
         return homework_url;
     }
 
     public void setHomework_url(String homework_url) {
         this.homework_url = homework_url;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getHomework_upload_time() {
-        return homework_upload_time;
-    }
-
-    public void setHomework_upload_time(String homework_upload_time) {
-        this.homework_upload_time = homework_upload_time;
     }
 }
