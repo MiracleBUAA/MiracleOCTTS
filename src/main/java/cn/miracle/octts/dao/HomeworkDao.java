@@ -15,33 +15,8 @@ public interface HomeworkDao extends BaseMapper<Homework> {
             "WHERE homework_id = #{homework_id}")
     Homework findHomeworkById(Integer homework_id);
 
-    @Insert("INSERT INTO homework  (" +
-            "  gmt_create," +
-            "  gmt_modified," +
-            "  uid," +
-            "  homework_id," +
-            "  course_id," +
-            "  teacher_id," +
-            "  homework_score," +
-            "  homework_status," +
-            "  homework_title," +
-            "  homework_message," +
-            "  homework_start_time," +
-            "  homework_end_time," +
-            "  resubmit_limit) " +
-            "VALUES (" +
-            "#{createtime}, " +
-            "#{updatetime}, " +
-            "#{uid}, " +
-            "#{homework_id}, " +
-            "#{course_id}, " +
-            "#{teacher_id}, " +
-            "#{homework_score}, " +
-            "#{homework_title}, " +
-            "#{homework_message}, " +
-            "#{homework_start_time}, " +
-            "#{homework_end_time}, " +
-            "#{resubmit_limit})")
+    @Insert("INSERT INTO homework(gmt_create, gmt_modified, uid, homework_id, course_id, teacher_id, homework_score, homework_title, homework_message, homework_start_time, homework_end_time, resubmit_limit)" +
+            "VALUES(#{createtime},#{updatetime},#{uid},#{homework_id},#{course_id},#{teacher_id},#{homework_score},#{homework_title},#{homework_message},#{homework_start_time},#{homework_end_time},#{resubmit_limit})")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void InsertHomework(Homework homework);
 

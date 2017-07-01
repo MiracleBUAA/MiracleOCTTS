@@ -20,7 +20,7 @@ public class HomeworkService {
         Date currenttime = new Date();
         homework.setCreatetime(currenttime);
         homework.setUpdatetime(currenttime);
-
+        homeworkDao.InsertHomework(homework);
     }
 
     public Integer findMaxHomeworkId() {

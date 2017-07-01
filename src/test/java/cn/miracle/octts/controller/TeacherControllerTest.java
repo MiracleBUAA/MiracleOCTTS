@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
+import cn.miracle.octts.util.CodeConvert;
+import org.aspectj.apache.bcel.classfile.Code;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,30 @@ public class TeacherControllerTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
+
+    @Test
+    public void testNewHomework() {
+        String homework_title = CodeConvert.string2Unicode("测试作业");
+        String homework_message = CodeConvert.string2Unicode("这是一个测试作业");
+        String homework_start_time = CodeConvert.string2Unicode("2017-07-01 20:00:00");
+        String homework_end_time = CodeConvert.string2Unicode("2017-07-02 20:00:00");
+        try {
+            this.mockMvc.perform(
+                    post("/teacher/new_homework")
+                            .param("uid", "T001")
+                            .param("course_id", "1")
+                            .param("homework_title", homework_title)
+                            .param("homework_message", homework_message)
+                            .param("homework_start_time", homework_start_time)
+                            .param("homework_end_time", homework_end_time)
+                            .param("homework_score", "10")
+                            .param("resubmit_limit", "3"))
+                    .andDo(print())
+                    .andExpect(status().isOk());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void TestgetResource() {
