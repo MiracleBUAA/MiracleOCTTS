@@ -5,6 +5,8 @@ import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
 import cn.miracle.octts.entity.Student;
 import cn.miracle.octts.entity.Teacher;
+import cn.miracle.octts.service.GroupApplyService;
+import cn.miracle.octts.service.GroupService;
 import cn.miracle.octts.service.StudentService;
 import cn.miracle.octts.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Tony on 2017/6/27.
@@ -28,6 +32,10 @@ public class LoginController extends BaseController{
     private StudentService studentService;
     @Autowired
     private TeacherService teacherService;
+    @Autowired
+    private GroupService groupService;
+    @Autowired
+    private GroupApplyService groupApplyService;
 
     @Autowired
     private HttpSession httpSession;
@@ -62,6 +70,26 @@ public class LoginController extends BaseController{
                             data.put("desc", "success");
                             data.put("uid", student.getStudent_id());
                             // TODO: 判断学生是否是团队负责人
+                            Integer student_role = 1;
+                            ArrayList<String> groupOwners = new ArrayList<>();
+                            groupOwners.addAll(groupService.findGroupOwner());
+                            for (String group_owner_id : groupOwners) {
+                                if (uid.equals(group_owner_id)) {
+                                    student_role = 2;
+                                    break;
+                                }
+                            }
+                            if (student_role == 1) {
+                                ArrayList<String> groupApplyOwners = new ArrayList<>();
+                                groupApplyOwners.addAll(groupApplyService.findGroupApplyOwner());
+                                for (String group_apply_owner : groupApplyOwners) {
+                                    if (uid.equals(group_apply_owner)) {
+                                        student_role = 2;
+                                        break;
+                                    }
+                                }
+                            }
+                            data.put("urank", student_role);
                             response = setCorrectResponse(data);
                         }
                     }
@@ -93,7 +121,7 @@ public class LoginController extends BaseController{
                         }
                     }
                     break;
-                case 4: // 教师
+                case 4: // 教务
                     Teacher teacherAdmin = teacherService.findTeacherByIdForLogin(uid);
                     if (teacherAdmin == null) {
                         response.setErrorNo(2);
