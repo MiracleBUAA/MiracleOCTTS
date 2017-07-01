@@ -25,7 +25,7 @@ public class CourseDaoTest {
 
     private Date currentTime = new Date(System.currentTimeMillis());
 
-    @Test
+/*    @Test
     public void testInsertCourse(){
         Course course = new Course();
         course.setCourse_start_time(currentTime);
@@ -37,7 +37,6 @@ public class CourseDaoTest {
         course.setUid("T001");
         course.setCourse_credit(100.0);
         courseDao.insertCourse(course);
-
-    }
+    }*/
 
 }
