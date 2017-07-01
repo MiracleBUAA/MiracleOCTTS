@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
  */
 public interface ResourceDao extends BaseMapper<Resource> {
 
-    @Select("SELECT resource_id, resource_url, title " +
-            "from resource " +
-            "where resource_id = #{resource_id}")
-    @ResultMap("cn.miracle.octts.dao.ResourceDao.ResourceDownload")
-    Resource findByIdForDownload(Integer resource_id);
+    @Select("SELECT resource_id, course_id, teacher_id, resource_title, resource_url, resource_type" +
+            "FROM resource " +
+            "WHERE resource_id = #{resource_id}")
+    @ResultMap("cn.miracle.octts.dao.ResourceDao.ResourceDetail")
+    Resource findResourceById(Integer resource_id);
 
 }

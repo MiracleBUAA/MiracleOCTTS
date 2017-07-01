@@ -15,6 +15,6 @@ public class ResourceService {
     ResourceDao resourceDao;
 
     public Resource findByIdForDownload(Integer resource_id) {
-        return resourceDao.findByIdForDownload(resource_id);
+        return resourceDao.findResourceById(resource_id);
     }
 }
