@@ -1,5 +1,6 @@
 # .gitignore for maven 
 target/
+file/
 
 # Compiled class file
 *.class
