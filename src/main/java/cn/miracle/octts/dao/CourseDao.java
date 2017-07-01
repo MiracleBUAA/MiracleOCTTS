@@ -14,7 +14,7 @@ public interface CourseDao extends BaseMapper<Course> {
     @Select("SELECT uid, course_id, course_year, course_start_time, course_status, course_name, course_hour, " +
             "course_credit, course_location, team_limit_information, teacher_information, course_information " +
             "FROM course " +
-            "ORDER BY course_year DESC")
+            "ORDER BY course_id DESC")
     @ResultMap("cn.miracle.octts.dao.CourseDao.CourseDetail")
     List<Course> findAllCourse();
 
