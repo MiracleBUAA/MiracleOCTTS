@@ -3,12 +3,10 @@ package cn.miracle.octts.controller;
 
 import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
+import cn.miracle.octts.dao.CourseDao;
 import cn.miracle.octts.entity.Student;
 import cn.miracle.octts.entity.Teacher;
-import cn.miracle.octts.service.GroupApplyService;
-import cn.miracle.octts.service.GroupConfirmService;
-import cn.miracle.octts.service.StudentService;
-import cn.miracle.octts.service.TeacherService;
+import cn.miracle.octts.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +33,8 @@ public class LoginController extends BaseController {
     private GroupConfirmService groupConfirmService;
     @Autowired
     private GroupApplyService groupApplyService;
+    @Autowired
+    private CourseService courseService;
 
     @Autowired
     private HttpSession httpSession;
@@ -88,6 +88,7 @@ public class LoginController extends BaseController {
                                 }
                             }
                             data.put("urank", student_role);
+                            data.put("course_id", courseService.findCurrentCourse());
                             response = setCorrectResponse(data);
                         }
                     } else { // 未授权
@@ -112,6 +113,7 @@ public class LoginController extends BaseController {
                             data.put("desc", "success");
                             data.put("uid", teacher.getTeacher_id());
                             data.put("urank", urank);
+                            data.put("course_id", courseService.findCurrentCourse());
                             response = setCorrectResponse(data);
                         }
                     }
@@ -132,6 +134,7 @@ public class LoginController extends BaseController {
                             data.put("desc", "success");
                             data.put("uid", teacherAdmin.getTeacher_id());
                             data.put("urank", urank);
+                            data.put("course_id", courseService.findCurrentCourse());
                             response = setCorrectResponse(data);
                         }
                     }

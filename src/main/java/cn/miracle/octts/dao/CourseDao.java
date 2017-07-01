@@ -44,4 +44,8 @@ public interface CourseDao extends BaseMapper<Course> {
             "#{team_limit_information}, #{teacher_information}, #{course_information})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertCourse(Course course);
+
+
+    @Select("SELECT course_id FROM course WHERE course_status=1;")
+    Integer findCurrentCourse();
 }

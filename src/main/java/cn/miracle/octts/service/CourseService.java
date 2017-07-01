@@ -72,4 +72,8 @@ public class CourseService {
     public List<Course> findAllCourse(){
         return courseDao.findAllCourse();
     }
+
+    public Integer findCurrentCourse() {
+        return courseDao.findCurrentCourse();
+    }
 }
