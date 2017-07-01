@@ -71,6 +71,7 @@ public class StudentServiceTest {
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/student/homework_upload")
                         .file(file)
+                        .param("uid", "14212333")
                         .param("course_id", "1")
                         .param("homework_id", "1")
                         .param("group_id", "1"))
