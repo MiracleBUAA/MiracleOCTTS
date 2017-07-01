@@ -40,8 +40,19 @@ public class AdminController extends BaseController {
     @Autowired
     private CourseService courseService;
 
-
-    //API2: 添加新学期
+    /**
+     * API2: 添加新学期
+     *
+     * @param uid
+     * @param course_year
+     * @param course_name
+     * @param course_start_time
+     * @param course_hour
+     * @param course_location
+     * @param course_credit
+     * @param teacher_information
+     * @return
+     */
     @RequestMapping(value = "/new_course", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> initCourseInfomation(@RequestParam(value = "uid") String uid,
                                                              @RequestParam(value = "course_year") Integer course_year,
@@ -74,6 +85,9 @@ public class AdminController extends BaseController {
 
             courseService.insertCourse(course, uid);
             response = setCorrectInsert();
+            HashMap<String,Object> data = new HashMap<String,Object>();
+            data.put("course_id", course.getCourse_id());
+            response.setData(data);
 
         } catch (ParseException parseExceptionse) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -81,7 +95,20 @@ public class AdminController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    //API3: 修改课程
+    /**
+     * API3: 修改课程
+     *
+     * @param uid
+     * @param course_id
+     * @param course_year
+     * @param course_name
+     * @param course_start_time
+     * @param course_hour
+     * @param course_location
+     * @param course_credit
+     * @param teacher_information
+     * @return
+     */
     @RequestMapping(value = "/course_update", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> updateCourseInfomation(@RequestParam(value = "uid") String uid,
                                                                @RequestParam(value = "course_id") Integer course_id,
@@ -132,7 +159,13 @@ public class AdminController extends BaseController {
         }
     }
 
-    //API4: 结束课程
+    /**
+     * API4: 结束课程
+     *
+     * @param uid
+     * @param course_id
+     * @return
+     */
     @RequestMapping(value = "/course_end", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> endCourse(@RequestParam(value = "uid") String uid,
                                                   @RequestParam(value = "course_id") Integer course_id) {
@@ -153,7 +186,11 @@ public class AdminController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    //API5: 显示课程信息
+    /**
+     * API5: 显示课程信息
+     *
+     * @return
+     */
     @RequestMapping(value = "/course_information", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getCourseInformation() {
         BaseResponse response = new BaseResponse();
@@ -162,7 +199,7 @@ public class AdminController extends BaseController {
         List<Course> course_result = courseService.findAllCourse();
         Iterator<Course> course_iter = course_result.iterator();
         while (course_iter.hasNext()) {
-            HashMap<String, Object> course = courseService.teacherCourse2Json(course_iter.next());
+            HashMap<String, Object> course = courseService.adminCourse2Json(course_iter.next());
             course_list.add(course);
         }
 
@@ -173,7 +210,11 @@ public class AdminController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    //API6: 上传学生名单
+    /**
+     * API6: 上传学生名单
+     *
+     * @return
+     */
     @RequestMapping(value = "/student_list", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getStudentList() {
         BaseResponse response = new BaseResponse();
@@ -194,9 +235,13 @@ public class AdminController extends BaseController {
     }
 
     /**
-    * 上传学生名单
+     * API7: 上传学生名单
      *
-    * */
+     * @param uid
+     * @param course_id
+     * @param student_list
+     * @return
+     */
     @RequestMapping(value = "/student_list", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> uploadStudentList (@RequestParam(value = "uid", required = false) String uid,
                                                          @RequestParam(value = "course_id") Integer course_id,
