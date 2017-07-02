@@ -98,6 +98,25 @@ public class TeacherControllerTest {
     }
 
     @Test
+    public void testSetHomeworkScore() {
+        String score_message = CodeConvert.string2Unicode("打得不错");
+        try {
+            this.mockMvc.perform(
+                    post("/teacher/homework_set_score")
+                            .param("uid","T001")
+                            .param("course_id","1")
+                            .param("homework_id", "2")
+                            .param("group_id", "2")
+                            .param("score", "20.0")
+                            .param("score_message", score_message))
+                    .andDo(print())
+                    .andExpect(status().isOk());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void TestgetResource() {
         try {
             this.mockMvc.perform(get("/teacher/resource")
