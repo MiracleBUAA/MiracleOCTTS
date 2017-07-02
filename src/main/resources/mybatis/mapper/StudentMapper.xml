@@ -14,7 +14,7 @@
         <result property="group_id" column="group_id"/>
         <result property="student_name" column="student_name"/>
         <result property="student_gender" column="student_gender"/>
-        <result property="student_class" column="studnet_class"/>
+        <result property="student_class" column="student_class"/>
         <result property="student_absent" column="student_absent"/>
         <result property="student_rate" column="student_rate"/>
         <result property="personal_score" column="personal_score"/>
