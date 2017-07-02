@@ -7,7 +7,6 @@ import cn.miracle.octts.service.*;
 import cn.miracle.octts.util.CodeConvert;
 import cn.miracle.octts.util.DateConvert;
 import cn.miracle.octts.util.FileUtils;
-import org.omg.PortableServer.POA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -54,6 +53,9 @@ public class TeacherController extends BaseController {
     @Autowired
     private HomeworkUploadService homeworkUploadService;
 
+    @Autowired
+    private GroupConfirmService groupConfirmService;
+
     /**
      * API7: 课程信息
      *
@@ -91,6 +93,7 @@ public class TeacherController extends BaseController {
     public ResponseEntity<BaseResponse> setCourseInfomation(@RequestParam(value = "uid") String uid,
                                                             @RequestParam(value = "course_id") Integer course_id,
                                                             @RequestParam(value = "team_limit_information", required = false) String team_limit_information,
+                                                            @RequestParam(value = "teacher_information", required = false) String teacher_information,
                                                             @RequestParam(value = "course_information", required = false) String course_information) {
         BaseResponse response = new BaseResponse();
 
@@ -102,9 +105,13 @@ public class TeacherController extends BaseController {
             if (team_limit_information != null) {
                 course.setTeam_limit_information(CodeConvert.unicode2String(team_limit_information));
             }
+            if (teacher_information != null) {
+                course.setTeacher_information(teacher_information);
+            }
             if (course_information != null) {
                 course.setCourse_information(CodeConvert.unicode2String(course_information));
             }
+
             courseService.updateCourse(course, uid);
             response = setCorrectUpdate();
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -303,8 +310,8 @@ public class TeacherController extends BaseController {
     }
 
     /**
-    * API.17:教师——删除作业
-     * */
+     * API.17:教师——删除作业
+     */
     @RequestMapping(value = "/homework_delete", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> deleteHomework(@RequestParam(value = "uid") String uid,
                                                        @RequestParam(value = "homework_id") Integer homework_id) {
@@ -321,18 +328,17 @@ public class TeacherController extends BaseController {
     }
 
     /**
-    * API.18:教师——查看学生提交情况
-    * */
-    public ResponseEntity<BaseResponse> getGroupHomeworkUpload (@RequestParam(value = "course_id") Integer course_id,
-                                                                @RequestParam(value = "homework_id") Integer homework_id) {
+     * API.18:教师——查看学生提交情况
+     */
+    public ResponseEntity<BaseResponse> getGroupHomeworkUpload(@RequestParam(value = "course_id") Integer course_id,
+                                                               @RequestParam(value = "homework_id") Integer homework_id) {
         BaseResponse response = new BaseResponse();
         HashMap<String, Object> data = new HashMap<>();
 
         Homework homework = homeworkService.findHomeworkById(homework_id);
         if (homework == null) {
             return ResponseEntity.badRequest().body(null);
-        }
-        else {
+        } else {
             // 写入homework信息部分
             data.put("homework_id", homework.getHomework_id());
             data.put("homework_name", homework.getHomework_title());
@@ -354,15 +360,15 @@ public class TeacherController extends BaseController {
     }
 
     /**
-    *API.19 教师——作业评分
-    * */
+     * API.19 教师——作业评分
+     */
     @RequestMapping(value = "/homework_set_score", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> setHomeworkScore (@RequestParam(value = "uid") String uid,
-                                                          @RequestParam(value = "course_id") Integer course_id,
-                                                          @RequestParam(value = "homework_id") Integer homework_id,
-                                                          @RequestParam(value = "group_id") Integer group_id,
-                                                          @RequestParam(value = "score") Double score,
-                                                          @RequestParam(value = "score_message") String score_message) {
+    public ResponseEntity<BaseResponse> setHomeworkScore(@RequestParam(value = "uid") String uid,
+                                                         @RequestParam(value = "course_id") Integer course_id,
+                                                         @RequestParam(value = "homework_id") Integer homework_id,
+                                                         @RequestParam(value = "group_id") Integer group_id,
+                                                         @RequestParam(value = "score") Double score,
+                                                         @RequestParam(value = "score_message") String score_message) {
         BaseResponse response = new BaseResponse();
         HashMap<String, Object> data = new HashMap<>();
 
@@ -373,33 +379,32 @@ public class TeacherController extends BaseController {
 
 
     @RequestMapping(value = "/homework_group_download", method = RequestMethod.GET)
-    public ResponseEntity<org.springframework.core.io.Resource> downloadGroupHomeworkUpload (
+    public ResponseEntity<org.springframework.core.io.Resource> downloadGroupHomeworkUpload(
             @RequestParam(value = "homework_upload_id") Integer homework_upload_id) {
-            HomeworkUpload homework_upload = homeworkUploadService.findHomeworkUploadById(homework_upload_id);
-            if(homework_upload == null) {
-                return ResponseEntity.badRequest().body(null);
+        HomeworkUpload homework_upload = homeworkUploadService.findHomeworkUploadById(homework_upload_id);
+        if (homework_upload == null) {
+            return ResponseEntity.badRequest().body(null);
+        } else {
+            String homework_url = homework_upload.getHomework_url();
+            String file_name = homework_upload.getFile_name();
+
+            try {
+                ByteArrayOutputStream baos = FileUtils.getSingleDownloadFile(homework_url);
+
+                org.springframework.core.io.Resource resource = new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));
+
+                HttpHeaders headers = getFileDownloadHeaders(file_name);
+
+                return ResponseEntity.ok()
+                        .headers(headers)
+                        .contentType(MediaType.parseMediaType("application/x-msdownload"))
+                        .body(resource);
+
+
+            } catch (IOException e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            else {
-                String homework_url = homework_upload.getHomework_url();
-                String file_name = homework_upload.getFile_name();
-
-                try {
-                    ByteArrayOutputStream baos = FileUtils.getSingleDownloadFile(homework_url);
-
-                    org.springframework.core.io.Resource resource = new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));
-
-                    HttpHeaders headers = getFileDownloadHeaders(file_name);
-
-                    return ResponseEntity.ok()
-                            .headers(headers)
-                            .contentType(MediaType.parseMediaType("application/x-msdownload"))
-                            .body(resource);
-
-
-                } catch (IOException e) {
-                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-                }
-            }
+        }
 
     }
 
@@ -609,15 +614,8 @@ public class TeacherController extends BaseController {
         BaseResponse response = new BaseResponse();
         HashMap<String, Object> data = new HashMap<String, Object>();
 
-
-        /*TODO
-        try {
-            List<HashMap<String, Object>> group_confirm_list = ();
-            data.put();
-
-        } catch (ParseException parseException) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }*/
+        List<HashMap<String, Object>> group_confirm_list = groupConfirmService.getGroupConfirmList(course_id);
+        data.put("group_confirm_list", group_confirm_list);
 
         response = setCorrectResponse(data);
         return new ResponseEntity<>(response, HttpStatus.OK);
