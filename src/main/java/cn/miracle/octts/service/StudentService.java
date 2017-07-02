@@ -1,13 +1,14 @@
 package cn.miracle.octts.service;
 
-import cn.miracle.octts.dao.StudentDao;
 import cn.miracle.octts.dao.GroupConfirmMemberDao;
-import cn.miracle.octts.entity.GroupConfirmMember;
+import cn.miracle.octts.dao.StudentDao;
 import cn.miracle.octts.entity.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public class StudentService {
         return studentDao.findByIdforLogin(student_id);
     }
 
-    public HashMap<String, Object> adminStudent2Json(Student student) {
+    public HashMap<String, Object> student2Json(Student student) {
         HashMap<String, Object> data = new HashMap<>();
 
         data.put("student_id", student.getStudent_id());
@@ -47,6 +48,18 @@ public class StudentService {
 
     public String findStudentNameById(String student_id) {
         return studentDao.findStudentNameById(student_id);
+    }
+
+    public List<HashMap<String, Object>> getStudentList() {
+        List<HashMap<String, Object>> studentList = new ArrayList<HashMap<String, Object>>();
+
+        List<Student> studentResult = findAllStudent();
+        Iterator<Student> studentIter = studentResult.iterator();
+        while (studentIter.hasNext()) {
+            HashMap<String, Object> student = student2Json(studentIter.next());
+            studentList.add(student);
+        }
+        return studentList;
     }
 
 }

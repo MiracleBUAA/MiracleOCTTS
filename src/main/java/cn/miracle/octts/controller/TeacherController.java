@@ -23,7 +23,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Tony on 2017/6/27.
@@ -139,19 +142,12 @@ public class TeacherController extends BaseController {
     @RequestMapping(value = "/student_list", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> student_list() {
         BaseResponse response = new BaseResponse();
-        List<HashMap<String, Object>> student_list = new ArrayList<HashMap<String, Object>>();
-
-        List<Student> student_result = studentService.findAllStudent();
-        Iterator<Student> student_iter = student_result.iterator();
-        while (student_iter.hasNext()) {
-            HashMap<String, Object> student = studentService.adminStudent2Json(student_iter.next());
-            student_list.add(student);
-        }
-
         HashMap<String, Object> data = new HashMap<String, Object>();
-        data.put("student_list", student_list);
-        response = setCorrectResponse(data);
 
+        List<HashMap<String, Object>> student_list = studentService.getStudentList();
+        data.put("student_list", student_list);
+
+        response = setCorrectResponse(data);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -633,7 +629,7 @@ public class TeacherController extends BaseController {
         BaseResponse response = new BaseResponse();
 
         Announcement announcement = announcementService.findAnnouncementById(announcement_id);
-        if (announcement == null || announcement.getCourse_id() != course_id) {
+        if (announcement == null || (!announcement.getCourse_id().equals(course_id))) {
             response = setParamError();
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
@@ -724,7 +720,7 @@ public class TeacherController extends BaseController {
 
         //判读group_apply_id合法性
         GroupApply groupApply = groupApplyService.findGroupApplyById(group_apply_id);
-        if (groupApply == null || groupApply.getCourse_id() != course_id) {
+        if (groupApply == null || (!groupApply.getCourse_id().equals(course_id))) {
             response = setParamError();
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
@@ -777,7 +773,7 @@ public class TeacherController extends BaseController {
 
         //判读group_apply_id合法性
         GroupApply groupApply = groupApplyService.findGroupApplyById(group_apply_id);
-        if (groupApply == null || groupApply.getCourse_id() != course_id) {
+        if (groupApply == null || (!groupApply.getCourse_id().equals(course_id))) {
             response = setParamError();
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
@@ -787,6 +783,14 @@ public class TeacherController extends BaseController {
 
         //group_apply_member 删除记录
         groupApplyMemberService.deleteGroupApplyMemberByGroupApplyId(group_apply_id);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/student_not_in_group", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getStudentNotInGroup(@RequestParam(value = "course_id") Integer course_id) {
+        BaseResponse response = new BaseResponse();
+
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

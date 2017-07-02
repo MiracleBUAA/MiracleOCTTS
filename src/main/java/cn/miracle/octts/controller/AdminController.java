@@ -221,19 +221,12 @@ public class AdminController extends BaseController {
     @RequestMapping(value = "/student_list", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getStudentList() {
         BaseResponse response = new BaseResponse();
-        List<HashMap<String, Object>> student_list = new ArrayList<HashMap<String, Object>>();
-
-        List<Student> student_result = studentService.findAllStudent();
-        Iterator<Student> student_iter = student_result.iterator();
-        while (student_iter.hasNext()) {
-            HashMap<String, Object> student = studentService.adminStudent2Json(student_iter.next());
-            student_list.add(student);
-        }
-
         HashMap<String, Object> data = new HashMap<String, Object>();
-        data.put("student_list", student_list);
-        response = setCorrectResponse(data);
 
+        List<HashMap<String, Object>> student_list = studentService.getStudentList();
+        data.put("student_list", student_list);
+
+        response = setCorrectResponse(data);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
