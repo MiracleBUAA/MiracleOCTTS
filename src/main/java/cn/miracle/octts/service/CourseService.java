@@ -36,7 +36,7 @@ public class CourseService {
         data.put("course_name", course.getCourse_name());
         data.put("course_start_time", DateConvert.date2String(course.getCourse_start_time()));
         data.put("course_hour", course.getCourse_hour());
-        data.put("course_location", course.getCourse_hour());
+        data.put("course_location", course.getCourse_location());
         data.put("course_credit", course.getCourse_credit());
         data.put("teacher_information", course.getTeacher_information());
 
