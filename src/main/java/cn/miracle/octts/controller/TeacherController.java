@@ -225,8 +225,8 @@ public class TeacherController extends BaseController {
         data.put("homework_title", homework.getHomework_title());
 
         try {
-            data.put("homework_start_time", DateConvert.Datetime2String(homework.getHomework_start_time()));
-            data.put("homework_end_time", DateConvert.Datetime2String(homework.getHomework_end_time()));
+            data.put("homework_start_time", DateConvert.datetime2String(homework.getHomework_start_time()));
+            data.put("homework_end_time", DateConvert.datetime2String(homework.getHomework_end_time()));
         } catch (ParseException e) {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
