@@ -31,7 +31,7 @@ public interface ScoreDao extends BaseMapper<Score> {
     Integer findMaxId();
 
     @Update("UPDATE score " +
-            "SET gmt_modified=#{updatetime}, uid=#{uid}, course_id=#{course_id}, homework_id=#{homework_id}, group_id=#{group_id}, grader_id=#{grader_id}, score=#{score}, score_message#{score_message} " +
+            "SET gmt_modified=#{updatetime}, uid=#{uid}, course_id=#{course_id}, homework_id=#{homework_id}, group_id=#{group_id}, grader_id=#{grader_id}, score=#{score}, score_message=#{score_message} " +
             "WHERE score_id=#{score_id}")
     void updateScore(Score score);
 }
