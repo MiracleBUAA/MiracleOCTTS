@@ -80,4 +80,12 @@ public class CourseService {
     public Integer endAllCourse() {
         return courseDao.endAllCourse();
     }
+
+    public Integer findMaxCourseId() {
+        if (courseDao.findMaxCourseId() != null) {
+            return courseDao.findMaxCourseId() + 1;
+        } else {
+            return new Integer(1);
+        }
+    }
 }

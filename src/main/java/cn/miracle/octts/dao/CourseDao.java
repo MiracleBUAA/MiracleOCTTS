@@ -38,7 +38,7 @@ public interface CourseDao extends BaseMapper<Course> {
             "teacher_information = #{teacher_information}, " +
             "course_information = #{course_information} " +
             "WHERE course_id = #{course_id}")
-    int updateCourse(Course course);
+    Integer updateCourse(Course course);
 
     @Insert("INSERT INTO course(gmt_create, gmt_modified, uid, course_id, course_year, course_start_time, " +
             "course_status, course_name, course_hour, course_credit, course_location, team_limit_information, " +
@@ -47,12 +47,16 @@ public interface CourseDao extends BaseMapper<Course> {
             "#{course_status}, #{course_name}, #{course_hour}, #{course_credit}, #{course_location}, " +
             "#{team_limit_information}, #{teacher_information}, #{course_information})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    int insertCourse(Course course);
+    Integer insertCourse(Course course);
 
 
     @Select("SELECT course_id FROM course WHERE course_status=1;")
     Integer findCurrentCourse();
 
     @Update("UPDATE course SET course_status = 0")
-    int endAllCourse();
+    Integer endAllCourse();
+
+    @Select("SELECT max(course_id) FROM course")
+    Integer findMaxCourseId();
+
 }

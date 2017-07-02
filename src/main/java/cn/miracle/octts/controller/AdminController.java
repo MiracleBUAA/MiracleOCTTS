@@ -63,10 +63,7 @@ public class AdminController extends BaseController {
                                                              @RequestParam(value = "teacher_information") String teacher_information) {
         BaseResponse response = new BaseResponse();
         Course course = new Course();
-        Integer cid = new Integer(1);
-        while (courseService.findCourseById(cid) != null) { //查找唯一course_id
-            cid++;
-        }
+        Integer cid = courseService.findMaxCourseId();
         course.setCourse_id(cid);
 
         courseService.endAllCourse();
