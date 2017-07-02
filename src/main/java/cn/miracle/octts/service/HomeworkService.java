@@ -58,4 +58,9 @@ public class HomeworkService {
         Integer maxId = homeworkDao.findMaxHomeworkId();
         return maxId == null ? 1 : maxId;
     }
+
+    public void updateHomework(Homework homework) {
+        homework.setUpdatetime(new Date());
+        homeworkDao.updateHomework(homework);
+    }
 }

@@ -145,7 +145,7 @@ public class TeacherController extends BaseController {
      */
     @RequestMapping(value = "/new_homework", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> newHomework(@RequestParam(value = "uid") String uid,
-                                                    @RequestParam(value = "course_id", required = true) Integer course_id,
+                                                    @RequestParam(value = "course_id") Integer course_id,
                                                     @RequestParam(value = "homework_title") String homework_title,
                                                     @RequestParam(value = "homework_start_time") String homework_start_time,
                                                     @RequestParam(value = "homework_end_time") String homework_end_time,
@@ -153,7 +153,7 @@ public class TeacherController extends BaseController {
                                                     @RequestParam(value = "homework_message") String homework_message,
                                                     @RequestParam(value = "resubmit_limit") Integer resubmit_limit) {
         BaseResponse response = new BaseResponse();
-
+        HashMap<String, Object> data = new HashMap<>();
         Homework new_homework = new Homework();
 
         Integer homework_id = homeworkService.findMaxHomeworkId() + 1;
@@ -182,13 +182,14 @@ public class TeacherController extends BaseController {
         homework_message = CodeConvert.unicode2String(homework_message);
         new_homework.setHomework_message(homework_message);
 
-        homeworkService.InsertHomework(new_homework);
-
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("desc", "OK");
-        response = setCorrectResponse(data);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        try {
+            homeworkService.InsertHomework(new_homework);
+            data.put("desc", "OK");
+            response = setCorrectResponse(data);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<BaseResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
     }
 
@@ -223,10 +224,70 @@ public class TeacherController extends BaseController {
         data.put("course_id", homework.getCourse_id());
         data.put("homework_title", homework.getHomework_title());
 
-        data.put("homework_start_time", homework.getHomework_start_time());
+        try {
+            data.put("homework_start_time", DateConvert.datetime2String(homework.getHomework_start_time()));
+            data.put("homework_end_time", DateConvert.datetime2String(homework.getHomework_end_time()));
+        } catch (ParseException e) {
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
+        data.put("homework_score", homework.getHomework_score());
+        data.put("homework_message", homework.getHomework_message());
+        data.put("resubmit_limit", homework.getResubmit_limit());
+
+        response = setCorrectResponse(data);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+
+    /**
+    * 教师更新作业
+    * */
+    @RequestMapping(value = "/homework_update", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> updateHomework (@RequestParam(value = "uid") String uid,
+                                                        @RequestParam(value = "homework_id") Integer homework_id,
+                                                        @RequestParam(value = "course_id") Integer course_id,
+                                                        @RequestParam(value = "homework_title") String homework_title,
+                                                        @RequestParam(value = "homework_start_time") String homework_start_time,
+                                                        @RequestParam(value = "homework_end_time") String homework_end_time,
+                                                        @RequestParam(value = "homework_score") Integer homework_score,
+                                                        @RequestParam(value = "homework_message") String homework_message,
+                                                        @RequestParam(value = "resubmit_limit") Integer resubmit_limit) {
+        BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<>();
+
+        Homework homework = homeworkService.findHomeworkById(homework_id);
+        if (homework == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        else {
+            homework.setHomework_title(homework_title);
+            homework.setHomework_message(homework_message);
+            homework.setHomework_score(homework_score);
+            homework.setResubmit_limit(resubmit_limit);
+
+            try {
+                homework.setHomework_start_time(DateConvert.string2Datetime(homework_start_time));
+                homework.setHomework_end_time(DateConvert.string2Datetime(homework_end_time));
+            } catch (ParseException e) {
+                return ResponseEntity.badRequest().body(null);
+            }
+
+            try {
+
+                homeworkService.updateHomework(homework);
+                data.put("desc", "OK");
+                response = setCorrectResponse(data);
+
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<BaseResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+    }
+
 
 
     /**
