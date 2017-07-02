@@ -275,29 +275,29 @@ public class StudentController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/download/", method = RequestMethod.GET)
-    public ResponseEntity<org.springframework.core.io.Resource> DownloadHomework(@RequestParam(value = "course_id") Integer course_id,
-                                                                                 @RequestParam(value = "group_id") String group_id,
-                                                                                 @RequestParam(value = "homework_id") String homework_id) {
-        BaseResponse response = new BaseResponse();
-
-        String file_folder = "test";
-
-        String file_name = "test.txt";
-
-        String downloadFileURL = "/Users/hf/tmp/download/" + file_folder + "/" + file_name;
-
-        try {
-            ByteArrayOutputStream baos = FileUtils.getSingleDownloadFile(downloadFileURL);
-            org.springframework.core.io.Resource resource = new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));
-
-            HttpHeaders headers = getFileDownloadHeaders(file_name);
-
-            return ResponseEntity.ok().headers(headers).contentType(MediaType.parseMediaType("application/x-msdownload")).body(resource);
-
-        } catch (IOException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @RequestMapping(value = "/download/", method = RequestMethod.GET)
+//    public ResponseEntity<org.springframework.core.io.Resource> DownloadHomework(@RequestParam(value = "course_id") Integer course_id,
+//                                                                                 @RequestParam(value = "group_id") String group_id,
+//                                                                                 @RequestParam(value = "homework_id") String homework_id) {
+//        BaseResponse response = new BaseResponse();
+//
+//        String file_folder = "test";
+//
+//        String file_name = "test.txt";
+//
+//        String downloadFileURL = "/Users/hf/tmp/download/" + file_folder + "/" + file_name;
+//
+//        try {
+//            ByteArrayOutputStream baos = FileUtils.getSingleDownloadFile(downloadFileURL);
+//            org.springframework.core.io.Resource resource = new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));
+//
+//            HttpHeaders headers = getFileDownloadHeaders(file_name);
+//
+//            return ResponseEntity.ok().headers(headers).contentType(MediaType.parseMediaType("application/x-msdownload")).body(resource);
+//
+//        } catch (IOException e) {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
 }
