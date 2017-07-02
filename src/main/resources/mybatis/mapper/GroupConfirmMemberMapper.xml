@@ -5,8 +5,8 @@
 <mapper namespace="cn.miracle.octts.dao.GroupConfirmMemberDao">
     <resultMap id="GroupConfirmMemberDetail" type="GroupConfirmMember">
         <id property="id" column="id"/>
-        <result property="gmt_create" column="gmt_create"/>
-        <result property="gmt_modified" column="gmt_modified"/>
+        <result property="createtime" column="gmt_create"/>
+        <result property="updatetime" column="gmt_modified"/>
         <result property="uid" column="uid"/>
         <result property="group_id" column="group_id"/>
         <result property="course_id" column="course_id"/>

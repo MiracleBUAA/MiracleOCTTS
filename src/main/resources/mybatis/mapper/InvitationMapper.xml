@@ -5,8 +5,8 @@
 <mapper namespace="cn.miracle.octts.dao.InvitationDao">
     <resultMap id="InvitationDetail" type="Invitation">
         <id property="id" column="id"/>
-        <result property="gmt_create" column="gmt_create"/>
-        <result property="gmt_modified" column="gmt_modified"/>
+        <result property="createtime" column="gmt_create"/>
+        <result property="updatetime" column="gmt_modified"/>
         <result property="uid" column="uid"/>
         <result property="sender_id" column="sender_id"/>
         <result property="receiver_id" column="receiver_id"/>

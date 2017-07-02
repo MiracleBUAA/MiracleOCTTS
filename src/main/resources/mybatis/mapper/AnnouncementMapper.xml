@@ -5,6 +5,7 @@
 <mapper namespace="cn.miracle.octts.dao.AnnouncementDao">
     <resultMap id="AnnouncementDetail" type="Announcement">
         <id property="id" column="id"/>
+        <result property="createtime" column="gmt_create"/>
         <result property="updatetime" column="gmt_modified"/>
         <result property="uid" column="uid"/>
         <result property="announcement_id" column="announcement_id"/>
