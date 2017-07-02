@@ -237,6 +237,7 @@ CREATE TABLE `invitation` (
   `id`           BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `gmt_create`   DATETIME            NOT NULL,
   `gmt_modified` DATETIME            NOT NULL,
+  `uid`          VARCHAR(20)         NOT NULL,
   `sender_id`    CHAR(8)             NOT NULL,
   `receiver_id`  CHAR(8)             NOT NULL,
   PRIMARY KEY (`id`)

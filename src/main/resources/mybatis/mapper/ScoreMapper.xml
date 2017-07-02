@@ -2,16 +2,18 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.miracle.octts.dao.GroupConfirmDao">
-    <resultMap id="GroupConfirmDetail" type="GroupConfirm">
+<mapper namespace="cn.miracle.octts.dao.ScoreDao">
+    <resultMap id="ScoreDetail" type="Score">
         <id property="id" column="id"/>
         <result property="gmt_create" column="gmt_create"/>
         <result property="gmt_modified" column="gmt_modified"/>
         <result property="uid" column="uid"/>
-        <result property="group_id" column="group_id"/>
+        <result property="score_id" column="score_id"/>
         <result property="course_id" column="course_id"/>
-        <result property="group_name" column="group_name"/>
-        <result property="group_owner_id" column="group_owner_id"/>
-        <result property="group_score" column="group_score"/>
+        <result property="homework_id" column="homework_id"/>
+        <result property="group_id" column="group_id"/>
+        <result property="grader_id" column="grader_id"/>
+        <result property="score" column="score"/>
+        <result property="score_message" column="score_message"/>
     </resultMap>
 </mapper>

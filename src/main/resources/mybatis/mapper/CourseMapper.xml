@@ -18,5 +18,4 @@
         <result property="teacher_information" column="teacher_information"/>
         <result property="course_information" column="course_information"/>
     </resultMap>
-
 </mapper>

@@ -2,16 +2,15 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.miracle.octts.dao.GroupConfirmDao">
-    <resultMap id="GroupConfirmDetail" type="GroupConfirm">
+<mapper namespace="cn.miracle.octts.dao.GroupApplyDao">
+    <resultMap id="GroupApplyDetail" type="GroupApply">
         <id property="id" column="id"/>
         <result property="gmt_create" column="gmt_create"/>
         <result property="gmt_modified" column="gmt_modified"/>
         <result property="uid" column="uid"/>
-        <result property="group_id" column="group_id"/>
+        <result property="group_apply_id" column="group_apply_id"/>
         <result property="course_id" column="course_id"/>
-        <result property="group_name" column="group_name"/>
-        <result property="group_owner_id" column="group_owner_id"/>
-        <result property="group_score" column="group_score"/>
+        <result property="group_apply_name" column="group_apply_name"/>
+        <result property="group_apply_owner_id" column="group_apply_owner_id"/>
     </resultMap>
 </mapper>
