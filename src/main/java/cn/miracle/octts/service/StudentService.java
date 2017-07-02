@@ -33,7 +33,7 @@ public class StudentService {
 
         data.put("student_id", student.getStudent_id());
         data.put("student_name", student.getStudent_name());
-        data.put("studnet_gender", student.getStudent_gender());
+        data.put("student_gender", student.getStudent_gender());
         data.put("student_class", student.getStudent_class());
 
         return data;
