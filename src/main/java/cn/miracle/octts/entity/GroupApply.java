@@ -10,7 +10,7 @@ public class GroupApply extends BaseEntity {
     private Integer group_apply_id;
     private Integer course_id;
     private String group_apply_name;
-    private String group_apply_owner;
+    private String group_apply_owner_id;
 
     public GroupApply() {
     }
@@ -40,10 +40,10 @@ public class GroupApply extends BaseEntity {
     }
 
     public String getGroup_apply_owner() {
-        return group_apply_owner;
+        return group_apply_owner_id;
     }
 
     public void setGroup_apply_owner(String group_apply_owner) {
-        this.group_apply_owner = group_apply_owner;
+        this.group_apply_owner_id = group_apply_owner;
     }
 }

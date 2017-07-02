@@ -1,7 +1,6 @@
 package cn.miracle.octts.service;
 
-
-import cn.miracle.octts.dao.GroupConfirmMemberDao;
+import cn.miracle.octts.dao.GroupApplyMemberDao;
 import cn.miracle.octts.dao.StudentDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,26 +13,25 @@ import java.util.List;
  * Created by Tony on 2017/7/2.
  */
 @Service
-public class GroupConfirmMemberService {
-
+public class GroupApplyMemberService {
     @Autowired
     private StudentDao studentDao;
 
     @Autowired
-    private GroupConfirmMemberDao groupConfirmMemberDao;
+    private GroupApplyMemberDao groupApplyMemberDao;
 
-    public List<String> findGroupConfirmMemberListByGroupId(Integer group_id) {
-        List<String> memberList = new ArrayList<String>();
+    List<String> findGroupApplyMemberListByGroupApplyId(Integer group_apply_id) {
+        List<String> applyMemberList = new ArrayList<String>();
 
-        List<String> studentIdList = groupConfirmMemberDao.findStudentIdByGroupId(group_id);
+        List<String> studentIdList = groupApplyMemberDao.findStudentIdByGroupApplyId(group_apply_id);
         if (studentIdList != null) {
             Iterator<String> studentIdIter = studentIdList.iterator();
 
             while (studentIdIter.hasNext()) {
-                memberList.add(studentDao.findStudentNameById(studentIdIter.next()));
+                applyMemberList.add(studentDao.findStudentNameById(studentIdIter.next()));
             }
         }
 
-        return memberList;
+        return applyMemberList;
     }
 }

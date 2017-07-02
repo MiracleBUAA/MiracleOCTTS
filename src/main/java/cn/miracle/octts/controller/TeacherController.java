@@ -54,6 +54,9 @@ public class TeacherController extends BaseController {
     private HomeworkUploadService homeworkUploadService;
 
     @Autowired
+    private GroupApplyService groupApplyService;
+
+    @Autowired
     private GroupConfirmService groupConfirmService;
 
     /**
@@ -613,6 +616,12 @@ public class TeacherController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * API24: 查看已组建团队信息
+     *
+     * @param course_id
+     * @return
+     */
     @RequestMapping(value = "/group_confirm_list", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getGroupConfirm(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
@@ -621,6 +630,19 @@ public class TeacherController extends BaseController {
         List<HashMap<String, Object>> group_confirm_list = groupConfirmService.getGroupConfirmList(course_id);
 
         data.put("group_confirm_list", group_confirm_list);
+        response = setCorrectResponse(data);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/group_apply_list", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getGroupApply(@RequestParam(value = "course_id") Integer course_id) {
+        BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<String, Object>();
+
+        List<HashMap<String, Object>> group_apply_list = groupApplyService.getGroupApplyList(course_id);
+
+        data.put("group_apply_list", group_apply_list);
         response = setCorrectResponse(data);
 
         return new ResponseEntity<>(response, HttpStatus.OK);

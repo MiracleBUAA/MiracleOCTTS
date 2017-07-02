@@ -162,5 +162,17 @@ public class TeacherControllerTest {
         }
     }
 
+    @Test
+    public void testGetGroupApply() {
+        try {
+            this.mockMvc.perform(get("/teacher/group_apply_list")
+                    .param("course_id", "1"))
+                    .andDo(print())
+                    .andExpect(status().isOk());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 

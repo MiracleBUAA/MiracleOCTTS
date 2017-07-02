@@ -2,6 +2,7 @@ package cn.miracle.octts.dao;
 
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.GroupApply;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -13,5 +14,17 @@ public interface GroupApplyDao extends BaseMapper<GroupApply> {
 
     @Select("SELECT GROUP_APPLY_OWNER_ID FROM GROUP_APPLY")
     List<String> findGroupApplyOwner();
+
+    @Select("SELECT gmt_create, gmt_modified, uid, group_apply_id, course_id, group_apply_name, group_apply_owner_id " +
+            "FROM group_apply " +
+            "WHERE group_apply_id = #{group_apply_id}")
+    @ResultMap("cn.miracle.octts.dao.GroupApplyDao.GroupApplyDetail")
+    GroupApply findGroupApplyById(Integer group_apply_id);
+
+    @Select("SELECT gmt_create, gmt_modified, uid, group_apply_id, course_id, group_apply_name, group_apply_owner_id " +
+            "FROM group_apply " +
+            "WHERE course_id = #{course_id}")
+    @ResultMap("cn.miracle.octts.dao.GroupApplyDao.GroupApplyDetail")
+    List<GroupApply> findGroupApplyByCourseId(Integer course_id);
 
 }

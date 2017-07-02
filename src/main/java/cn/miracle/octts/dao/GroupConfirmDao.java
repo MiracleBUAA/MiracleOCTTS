@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface GroupConfirmDao extends BaseMapper<GroupConfirm> {
 
-    @Select(value = "SELECT group_owner_id FROM group_confirm")
+    @Select("SELECT group_owner_id FROM group_confirm")
     List<String> findGroupOwner();
 
     @Select("SELECT gmt_create, gmt_modified, uid, group_id, course_id, group_name, group_owner_id, group_score " +
@@ -26,4 +26,5 @@ public interface GroupConfirmDao extends BaseMapper<GroupConfirm> {
             "WHERE course_id = #{course_id}")
     @ResultMap("cn.miracle.octts.dao.GroupConfirmDao.GroupConfirmDetail")
     List<GroupConfirm> findGroupConfirmByCourseId(Integer course_id);
+
 }
