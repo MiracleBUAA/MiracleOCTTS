@@ -2,6 +2,7 @@ package cn.miracle.octts.service;
 
 import cn.miracle.octts.dao.GroupApplyMemberDao;
 import cn.miracle.octts.dao.StudentDao;
+import cn.miracle.octts.entity.GroupApplyMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class GroupApplyMemberService {
     @Autowired
     private GroupApplyMemberDao groupApplyMemberDao;
 
-    List<String> findGroupApplyMemberListByGroupApplyId(Integer group_apply_id) {
+    public List<String> findGroupApplyMemberNameByGroupApplyId(Integer group_apply_id) {
         List<String> applyMemberList = new ArrayList<String>();
 
         List<String> studentIdList = groupApplyMemberDao.findStudentIdByGroupApplyId(group_apply_id);
@@ -34,4 +35,14 @@ public class GroupApplyMemberService {
 
         return applyMemberList;
     }
+
+    public List<GroupApplyMember> findGroupApplyMemberById(Integer group_apply_id) {
+        return groupApplyMemberDao.findGroupApplyMemberById(group_apply_id);
+    }
+
+    public Integer deleteGroupApplyMemberByGroupApplyId(Integer group_apply_id) {
+        return groupApplyMemberDao.deleteGroupApplyMemberByGroupApplyId(group_apply_id);
+    }
+
+
 }

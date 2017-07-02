@@ -193,5 +193,16 @@ public class TeacherControllerTest {
         }
     }
 
+    @Test
+    public void testConfirmGroupApply() throws Exception {
+        this.mockMvc.perform(
+                post("/teacher/group_confirm")
+                        .param("uid", "T001")
+                        .param("course_id", "1")
+                        .param("group_apply_id", "1"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
 }
 

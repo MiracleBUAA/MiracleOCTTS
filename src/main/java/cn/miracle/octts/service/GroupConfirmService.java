@@ -42,7 +42,7 @@ public class GroupConfirmService {
         data.put("group_id", group_confirm.getGroup_id());
         data.put("group_name", group_confirm.getGroup_name());
         data.put("group_owner_name", studentDao.findStudentNameById(group_confirm.getGroup_owner_id()));
-        data.put("group_member", groupConfirmMemberService.findGroupConfirmMemberListByGroupId(group_confirm.getGroup_id()));
+        data.put("group_member", groupConfirmMemberService.findGroupConfirmMemberNameByGroupId(group_confirm.getGroup_id()));
 
         return data;
     }

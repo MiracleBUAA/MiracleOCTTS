@@ -36,7 +36,7 @@ public class GroupApplyService {
         data.put("group_apply_id", groupApply.getGroup_apply_id());
         data.put("group_apply_name", groupApply.getGroup_apply_name());
         data.put("group_apply_owner", studentDao.findStudentNameById(groupApply.getGroup_apply_owner_id()));
-        data.put("group_apply_member", groupApplyMemberService.findGroupApplyMemberListByGroupApplyId(groupApply.getGroup_apply_id()));
+        data.put("group_apply_member", groupApplyMemberService.findGroupApplyMemberNameByGroupApplyId(groupApply.getGroup_apply_id()));
 
         return data;
     }
@@ -55,8 +55,12 @@ public class GroupApplyService {
         return groupApplyList;
     }
 
-    public GroupApply findGroupApplyById(Integer group_apply_id){
+    public GroupApply findGroupApplyById(Integer group_apply_id) {
         return groupApplyDao.findGroupApplyById(group_apply_id);
+    }
+
+    public Integer deleteGroupApplyById(Integer group_apply_id) {
+        return groupApplyDao.deleteGroupApplyById(group_apply_id);
     }
 
 }

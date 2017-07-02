@@ -2,6 +2,7 @@ package cn.miracle.octts.dao;
 
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.GroupApply;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 
@@ -26,5 +27,8 @@ public interface GroupApplyDao extends BaseMapper<GroupApply> {
             "WHERE course_id = #{course_id}")
     @ResultMap("cn.miracle.octts.dao.GroupApplyDao.GroupApplyDetail")
     List<GroupApply> findGroupApplyByCourseId(Integer course_id);
+
+    @Delete("DELETE FROM group_apply WHERE group_apply_id = #{group_apply_id}")
+    Integer deleteGroupApplyById(Integer group_apply_id);
 
 }

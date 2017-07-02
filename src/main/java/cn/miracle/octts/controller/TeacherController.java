@@ -57,7 +57,13 @@ public class TeacherController extends BaseController {
     private GroupApplyService groupApplyService;
 
     @Autowired
+    private GroupApplyMemberService groupApplyMemberService;
+
+    @Autowired
     private GroupConfirmService groupConfirmService;
+
+    @Autowired
+    private GroupConfirmMemberService groupConfirmMemberService;
 
     @Autowired
     private ScoreSerivce scoreSerivce;
@@ -402,8 +408,7 @@ public class TeacherController extends BaseController {
                 homework_score.setGrader_id(uid);
                 homework_score.setScore_message(score_message);
                 scoreSerivce.insertScore(homework_score);
-            }
-            else {
+            } else {
                 // 分数存在，修改评分
                 homework_score.setUid(uid);
                 homework_score.setCourse_id(course_id);
@@ -424,8 +429,8 @@ public class TeacherController extends BaseController {
 
 
     /**
-    * API.20: 教师——学生提交的作业下载
-    * */
+     * API.20: 教师——学生提交的作业下载
+     */
     @RequestMapping(value = "/homework_group_download", method = RequestMethod.GET)
     public ResponseEntity<org.springframework.core.io.Resource> downloadGroupHomeworkUpload(
             @RequestParam(value = "homework_upload_id") Integer homework_upload_id) {
@@ -666,7 +671,7 @@ public class TeacherController extends BaseController {
     }
 
     /**
-     * API24: 查看已组建团队信息
+     * API24: 查看已审批团队信息
      *
      * @param course_id
      * @return
@@ -684,6 +689,12 @@ public class TeacherController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * API25: 查看未审批的团队信息
+     *
+     * @param course_id
+     * @return
+     */
     @RequestMapping(value = "/group_apply_list", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getGroupApply(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
@@ -696,4 +707,58 @@ public class TeacherController extends BaseController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    /**
+     * API26: 批准学生团队
+     *
+     * @param uid
+     * @param course_id
+     * @param group_apply_id
+     * @return
+     */
+    @RequestMapping(value = "/group_confirm", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> confirmGroupApply(@RequestParam(value = "uid") String uid,
+                                                          @RequestParam(value = "course_id") Integer course_id,
+                                                          @RequestParam(value = "group_apply_id") Integer group_apply_id) {
+        BaseResponse response = new BaseResponse();
+
+        //判读group_apply_id合法性
+        GroupApply groupApply = groupApplyService.findGroupApplyById(group_apply_id);
+        if (groupApply == null || groupApply.getCourse_id() != course_id) {
+            response = setParamError();
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        //group_confirm 生成group_id 并插入记录
+        GroupConfirm groupConfirm = new GroupConfirm();
+        Integer gid = groupConfirmService.findMaxGroupId();
+
+        groupConfirm.setGroup_id(gid);
+        groupConfirm.setCourse_id(groupApply.getCourse_id());
+        groupConfirm.setGroup_name(groupApply.getGroup_apply_name());
+        groupConfirm.setGroup_owner_id(groupApply.getGroup_apply_owner_id());
+
+        groupConfirmService.insertGroupConfirm(groupConfirm, uid);
+
+        //group_confirm_memeber 插入记录
+        List<GroupApplyMember> groupApplyMemberList = groupApplyMemberService.findGroupApplyMemberById(group_apply_id);
+        if (groupApplyMemberList == null) {
+            response = setParamError();
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        groupConfirmMemberService.insertGroupConfirmMember(groupApplyMemberList, uid, gid);
+
+        //student 加入 group_id
+        groupConfirmMemberService.updateStudentGroupId(gid);
+
+        //group_apply 删除记录
+        groupApplyService.deleteGroupApplyById(group_apply_id);
+
+        //group_apply_member 删除记录
+        groupApplyMemberService.deleteGroupApplyMemberByGroupApplyId(group_apply_id);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }
