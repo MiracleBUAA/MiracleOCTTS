@@ -243,26 +243,25 @@ public class TeacherController extends BaseController {
 
 
     /**
-    * 教师更新作业
-    * */
+     * 教师更新作业
+     */
     @RequestMapping(value = "/homework_update", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> updateHomework (@RequestParam(value = "uid") String uid,
-                                                        @RequestParam(value = "homework_id") Integer homework_id,
-                                                        @RequestParam(value = "course_id") Integer course_id,
-                                                        @RequestParam(value = "homework_title") String homework_title,
-                                                        @RequestParam(value = "homework_start_time") String homework_start_time,
-                                                        @RequestParam(value = "homework_end_time") String homework_end_time,
-                                                        @RequestParam(value = "homework_score") Integer homework_score,
-                                                        @RequestParam(value = "homework_message") String homework_message,
-                                                        @RequestParam(value = "resubmit_limit") Integer resubmit_limit) {
+    public ResponseEntity<BaseResponse> updateHomework(@RequestParam(value = "uid") String uid,
+                                                       @RequestParam(value = "homework_id") Integer homework_id,
+                                                       @RequestParam(value = "course_id") Integer course_id,
+                                                       @RequestParam(value = "homework_title") String homework_title,
+                                                       @RequestParam(value = "homework_start_time") String homework_start_time,
+                                                       @RequestParam(value = "homework_end_time") String homework_end_time,
+                                                       @RequestParam(value = "homework_score") Integer homework_score,
+                                                       @RequestParam(value = "homework_message") String homework_message,
+                                                       @RequestParam(value = "resubmit_limit") Integer resubmit_limit) {
         BaseResponse response = new BaseResponse();
         HashMap<String, Object> data = new HashMap<>();
 
         Homework homework = homeworkService.findHomeworkById(homework_id);
         if (homework == null) {
             return ResponseEntity.badRequest().body(null);
-        }
-        else {
+        } else {
             homework.setUid(uid);
             homework_title = CodeConvert.unicode2String(homework_title);
             homework_message = CodeConvert.unicode2String(homework_message);
@@ -296,8 +295,8 @@ public class TeacherController extends BaseController {
     }
 
     @RequestMapping(value = "/homework_delete", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> deleteHomework (@RequestParam(value = "uid") String uid,
-                                                        @RequestParam(value = "homework_id") Integer homework_id) {
+    public ResponseEntity<BaseResponse> deleteHomework(@RequestParam(value = "uid") String uid,
+                                                       @RequestParam(value = "homework_id") Integer homework_id) {
         BaseResponse response = new BaseResponse();
         HashMap<String, Object> data = new HashMap<>();
         try {
@@ -494,24 +493,27 @@ public class TeacherController extends BaseController {
     @RequestMapping(value = "/announcement_list", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getAnnouncement(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
-        List<HashMap<String, Object>> announcement_list = new ArrayList<HashMap<String, Object>>();
+        HashMap<String, Object> data = new HashMap<String, Object>();
 
-        List<Announcement> announcement_result = announcementService.findAnnouncementByCourseId(course_id);
-        Iterator<Announcement> announcement_iter = announcement_result.iterator();
         try {
-            while (announcement_iter.hasNext()) {
-                HashMap<String, Object> announcement = announcementService.announcement2Json(announcement_iter.next());
-                announcement_list.add(announcement);
-            }
+            List<HashMap<String, Object>> announcement_list = announcementService.getAnnouncementList(course_id);
+            data.put("announcement_list", announcement_list);
         } catch (ParseException parseException) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        HashMap<String, Object> data = new HashMap<String, Object>();
-        data.put("announcement_list", announcement_list);
-
         response = setCorrectResponse(data);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/group_confirm_list", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getGroupConfirm(@RequestParam(value = "course_id") Integer course_id) {
+        BaseResponse response = new BaseResponse();
+        List<HashMap<String, Object>> group_confirm_list = new ArrayList<HashMap<String, Object>>();
+
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
 }
