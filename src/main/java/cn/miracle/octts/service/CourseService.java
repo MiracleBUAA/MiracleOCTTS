@@ -44,7 +44,7 @@ public class CourseService {
     }
 
     //导出教师课程信息
-    public HashMap<String, Object> teacherCourse2Json(Course course) throws ParseException {
+    public HashMap<String, Object> course2Json(Course course) throws ParseException {
 
         HashMap<String, Object> data = adminCourse2Json(course);
 
