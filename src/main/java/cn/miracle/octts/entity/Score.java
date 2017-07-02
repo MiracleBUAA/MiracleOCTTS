@@ -11,7 +11,7 @@ public class Score extends BaseEntity {
     private Integer homework_id;
     private Integer group_id;
     private String grader_id;
-    private Integer score;
+    private Double score;
     private String score_message;
 
     public Score() {
@@ -57,11 +57,11 @@ public class Score extends BaseEntity {
         this.grader_id = grader_id;
     }
 
-    public Integer getScore() {
+    public Double getScore() {
         return score;
     }
 
-    public void setScore(Integer score) {
+    public void setScore(Double score) {
         this.score = score;
     }
 
