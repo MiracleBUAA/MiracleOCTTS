@@ -56,6 +56,9 @@ public class TeacherController extends BaseController {
     @Autowired
     private GroupConfirmService groupConfirmService;
 
+    @Autowired
+    private ScoreSerivce scoreSerivce;
+
     /**
      * API7: 课程信息
      *
@@ -330,6 +333,7 @@ public class TeacherController extends BaseController {
     /**
      * API.18:教师——查看学生提交情况
      */
+    @RequestMapping(value = "/homework_group_upload", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getGroupHomeworkUpload(@RequestParam(value = "course_id") Integer course_id,
                                                                @RequestParam(value = "homework_id") Integer homework_id) {
         BaseResponse response = new BaseResponse();
@@ -339,24 +343,32 @@ public class TeacherController extends BaseController {
         if (homework == null) {
             return ResponseEntity.badRequest().body(null);
         } else {
-            // 写入homework信息部分
-            data.put("homework_id", homework.getHomework_id());
-            data.put("homework_name", homework.getHomework_title());
-            data.put("homework_score", homework.getHomework_score());
-            data.put("homework_message", homework.getHomework_message());
-            data.put("teacher_name", teacherService.findTeacherNameById(homework.getTeacher_id()));
-
             try {
+                // 写入homework信息部分
+                data.put("homework_id", homework.getHomework_id());
+                data.put("homework_name", homework.getHomework_title());
+                data.put("homework_score", homework.getHomework_score());
+                data.put("homework_message", homework.getHomework_message());
+                data.put("teacher_name", teacherService.findTeacherNameById(homework.getTeacher_id()));
                 data.put("homework_start_time", DateConvert.datetime2String(homework.getHomework_start_time()));
                 data.put("homework_end_time", DateConvert.datetime2String(homework.getHomework_end_time()));
             } catch (ParseException e) {
-                return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>(response, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
             }
-            // TODO：写入提交作业列表
+            // 写入提交作业列表
+            ArrayList<HomeworkUpload> homeworkUploads = new ArrayList<>();
+            homeworkUploads.addAll(homeworkUploadService.findHomeworkUploadByHomeworkId(homework_id));
+            try {
+                List<HashMap<String, Object>> homework_upload_list = homeworkUploadService.getHomeworkUploadList(homeworkUploads);
 
+                data.put("homework_upload_list", homework_upload_list);
+                response = setCorrectResponse(data);
 
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } catch (ParseException e) {
+                return new ResponseEntity<BaseResponse>(response, HttpStatus.BAD_GATEWAY);
+            }
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     /**
@@ -367,17 +379,49 @@ public class TeacherController extends BaseController {
                                                          @RequestParam(value = "course_id") Integer course_id,
                                                          @RequestParam(value = "homework_id") Integer homework_id,
                                                          @RequestParam(value = "group_id") Integer group_id,
-                                                         @RequestParam(value = "score") Double score,
+                                                         @RequestParam(value = "score") Integer score,
                                                          @RequestParam(value = "score_message") String score_message) {
         BaseResponse response = new BaseResponse();
         HashMap<String, Object> data = new HashMap<>();
 
-        // todo: 评分
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        try {
+            // 先查找平分是否存在
+            Score homework_score = scoreSerivce.findScoreByHomeworkIdAndGroupId(homework_id, group_id);
+            if (homework_score == null) {
+                // 分数不存在，添加评分
+                homework_score = new Score();
+                homework_score.setUid(uid);
+                homework_score.setCourse_id(course_id);
+                homework_score.setHomework_id(homework_id);
+                homework_score.setGroup_id(group_id);
+                homework_score.setScore(score);
+                homework_score.setGrader_id(uid);
+                homework_score.setScore_message(score_message);
+                scoreSerivce.insertScore(homework_score);
+            }
+            else {
+                // 分数存在，修改评分
+                homework_score.setUid(uid);
+                homework_score.setCourse_id(course_id);
+                homework_score.setHomework_id(homework_id);
+                homework_score.setGroup_id(group_id);
+                homework_score.setScore(score);
+                homework_score.setGrader_id(uid);
+                homework_score.setScore_message(score_message);
+                scoreSerivce.updateScore(homework_score);
+            }
+            data.put("desc", "OK");
+            response = setCorrectResponse(data);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<BaseResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
+    /**
+    * API.20: 教师——学生提交的作业下载
+    * */
     @RequestMapping(value = "/homework_group_download", method = RequestMethod.GET)
     public ResponseEntity<org.springframework.core.io.Resource> downloadGroupHomeworkUpload(
             @RequestParam(value = "homework_upload_id") Integer homework_upload_id) {
