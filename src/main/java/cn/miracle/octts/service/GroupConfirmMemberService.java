@@ -3,6 +3,7 @@ package cn.miracle.octts.service;
 
 import cn.miracle.octts.dao.GroupConfirmMemberDao;
 import cn.miracle.octts.dao.StudentDao;
+import cn.miracle.octts.entity.Score;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +36,9 @@ public class GroupConfirmMemberService {
         }
 
         return memberList;
+    }
+
+    public Integer findGroupIdByStudentId(String student_id) {
+        return groupConfirmMemberDao.findGroupIdByStudentId(student_id);
     }
 }

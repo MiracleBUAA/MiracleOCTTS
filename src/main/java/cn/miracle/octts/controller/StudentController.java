@@ -2,11 +2,9 @@ package cn.miracle.octts.controller;
 
 import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
-import cn.miracle.octts.entity.Announcement;
-import cn.miracle.octts.entity.Course;
-import cn.miracle.octts.entity.HomeworkUpload;
-import cn.miracle.octts.entity.Resource;
+import cn.miracle.octts.entity.*;
 import cn.miracle.octts.service.*;
+import cn.miracle.octts.util.DateConvert;
 import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -51,6 +49,12 @@ public class StudentController extends BaseController {
 
     @Autowired
     private HomeworkUploadService homeworkUploadService;
+
+    @Autowired
+    private TeacherService teacherService;
+
+    @Autowired
+    private GroupConfirmMemberService groupConfirmMemberService;
 
     /**
      * API34: 查看课程信息
@@ -196,7 +200,37 @@ public class StudentController extends BaseController {
 
         // TODO: 生成学生作业提交信息
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        Homework homework = homeworkService.findHomeworkById(homework_id);
+        if (homework == null) {
+            return ResponseEntity.badRequest().body(null);
+        } else {
+            try {
+                // 写入homework信息部分
+                data.put("homework_id", homework.getHomework_id());
+                data.put("homework_name", homework.getHomework_title());
+                data.put("homework_score", homework.getHomework_score());
+                data.put("homework_message", homework.getHomework_message());
+                data.put("teacher_name", teacherService.findTeacherNameById(homework.getTeacher_id()));
+                data.put("homework_start_time", DateConvert.datetime2String(homework.getHomework_start_time()));
+                data.put("homework_end_time", DateConvert.datetime2String(homework.getHomework_end_time()));
+            } catch (ParseException e) {
+                return new ResponseEntity<>(response, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+            }
+            // 写入提交作业列表
+            ArrayList<HomeworkUpload> homeworkUploads = new ArrayList<>();
+            Integer group_id = groupConfirmMemberService.findGroupIdByStudentId(uid);
+            homeworkUploads.addAll(homeworkUploadService.findHomeworkUploadByHomeworkIdAndGroupId(homework_id, group_id));
+            try {
+                List<HashMap<String, Object>> homework_upload_list = homeworkUploadService.getHomeworkUploadList(homeworkUploads);
+
+                data.put("homework_upload_list", homework_upload_list);
+                response = setCorrectResponse(data);
+
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } catch (ParseException e) {
+                return new ResponseEntity<BaseResponse>(response, HttpStatus.BAD_GATEWAY);
+            }
+        }
     }
 
     /**

@@ -2,10 +2,7 @@ package cn.miracle.octts.dao;
 
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.HomeworkUpload;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -40,5 +37,6 @@ public interface HomeworkUploadDao extends BaseMapper<HomeworkUpload> {
             "FROM homework_upload " +
             "WHERE homework_id = #{homework_id} and group_id=#{group_id}")
     @ResultMap("cn.miracle.octts.dao.HomeworkUploadDao.HomeworkUploadDetail")
-    List<HomeworkUpload> findHomeworkUploadByHomeworkIdAndGroupId(Integer homework_id, Integer group_id);
+    List<HomeworkUpload> findHomeworkUploadByHomeworkIdAndGroupId(@Param(value = "homework_id") Integer homework_id,
+                                                                  @Param(value = "group_id") Integer group_id);
 }

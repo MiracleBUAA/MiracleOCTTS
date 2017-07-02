@@ -8,6 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Created by Tony on 2017/7/2.
  */
@@ -24,4 +28,9 @@ public class GroupConfirmMemberServiceTest {
        groupConfirmMemberService.findGroupConfirmMemberListByGroupId(1);
     }
 
+    @Test
+    public void testFindGidBySid() {
+        Integer gid = groupConfirmMemberService.findGroupIdByStudentId("14215555");
+        assertEquals(gid, new Integer(1));
+    }
 }
