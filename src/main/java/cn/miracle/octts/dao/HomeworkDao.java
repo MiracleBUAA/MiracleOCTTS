@@ -2,10 +2,7 @@ package cn.miracle.octts.dao;
 
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.Homework;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -32,4 +29,9 @@ public interface HomeworkDao extends BaseMapper<Homework> {
 
     @Select("SELECT max(homework_id) FROM homework")
     Integer findMaxHomeworkId();
+
+    @Update("UPDATE homework " +
+            "SET gmt_modified=#{updatetime}, uid=#{uid}, homework_title=#{homework_title}, homework_message=#{homework_message}, homework_score=#{homework_score}, homework_start_time=#{homework_start_time}, homework_end_time=#{homework_end_time}, resubmit_limit=#{resubmit_limit} " +
+            "WHERE homework_id=#{homework_id}")
+    void updateHomework(Homework homework);
 }
