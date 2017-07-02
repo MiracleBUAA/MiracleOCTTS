@@ -106,7 +106,7 @@ public class TeacherController extends BaseController {
                 course.setTeam_limit_information(CodeConvert.unicode2String(team_limit_information));
             }
             if (teacher_information != null) {
-                course.setTeacher_information(teacher_information);
+                course.setTeacher_information(CodeConvert.unicode2String(teacher_information));
             }
             if (course_information != null) {
                 course.setCourse_information(CodeConvert.unicode2String(course_information));
