@@ -2,6 +2,7 @@ package cn.miracle.octts.service;
 
 import cn.miracle.octts.dao.GroupConfirmDao;
 import cn.miracle.octts.dao.HomeworkUploadDao;
+import cn.miracle.octts.dao.ScoreDao;
 import cn.miracle.octts.dao.StudentDao;
 import cn.miracle.octts.entity.GroupConfirm;
 import cn.miracle.octts.entity.HomeworkUpload;
@@ -31,6 +32,9 @@ public class HomeworkUploadService {
 
     @Autowired
     private StudentDao studentDao;
+
+    @Autowired
+    private ScoreDao scoreDao;
 
     public void InsertHomeworkUpload(HomeworkUpload homeworkUpload) {
         Date currentDate = new Date(System.currentTimeMillis());
@@ -65,12 +69,14 @@ public class HomeworkUploadService {
             homework_upload_map.put("group_name", groupConfirm.getGroup_name());
             homework_upload_map.put("group_owner", studentDao.findStudentNameById(groupConfirm.getGroup_owner_id()));
             // 获取团队得分
-//            Score score =
-
+            Integer homework_id = homework_upload.getHomework_id();
+            Integer group_id = homework_upload.getGroup_id();
+            Score score = scoreDao.findScoreByHomeworkIdAndGroupId(homework_id, group_id);
+            homework_upload_map.put("score", score.getScore());
+            homework_upload_map.put("score_message", score.getScore_message());
 
             homework_upload_list.add(homework_upload_map);
         }
-
         return homework_upload_list;
     }
 }
