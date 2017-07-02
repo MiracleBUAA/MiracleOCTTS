@@ -19,11 +19,11 @@ public class DateConvert {
         return datetimeFormat.parse(date);
     }
 
-    public static String Datetime2String (Date datetime) throws ParseException {
+    public static String datetime2String (Date datetime) throws ParseException {
         return datetimeFormat.format(datetime);
     }
 
-    public static String Date2String (Date date) throws ParseException {
+    public static String date2String (Date date) throws ParseException {
         return dateFormat.format(date);
     }
 }
