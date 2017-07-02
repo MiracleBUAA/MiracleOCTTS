@@ -18,4 +18,12 @@ public class DateConvert {
     public static Date string2Datetime(String date) throws ParseException {
         return datetimeFormat.parse(date);
     }
+
+    public static String Datetime2String (Date datetime) throws ParseException {
+        return datetimeFormat.format(datetime);
+    }
+
+    public static String Date2String (Date date) throws ParseException {
+        return dateFormat.format(date);
+    }
 }
