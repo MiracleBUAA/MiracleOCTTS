@@ -294,7 +294,7 @@ public class TeacherController extends BaseController {
             response = setFileUploadError();
         } else {  // 文件存在
             try {
-                String resource_url = FileUtils.saveSingleUploadFile(resource_file);
+                String resource_url = FileUtils.saveSingleUploadFile(resource_file, FileUtils.RESOURCE_FOLDER);
 
                 Integer resource_id = resourceService.findMaxResource() + 1;
 

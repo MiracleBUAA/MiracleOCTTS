@@ -14,25 +14,31 @@ import java.util.List;
  */
 public class FileUtils {
 
-    public static final String UPLOAD_SAVE_FOLDER = "file\\";
+    private static final String FILE_SEPARATOR =  System.getProperty("file.separator");
+    private static final String UPLOAD_SAVE_FOLDER = "file";
+
+    public static final String RESOURCE_FOLDER = "resource";
+
+    public static final String HOMEWORK_UPLOAD_FOLDER = "homework_upload";
+
+    public static final String STUDENT_LIST_FOLDER = "student_list";
 
     //public static final String DOWNLOAD_FILES_FOLDER = "C:\\Users\\刘柘林\\Desktop\\download\\";
 
-    public static String saveSingleUploadFile(MultipartFile file) throws IOException {
+    public static String saveSingleUploadFile(MultipartFile file, String file_type) throws IOException {
         byte[] filebytes = file.getBytes();
-        String file_url = UPLOAD_SAVE_FOLDER + file.getOriginalFilename();
+        String file_url = UPLOAD_SAVE_FOLDER + FILE_SEPARATOR + file_type + FILE_SEPARATOR +file.getOriginalFilename();
+//        String file_path = UPLOAD_SAVE_FOLDER + file_url;
         Path path = Paths.get(file_url);
         Files.write(path, filebytes);
         return file_url;
     }
 
-    public static void saveUploadFiles(List<MultipartFile> files) throws IOException {
+    public static void saveUploadFiles(List<MultipartFile> files, String file_type) throws IOException {
         for (MultipartFile file : files) {
             if (file.isEmpty())
                 continue;
-            byte[] fileBytes = file.getBytes();
-            Path path = Paths.get(UPLOAD_SAVE_FOLDER + file.getOriginalFilename());
-            Files.write(path, fileBytes);
+            String file_path = saveSingleUploadFile(file, file_type);
         }
     }
 

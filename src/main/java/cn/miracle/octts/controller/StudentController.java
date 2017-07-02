@@ -128,7 +128,7 @@ public class StudentController extends BaseController {
             // 完成文件上传
             try {
                 // 将文件写入服务器
-                String filePath = FileUtils.saveSingleUploadFile(uploadFile);
+                String filePath = FileUtils.saveSingleUploadFile(uploadFile, FileUtils.HOMEWORK_UPLOAD_FOLDER);
                 // TODO: WRITE DATABASE
                 //Uid included
                 HomeworkUpload homeworkUpload = new HomeworkUpload();

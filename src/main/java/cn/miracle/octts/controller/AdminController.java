@@ -251,7 +251,7 @@ public class AdminController extends BaseController {
             response = setFileUploadError();
         } else {
             try {
-                String student_list_path = FileUtils.saveSingleUploadFile(student_list); // 上传文件
+                String student_list_path = FileUtils.saveSingleUploadFile(student_list, FileUtils.STUDENT_LIST_FOLDER); // 上传文件
                 if (uid == null)
                     uid = "T000";
                 Integer studentcount = teacherService.importStudentList(student_list_path, uid); // 写入数据库
