@@ -295,6 +295,9 @@ public class TeacherController extends BaseController {
         }
     }
 
+    /**
+    * 教师——删除作业
+     * */
     @RequestMapping(value = "/homework_delete", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> deleteHomework (@RequestParam(value = "uid") String uid,
                                                         @RequestParam(value = "homework_id") Integer homework_id) {
@@ -308,6 +311,37 @@ public class TeacherController extends BaseController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
         }
+    }
+
+
+    public ResponseEntity<BaseResponse> getGroupHomeworkUpload (@RequestParam(value = "course_id") Integer course_id,
+                                                                @RequestParam(value = "homework_id") Integer homework_id) {
+        BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<>();
+
+        Homework homework = homeworkService.findHomeworkById(homework_id);
+        if (homework == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        else {
+            // 写入homework信息部分
+            data.put("homework_id", homework.getHomework_id());
+            data.put("homework_name", homework.getHomework_title());
+            data.put("homework_score", homework.getHomework_score());
+            data.put("homework_message", homework.getHomework_message());
+            data.put("teacher_name", teacherService.findTeacherNameById(homework.getTeacher_id()));
+
+            try {
+                data.put("homework_start_time", DateConvert.datetime2String(homework.getHomework_start_time()));
+                data.put("homework_end_time", DateConvert.datetime2String(homework.getHomework_end_time()));
+            } catch (ParseException e) {
+                return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            // 写入提交作业列表
+
+
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     /**
