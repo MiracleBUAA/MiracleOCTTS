@@ -64,8 +64,12 @@ public class TeacherController extends BaseController {
             response = setParamError();
             return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
         } else {
-            HashMap<String, Object> data = courseService.teacherCourse2Json(course);
-            response = setCorrectResponse(data);
+            try {
+                HashMap<String, Object> data = courseService.teacherCourse2Json(course);
+                response = setCorrectResponse(data);
+            } catch (ParseException parseExceptionse) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -128,28 +132,6 @@ public class TeacherController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-//    @RequestMapping(value = "/student_list", method = RequestMethod.POST)
-//    public ResponseEntity<BaseResponse> student_list(@RequestParam(value = "uid") String uid,
-//                                                     @RequestParam(value = "file") MultipartFile student_list) {
-//        BaseResponse response = new BaseResponse();
-//        if (student_list.isEmpty()) {
-//            response = setFileUploadError();
-//        } else {
-//            try {
-//                String student_list_path = FileUtils.saveSingleUploadFile(student_list); // 上传文件
-//                if (uid == null)
-//                    uid = "T001";
-//                Integer studentcount = teacherService.importStudentList(student_list_path, uid); // 写入数据库
-//
-//                HashMap<String, Object> data = new HashMap<>();
-//                data.put("desc", "success");
-//                response = setCorrectResponse(data);
-//            } catch (IOException e) {
-//                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//            }
-//        }
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
 
     @RequestMapping(value = "/homework", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getHomework(@RequestParam(value = "course_id", required = true) Integer course_id) {
@@ -157,13 +139,6 @@ public class TeacherController extends BaseController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-//    @RequestMapping(value = "/homework", method = RequestMethod.POST)
-//    public ResponseEntity<BaseResponse> setHomework(@RequestParam(value = "course_id", required = true) Integer course_id) {
-//        BaseResponse response = new BaseResponse();
-//
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
 
     /**
      * 教师创建新作业
@@ -476,7 +451,7 @@ public class TeacherController extends BaseController {
 
         Announcement announcement = announcementService.findAnnouncementById(announcement_id);
         if (announcement == null || announcement.getCourse_id() != course_id) {
-            setParamError();
+            response = setParamError();
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
 
@@ -487,6 +462,29 @@ public class TeacherController extends BaseController {
         announcementService.updateAnnouncement(announcement, uid);
         setCorrectInsert();
 
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/announcement_list", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getAnnouncement(@RequestParam(value = "course_id") Integer course_id) {
+        BaseResponse response = new BaseResponse();
+        List<HashMap<String, Object>> announcement_list = new ArrayList<HashMap<String, Object>>();
+
+        List<Announcement> announcement_result = announcementService.findAnnouncementByCourseId(course_id);
+        Iterator<Announcement> announcement_iter = announcement_result.iterator();
+        try {
+            while (announcement_iter.hasNext()) {
+                HashMap<String, Object> announcement = announcementService.announcement2Json(announcement_iter.next());
+                announcement_list.add(announcement);
+            }
+        } catch (ParseException parseException) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put("announcement_list", announcement_list);
+
+        response = setCorrectResponse(data);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

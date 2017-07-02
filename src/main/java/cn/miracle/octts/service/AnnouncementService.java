@@ -2,16 +2,25 @@ package cn.miracle.octts.service;
 
 import cn.miracle.octts.dao.AnnouncementDao;
 import cn.miracle.octts.entity.Announcement;
+import cn.miracle.octts.util.DateConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
 
 /**
  * Created by Tony on 2017/7/1.
  */
 @Service
 public class AnnouncementService {
+
+    @Autowired
+    private TeacherService teacherService;
+
     @Autowired
     private AnnouncementDao announcementDao;
 
@@ -34,10 +43,26 @@ public class AnnouncementService {
         return announcementDao.insertAnnouncement(announcement);
     }
 
-    public Integer updateAnnouncement(Announcement announcement, String uid){
+    public Integer updateAnnouncement(Announcement announcement, String uid) {
         Date currentTime = new Date(System.currentTimeMillis());
         announcement.setUpdatetime(currentTime);
         announcement.setUid(uid);
         return announcementDao.updateAnnouncement(announcement);
+    }
+
+    public List<Announcement> findAnnouncementByCourseId(Integer course_id) {
+        return announcementDao.findAnnouncementByCourseId(course_id);
+    }
+
+    public HashMap<String, Object> announcement2Json(Announcement announcement) throws ParseException {
+        HashMap<String, Object> data = new HashMap<>();
+
+        data.put("announcement_id", announcement.getAnnouncement_id());
+        data.put("teacher_name", teacherService.findTeacherNameById(announcement.getTeacher_id()));
+        data.put("announcement_title", announcement.getAnnouncement_title());
+        data.put("announcement_message", announcement.getAnnouncement_message());
+        data.put("announcement_update_time", DateConvert.datetime2String(announcement.getUpdatetime()));
+
+        return data;
     }
 }

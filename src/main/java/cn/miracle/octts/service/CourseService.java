@@ -3,10 +3,11 @@ package cn.miracle.octts.service;
 
 import cn.miracle.octts.dao.CourseDao;
 import cn.miracle.octts.entity.Course;
+import cn.miracle.octts.util.DateConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,9 +26,7 @@ public class CourseService {
     }
 
     //导出教务课程信息
-    public HashMap<String, Object> adminCourse2Json(Course course) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String course_start_date = sdf.format(course.getCourse_start_time());
+    public HashMap<String, Object> adminCourse2Json(Course course) throws ParseException {
 
         HashMap<String, Object> data = new HashMap<>();
 
@@ -35,7 +34,7 @@ public class CourseService {
         data.put("course_year", course.getCourse_year());
         data.put("course_status", course.getCourse_status());
         data.put("course_name", course.getCourse_name());
-        data.put("course_start_time", course_start_date);
+        data.put("course_start_time", DateConvert.date2String(course.getCourse_start_time()));
         data.put("course_hour", course.getCourse_hour());
         data.put("course_location", course.getCourse_hour());
         data.put("course_credit", course.getCourse_credit());
@@ -45,8 +44,7 @@ public class CourseService {
     }
 
     //导出教师课程信息
-    public HashMap<String, Object> teacherCourse2Json(Course course) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    public HashMap<String, Object> teacherCourse2Json(Course course) throws ParseException {
 
         HashMap<String, Object> data = adminCourse2Json(course);
 
