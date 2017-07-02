@@ -5,6 +5,8 @@
 <mapper namespace="cn.miracle.octts.dao.ResourceDao">
     <resultMap id="ResourceDetail" type="Resource">
         <id property="id" column="id"/>
+        <result property="createtime" column="gmt_create"/>
+        <result property="updatetime" column="gmt_modified"/>
         <result property="resource_id" column="resource_id"/>
         <result property="course_id" column="course_id"/>
         <result property="teacher_id" column="teacher_id"/>
