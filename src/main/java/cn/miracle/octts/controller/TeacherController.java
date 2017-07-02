@@ -513,9 +513,19 @@ public class TeacherController extends BaseController {
     @RequestMapping(value = "/group_confirm_list", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getGroupConfirm(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
-        List<HashMap<String, Object>> group_confirm_list = new ArrayList<HashMap<String, Object>>();
+        HashMap<String, Object> data = new HashMap<String, Object>();
 
 
+        /*TODO
+        try {
+            List<HashMap<String, Object>> group_confirm_list = ();
+            data.put();
+
+        } catch (ParseException parseException) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }*/
+
+        response = setCorrectResponse(data);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
