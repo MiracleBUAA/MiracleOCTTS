@@ -83,6 +83,21 @@ public class TeacherControllerTest {
     }
 
     @Test
+    public void testDeleteHomework () {
+        try {
+            this.mockMvc.perform(
+                    post("/teacher/homework_delete")
+                            .param("uid", "T001")
+                            .param("homework_id", "4")
+            )
+                    .andDo(print())
+                    .andExpect(status().isOk());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void TestgetResource() {
         try {
             this.mockMvc.perform(get("/teacher/resource")

@@ -63,4 +63,8 @@ public class HomeworkService {
         homework.setUpdatetime(new Date());
         homeworkDao.updateHomework(homework);
     }
+
+    public void deleteHomework (Integer homework_id) {
+        homeworkDao.deleteHomework(homework_id);
+    }
 }

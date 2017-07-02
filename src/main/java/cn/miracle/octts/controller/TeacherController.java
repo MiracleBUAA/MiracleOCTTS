@@ -295,7 +295,20 @@ public class TeacherController extends BaseController {
         }
     }
 
-
+    @RequestMapping(value = "/homework_delete", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> deleteHomework (@RequestParam(value = "uid") String uid,
+                                                        @RequestParam(value = "homework_id") Integer homework_id) {
+        BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<>();
+        try {
+            homeworkService.deleteHomework(homework_id);
+            data.put("desc", "OK");
+            response = setCorrectResponse(data);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 
     /**
      * 教师获取课程资源列表
