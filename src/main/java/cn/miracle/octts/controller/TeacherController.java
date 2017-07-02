@@ -7,6 +7,7 @@ import cn.miracle.octts.service.*;
 import cn.miracle.octts.util.CodeConvert;
 import cn.miracle.octts.util.DateConvert;
 import cn.miracle.octts.util.FileUtils;
+import org.omg.PortableServer.POA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -49,6 +50,9 @@ public class TeacherController extends BaseController {
 
     @Autowired
     private HomeworkService homeworkService;
+
+    @Autowired
+    private HomeworkUploadService homeworkUploadService;
 
     /**
      * API7: 课程信息
@@ -141,7 +145,7 @@ public class TeacherController extends BaseController {
     }
 
     /**
-     * 教师创建新作业
+     * API.13:教师创建新作业
      */
     @RequestMapping(value = "/new_homework", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> newHomework(@RequestParam(value = "uid") String uid,
@@ -194,7 +198,7 @@ public class TeacherController extends BaseController {
     }
 
     /**
-     * 教师——查看学生作业列表
+     * API.14:教师——查看作业列表
      **/
     @RequestMapping(value = "homework_list", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getHomeworkList(@RequestParam(value = "course_id") Integer course_id) {
@@ -215,7 +219,7 @@ public class TeacherController extends BaseController {
     }
 
     /**
-     * 教师——查看学生作业
+     * API.15:教师——查看学生作业
      */
     @RequestMapping(value = "homework_information", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getHomeworkinformation(@RequestParam(value = "course_id") Integer course_id,
@@ -247,7 +251,7 @@ public class TeacherController extends BaseController {
 
 
     /**
-     * 教师更新作业
+     * API.16:教师更新作业
      */
     @RequestMapping(value = "/homework_update", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> updateHomework(@RequestParam(value = "uid") String uid,
@@ -299,7 +303,7 @@ public class TeacherController extends BaseController {
     }
 
     /**
-    * 教师——删除作业
+    * API.17:教师——删除作业
      * */
     @RequestMapping(value = "/homework_delete", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> deleteHomework(@RequestParam(value = "uid") String uid,
@@ -316,7 +320,9 @@ public class TeacherController extends BaseController {
         }
     }
 
-
+    /**
+    * API.18:教师——查看学生提交情况
+    * */
     public ResponseEntity<BaseResponse> getGroupHomeworkUpload (@RequestParam(value = "course_id") Integer course_id,
                                                                 @RequestParam(value = "homework_id") Integer homework_id) {
         BaseResponse response = new BaseResponse();
@@ -340,7 +346,7 @@ public class TeacherController extends BaseController {
             } catch (ParseException e) {
                 return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            // 写入提交作业列表
+            // TODO：写入提交作业列表
 
 
         }
@@ -348,7 +354,58 @@ public class TeacherController extends BaseController {
     }
 
     /**
-     * 教师获取课程资源列表
+    *API.19 教师——作业评分
+    * */
+    @RequestMapping(value = "/homework_set_score", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> setHomeworkScore (@RequestParam(value = "uid") String uid,
+                                                          @RequestParam(value = "course_id") Integer course_id,
+                                                          @RequestParam(value = "homework_id") Integer homework_id,
+                                                          @RequestParam(value = "group_id") Integer group_id,
+                                                          @RequestParam(value = "score") Double score,
+                                                          @RequestParam(value = "score_message") String score_message) {
+        BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<>();
+
+        // todo: 评分
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/homework_group_download", method = RequestMethod.GET)
+    public ResponseEntity<org.springframework.core.io.Resource> downloadGroupHomeworkUpload (
+            @RequestParam(value = "homework_upload_id") Integer homework_upload_id) {
+            HomeworkUpload homework_upload = homeworkUploadService.findHomeworkUploadById(homework_upload_id);
+            if(homework_upload == null) {
+                return ResponseEntity.badRequest().body(null);
+            }
+            else {
+                String homework_url = homework_upload.getHomework_url();
+                String file_name = homework_upload.getFile_name();
+
+                try {
+                    ByteArrayOutputStream baos = FileUtils.getSingleDownloadFile(homework_url);
+
+                    org.springframework.core.io.Resource resource = new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));
+
+                    HttpHeaders headers = getFileDownloadHeaders(file_name);
+
+                    return ResponseEntity.ok()
+                            .headers(headers)
+                            .contentType(MediaType.parseMediaType("application/x-msdownload"))
+                            .body(resource);
+
+
+                } catch (IOException e) {
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+
+    }
+
+
+    /**
+     * API.9:教师获取课程资源列表
      *
      * @param course_id 课程id
      */
@@ -372,7 +429,7 @@ public class TeacherController extends BaseController {
     }
 
     /**
-     * 教师上传课程资源
+     * API10:教师上传课程资源
      *
      * @param course_id 课程id
      */
@@ -416,7 +473,7 @@ public class TeacherController extends BaseController {
     }
 
     /**
-     * 教师下载资源
+     * API11:教师下载资源
      */
     @RequestMapping(value = "/resource_download", method = RequestMethod.GET)
     public ResponseEntity<org.springframework.core.io.Resource> downloadResource(
@@ -435,16 +492,19 @@ public class TeacherController extends BaseController {
 
                 HttpHeaders headers = getFileDownloadHeaders(resource_title);
 
-                return ResponseEntity.ok().headers(headers).contentType(MediaType.parseMediaType("application/x-msdownload")).body(resource);
+                return ResponseEntity.ok()
+                        .headers(headers)
+                        .contentType(MediaType.parseMediaType("application/x-msdownload"))
+                        .body(resource);
 
             } catch (IOException e) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
     }
 
     /**
-     * 教师删除资源
+     * API12:教师删除资源
      */
     @RequestMapping(value = "/resource_delete", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> deleteResource(@RequestParam(value = "resource_id") Integer resource_id) {

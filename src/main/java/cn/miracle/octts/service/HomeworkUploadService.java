@@ -27,6 +27,10 @@ public class HomeworkUploadService {
         homeworkUploadDao.InsertHomeworkUpload(homeworkUpload);
     }
 
+    public HomeworkUpload findHomeworkUploadById(Integer homework_upload_id) {
+        return homeworkUploadDao.findHomeworkUploadById(homework_upload_id);
+    }
+
     public List<HashMap<String, Object>> getHomeworkUploadList(Integer homework_id) {
         List<HashMap<String, Object>> homework_upload_list = new ArrayList<HashMap<String, Object>>();
 
@@ -37,7 +41,11 @@ public class HomeworkUploadService {
             HashMap<String, Object> homework_upload_map = new HashMap<>();
             homework_upload_map.put("homework_upload_id", homework_upload.getHomework_upload_id());
             homework_upload_map.put("group_id", homework_upload.getGroup_id());
+
+            // TODO: 获取团队名
             homework_upload_map.put("group_name", "23333");
+
+
             homework_upload_list.add(homework_upload_map);
         }
 

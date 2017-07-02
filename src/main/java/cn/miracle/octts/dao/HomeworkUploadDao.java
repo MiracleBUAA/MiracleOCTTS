@@ -23,6 +23,13 @@ public interface HomeworkUploadDao extends BaseMapper<HomeworkUpload> {
     void InsertHomeworkUpload(HomeworkUpload homeworkUpload);
 
 
+    @Select("SELECT gmt_create, gmt_modified, uid, homework_upload_id, course_id, homework_id, group_id, file_name, homework_url\n" +
+            "FROM homework_upload " +
+            "WHERE homework_upload_id = #{homework_upload_id}")
+    @ResultMap("cn.miracle.octts.dao.HomeworkUploadDao.HomeworkUploadDetail")
+    HomeworkUpload findHomeworkUploadById(Integer homework_upload_id);
+
+
     @Select("SELECT gmt_create, gmt_modified, uid, homework_upload_id, course_id, homework_id, group_id, file_name, homework_url " +
             "FROM homework_upload " +
             "WHERE homework_id = #{homework_id}")
