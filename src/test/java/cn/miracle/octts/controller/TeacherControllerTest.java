@@ -83,7 +83,7 @@ public class TeacherControllerTest {
     }
 
     @Test
-    public void testDeleteHomework () {
+    public void testDeleteHomework() {
         try {
             this.mockMvc.perform(
                     post("/teacher/homework_delete")
@@ -149,5 +149,18 @@ public class TeacherControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void testGetGroupConfirm() {
+        try {
+            this.mockMvc.perform(get("/teacher/group_confirm_list")
+                    .param("course_id", "1"))
+                    .andDo(print())
+                    .andExpect(status().isOk());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 

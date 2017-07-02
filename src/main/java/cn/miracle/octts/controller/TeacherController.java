@@ -619,9 +619,10 @@ public class TeacherController extends BaseController {
         HashMap<String, Object> data = new HashMap<String, Object>();
 
         List<HashMap<String, Object>> group_confirm_list = groupConfirmService.getGroupConfirmList(course_id);
-        data.put("group_confirm_list", group_confirm_list);
 
+        data.put("group_confirm_list", group_confirm_list);
         response = setCorrectResponse(data);
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
