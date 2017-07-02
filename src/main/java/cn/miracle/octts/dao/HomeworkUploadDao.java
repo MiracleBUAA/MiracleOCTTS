@@ -35,4 +35,10 @@ public interface HomeworkUploadDao extends BaseMapper<HomeworkUpload> {
             "WHERE homework_id = #{homework_id}")
     @ResultMap("cn.miracle.octts.dao.HomeworkUploadDao.HomeworkUploadDetail")
     List<HomeworkUpload> findHomeworkUploadByHomeworkId(Integer homework_id);
+
+    @Select("SELECT gmt_create, gmt_modified, uid, homework_upload_id, course_id, homework_id, group_id, file_name, homework_url " +
+            "FROM homework_upload " +
+            "WHERE homework_id = #{homework_id} and group_id=#{group_id}")
+    @ResultMap("cn.miracle.octts.dao.HomeworkUploadDao.HomeworkUploadDetail")
+    List<HomeworkUpload> findHomeworkUploadByHomeworkIdAndGroupId(Integer homework_id, Integer group_id);
 }
