@@ -2,6 +2,7 @@ package cn.miracle.octts.service;
 
 import cn.miracle.octts.dao.StudentDao;
 import cn.miracle.octts.dao.TeacherDao;
+import cn.miracle.octts.entity.Announcement;
 import cn.miracle.octts.entity.Student;
 import cn.miracle.octts.entity.Teacher;
 import jxl.Cell;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by hf on 2017/6/27.
@@ -74,4 +76,5 @@ public class TeacherService {
     public String findTeacherNameById(String teacher_id) {
         return teacherDao.findTeacherNameById(teacher_id);
     }
+
 }

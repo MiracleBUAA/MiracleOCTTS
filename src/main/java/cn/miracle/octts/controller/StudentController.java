@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.HashMap;
 
 
@@ -53,8 +54,13 @@ public class StudentController extends BaseController {
         } else {
             Course course = courseService.findCourseById(course_id);
             if (course != null) {
-                HashMap<String, Object> data = courseService.teacherCourse2Json(course);
-                response = setCorrectResponse(data);
+                try {
+                    HashMap<String, Object> data = courseService.teacherCourse2Json(course);
+                    response = setCorrectResponse(data);
+                } catch (ParseException parseException) {
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+
             }
         }
         return new ResponseEntity<>(response, HttpStatus.OK);

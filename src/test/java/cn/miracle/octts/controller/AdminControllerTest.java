@@ -83,7 +83,7 @@ public class AdminControllerTest {
     public void TestUploadStudentList() {
         try {
             byte[] filebytes;
-            FileInputStream fs = new FileInputStream("/Users/hf/tmp/test/student_list.xls");
+            FileInputStream fs = new FileInputStream("C:\\Users\\Tony\\Documents\\workspace\\MiracleOCTTS\\student_list.xls");
             BufferedInputStream bufferedInputStream = new BufferedInputStream(fs);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             int c = bufferedInputStream.read();

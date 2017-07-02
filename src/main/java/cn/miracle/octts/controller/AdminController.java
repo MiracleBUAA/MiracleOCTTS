@@ -1,7 +1,6 @@
 package cn.miracle.octts.controller;
 
 import cn.miracle.octts.common.base.BaseController;
-import cn.miracle.octts.common.base.BaseEntity;
 import cn.miracle.octts.common.base.BaseResponse;
 import cn.miracle.octts.entity.Course;
 import cn.miracle.octts.entity.Student;
@@ -9,8 +8,8 @@ import cn.miracle.octts.service.CourseService;
 import cn.miracle.octts.service.StudentService;
 import cn.miracle.octts.service.TeacherService;
 import cn.miracle.octts.util.CodeConvert;
-import cn.miracle.octts.util.FileUtils;
 import cn.miracle.octts.util.DateConvert;
+import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -85,7 +84,7 @@ public class AdminController extends BaseController {
 
             courseService.insertCourse(course, uid);
             response = setCorrectInsert();
-            HashMap<String,Object> data = new HashMap<String,Object>();
+            HashMap<String, Object> data = new HashMap<String, Object>();
             data.put("course_id", course.getCourse_id());
             response.setData(data);
 
@@ -198,9 +197,16 @@ public class AdminController extends BaseController {
 
         List<Course> course_result = courseService.findAllCourse();
         Iterator<Course> course_iter = course_result.iterator();
-        while (course_iter.hasNext()) {
-            HashMap<String, Object> course = courseService.adminCourse2Json(course_iter.next());
-            course_list.add(course);
+        try {
+            while (course_iter.hasNext()) {
+
+                HashMap<String, Object> course = courseService.adminCourse2Json(course_iter.next());
+                course_list.add(course);
+
+
+            }
+        } catch (ParseException parseException) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         HashMap<String, Object> data = new HashMap<String, Object>();
@@ -243,9 +249,9 @@ public class AdminController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/student_list", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> uploadStudentList (@RequestParam(value = "uid", required = false) String uid,
-                                                         @RequestParam(value = "course_id") Integer course_id,
-                                                         @RequestParam(value = "file") MultipartFile student_list) {
+    public ResponseEntity<BaseResponse> uploadStudentList(@RequestParam(value = "uid", required = false) String uid,
+                                                          @RequestParam(value = "course_id") Integer course_id,
+                                                          @RequestParam(value = "file") MultipartFile student_list) {
         BaseResponse response = new BaseResponse();
         if (student_list.isEmpty()) {
             response = setFileUploadError();
