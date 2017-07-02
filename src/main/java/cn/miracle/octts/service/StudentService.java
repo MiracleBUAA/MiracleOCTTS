@@ -1,6 +1,8 @@
 package cn.miracle.octts.service;
 
 import cn.miracle.octts.dao.StudentDao;
+import cn.miracle.octts.dao.GroupConfirmMemberDao;
+import cn.miracle.octts.entity.GroupConfirmMember;
 import cn.miracle.octts.entity.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,9 @@ public class StudentService {
 
     @Autowired
     private StudentDao studentDao;
+
+    @Autowired
+    private GroupConfirmMemberDao groupConfirmMemberDao;
 
     public List<Student> findAllStudent() {
         return studentDao.findAllStudent();
