@@ -761,4 +761,35 @@ public class TeacherController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * API27: 拒绝学生团队
+     *
+     * @param uid
+     * @param course_id
+     * @param group_apply_id
+     * @return
+     */
+    @RequestMapping(value = "/group_reject", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> rejectGroupApply(@RequestParam(value = "uid") String uid,
+                                                         @RequestParam(value = "course_id") Integer course_id,
+                                                         @RequestParam(value = "group_apply_id") Integer group_apply_id) {
+        BaseResponse response = new BaseResponse();
+
+        //判读group_apply_id合法性
+        GroupApply groupApply = groupApplyService.findGroupApplyById(group_apply_id);
+        if (groupApply == null || groupApply.getCourse_id() != course_id) {
+            response = setParamError();
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        //group_apply 删除记录
+        groupApplyService.deleteGroupApplyById(group_apply_id);
+
+        //group_apply_member 删除记录
+        groupApplyMemberService.deleteGroupApplyMemberByGroupApplyId(group_apply_id);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
 }
