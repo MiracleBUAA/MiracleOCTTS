@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -64,5 +62,18 @@ public class AnnouncementService {
         data.put("announcement_update_time", DateConvert.datetime2String(announcement.getUpdatetime()));
 
         return data;
+    }
+
+    public List<HashMap<String, Object>> getAnnouncementList(Integer course_id) throws ParseException {
+        List<HashMap<String, Object>> announcement_list = new ArrayList<HashMap<String, Object>>();
+
+        List<Announcement> announcement_result = findAnnouncementByCourseId(course_id);
+        Iterator<Announcement> announcement_iter = announcement_result.iterator();
+        while (announcement_iter.hasNext()) {
+            HashMap<String, Object> announcement = announcement2Json(announcement_iter.next());
+            announcement_list.add(announcement);
+        }
+
+        return announcement_list;
     }
 }

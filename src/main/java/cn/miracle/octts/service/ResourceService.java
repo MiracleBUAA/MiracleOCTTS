@@ -30,14 +30,14 @@ public class ResourceService {
         return resourceDao.findResourceType(course_id);
     }
 
-    public List< HashMap<String, Object> > getResourceList(Integer course_id) {
+    public List<HashMap<String, Object>> getResourceList(Integer course_id) {
         List<HashMap<String, Object>> resource_list = new ArrayList<HashMap<String, Object>>();
 
         ArrayList<Resource> resources = new ArrayList<>();
 
         resources.addAll(resourceDao.findResourceByCourseId(course_id));
         for (Resource resource : resources) {
-            HashMap<String,Object> resource_item = new HashMap<>();
+            HashMap<String, Object> resource_item = new HashMap<>();
 
             resource_item.put("resource_id", resource.getResource_id());
             resource_item.put("resource_title", resource.getResource_title());
@@ -60,7 +60,7 @@ public class ResourceService {
 
     public Integer findMaxResource() {
         Integer maxId = resourceDao.findMAxResourceId();
-        return maxId == null? 1 : maxId;
+        return maxId == null ? 1 : maxId;
     }
 
     public void deleteResource(Integer resource_id) {
