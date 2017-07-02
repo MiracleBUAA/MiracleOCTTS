@@ -420,17 +420,21 @@ public class TeacherController extends BaseController {
 
         HashMap<String, Object> data = new HashMap<>();
 
-        List<HashMap<String, Object>> resource_list = resourceService.getResourceList(course_id);
+        try {
+            List<HashMap<String, Object>> resource_list = resourceService.getResourceList(course_id);
+            data.put("resource_list", resource_list);
 
-        data.put("resource_list", resource_list);
+            List<String> resource_types = resourceService.findResourceType(course_id);
 
-        List<String> resource_types = resourceService.findResourceType(course_id);
+            data.put("resource_type_list", resource_types);
 
-        data.put("resource_type_list", resource_types);
+            response = setCorrectResponse(data);
 
-        response = setCorrectResponse(data);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (ParseException pe) {
+            return new ResponseEntity<BaseResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     /**
