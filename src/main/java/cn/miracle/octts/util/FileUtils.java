@@ -76,4 +76,9 @@ public class FileUtils {
 
         return byteArrayOutputStream;
     }
+
+    public static Boolean deleteSingleFile(String file_url) throws IOException{
+        File file_to_be_deleted = new File(file_url);
+        return  file_to_be_deleted.delete();
+    }
 }

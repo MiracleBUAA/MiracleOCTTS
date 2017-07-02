@@ -4,9 +4,11 @@ import cn.miracle.octts.dao.ResourceDao;
 import cn.miracle.octts.dao.TeacherDao;
 import cn.miracle.octts.entity.Resource;
 import cn.miracle.octts.util.DateConvert;
+import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,7 +67,9 @@ public class ResourceService {
         return maxId == null ? 1 : maxId;
     }
 
-    public void deleteResource(Integer resource_id) {
+    public void deleteResource(Integer resource_id) throws IOException{
+        String resource_url = resourceDao.findResourceById(resource_id).getResource_url();
+        FileUtils.deleteSingleFile(resource_url);
         resourceDao.deleteResourceById(resource_id);
     }
 }

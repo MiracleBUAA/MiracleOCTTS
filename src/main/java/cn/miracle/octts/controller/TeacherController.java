@@ -382,11 +382,12 @@ public class TeacherController extends BaseController {
                                                          @RequestParam(value = "course_id") Integer course_id,
                                                          @RequestParam(value = "homework_id") Integer homework_id,
                                                          @RequestParam(value = "group_id") Integer group_id,
-                                                         @RequestParam(value = "score") Integer score,
+                                                         @RequestParam(value = "score") String score,
                                                          @RequestParam(value = "score_message") String score_message) {
         BaseResponse response = new BaseResponse();
         HashMap<String, Object> data = new HashMap<>();
-
+        Double score_to_set = Double.valueOf(score);
+        score_message = CodeConvert.unicode2String(score_message);
         try {
             // 先查找平分是否存在
             Score homework_score = scoreSerivce.findScoreByHomeworkIdAndGroupId(homework_id, group_id);
@@ -397,7 +398,7 @@ public class TeacherController extends BaseController {
                 homework_score.setCourse_id(course_id);
                 homework_score.setHomework_id(homework_id);
                 homework_score.setGroup_id(group_id);
-                homework_score.setScore(score);
+                homework_score.setScore(score_to_set);
                 homework_score.setGrader_id(uid);
                 homework_score.setScore_message(score_message);
                 scoreSerivce.insertScore(homework_score);
@@ -408,7 +409,7 @@ public class TeacherController extends BaseController {
                 homework_score.setCourse_id(course_id);
                 homework_score.setHomework_id(homework_id);
                 homework_score.setGroup_id(group_id);
-                homework_score.setScore(score);
+                homework_score.setScore(score_to_set);
                 homework_score.setGrader_id(uid);
                 homework_score.setScore_message(score_message);
                 scoreSerivce.updateScore(homework_score);
@@ -566,13 +567,17 @@ public class TeacherController extends BaseController {
     public ResponseEntity<BaseResponse> deleteResource(@RequestParam(value = "resource_id") Integer resource_id) {
         BaseResponse response = new BaseResponse();
 
-        resourceService.deleteResource(resource_id);
+        try {
+            resourceService.deleteResource(resource_id);
 
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("desc", "success");
-        response = setCorrectResponse(data);
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("desc", "success");
+            response = setCorrectResponse(data);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
