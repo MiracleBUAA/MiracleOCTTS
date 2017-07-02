@@ -5,7 +5,6 @@ import cn.miracle.octts.entity.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,9 +17,11 @@ public class StudentService {
     @Autowired
     private StudentDao studentDao;
 
-    public List<Student> findAllStudent() { return studentDao.findAllStudent();}
+    public List<Student> findAllStudent() {
+        return studentDao.findAllStudent();
+    }
 
-    public Student findStudentById(Integer id) {
+    public Student findStudentById(String id) {
         return studentDao.findStudentById(id);
     }
 
@@ -37,6 +38,10 @@ public class StudentService {
         data.put("student_class", student.getStudent_class());
 
         return data;
+    }
+
+    public String findStudentNameById(String student_id) {
+        return studentDao.findStudentNameById(student_id);
     }
 
 }

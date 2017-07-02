@@ -25,7 +25,7 @@ public interface StudentDao extends BaseMapper<Student> {
             "FROM student " +
             "Where student_id = #{stud_id}")
     @ResultMap("cn.miracle.octts.dao.StudentDao.StudentDetail")
-    Student findStudentById(Integer student_id);
+    Student findStudentById(String student_id);
 
     @Select(("SELECT STUDENT_ID, PASSWORD " +
             "FROM STUDENT " +
@@ -36,6 +36,9 @@ public interface StudentDao extends BaseMapper<Student> {
     @Insert("INSERT INTO STUDENT (gmt_create, gmt_modified, uid, student_id, password, student_name, student_gender, student_class)" +
             "VALUES (#{createtime},#{updatetime},#{uid},#{student_id},#{password},#{student_name},#{student_gender},#{student_class})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    int insertStudent(Student student);
+    Integer insertStudent(Student student);
+
+    @Select("SELECT student_name FROM student WHERE student_id = #{student_id}")
+    String findStudentNameById(String student_id);
 
 }
