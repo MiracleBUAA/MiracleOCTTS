@@ -47,6 +47,9 @@ public class StudentController extends BaseController {
     private ResourceService resourceService;
 
     @Autowired
+    private HomeworkService homeworkService;
+
+    @Autowired
     private HomeworkUploadService homeworkUploadService;
 
     /**
@@ -129,6 +132,9 @@ public class StudentController extends BaseController {
 
     }
 
+    /**
+    * API.36:学生下载课程资源
+    * */
     @RequestMapping(value = "/resource_download", method = RequestMethod.GET)
     public ResponseEntity<org.springframework.core.io.Resource> downloadResource(
             @RequestParam(value = "resource_id") Integer resource_id) {
@@ -147,18 +153,48 @@ public class StudentController extends BaseController {
 
                 HttpHeaders headers = getFileDownloadHeaders(resource_title);
 
-                return ResponseEntity.ok().headers(headers).contentType(MediaType.parseMediaType("application/x-msdownload")).body(resource);
+                return ResponseEntity.ok()
+                        .headers(headers)
+                        .contentType(MediaType.parseMediaType("application/x-msdownload"))
+                        .body(resource);
 
             } catch (IOException e) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
     }
 
-    @RequestMapping(value = "/homework", method = RequestMethod.GET)
-    public ResponseEntity<BaseResponse> getHomework(@RequestParam(value = "course_id") Integer course_id,
-                                                    @RequestParam(value = "homework_id") Integer homework_id) {
+    /**
+    * API.42: 学生——查看作业列表
+    * */
+    @RequestMapping(value = "/homework_list", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getHomeworkList(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<>();
+
+        try {
+            List<HashMap<String, Object>> homework_list = homeworkService.getHomeworkList(course_id);
+            data.put("homework_list", homework_list);
+        } catch (ParseException parseException) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        response = setCorrectResponse(data);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    /**
+     * API.43: 学生——作业信息
+     * */
+    @RequestMapping(value = "/homework_information", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getHomeworkInformation (@RequestParam(value = "uid") String uid, // uid即学生id
+                                                                @RequestParam(value = "course_id") Integer course_id,
+                                                                @RequestParam(value = "homework_id") Integer homework_id) {
+        BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<>();
+
+        // TODO: 生成学生作业提交信息
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * Created by hf on 2017/7/1.
  */
+
 public interface GroupConfirmDao extends BaseMapper<GroupConfirm> {
 
     @Select("SELECT group_owner_id FROM group_confirm")
