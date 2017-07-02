@@ -102,12 +102,31 @@ public class StudentController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+    * API.35: 学生查看课程资源
+    * */
     @RequestMapping(value = "/resource", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getResource(@RequestParam(value = "course_id") Integer course_id) {
+
         BaseResponse response = new BaseResponse();
 
+        HashMap<String, Object> data = new HashMap<>();
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        try {
+            List<HashMap<String, Object>> resource_list = resourceService.getResourceList(course_id);
+            data.put("resource_list", resource_list);
+
+            List<String> resource_types = resourceService.findResourceType(course_id);
+
+            data.put("resource_type_list", resource_types);
+
+            response = setCorrectResponse(data);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (ParseException pe) {
+            return new ResponseEntity<BaseResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @RequestMapping(value = "/resource_download", method = RequestMethod.GET)

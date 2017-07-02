@@ -3,9 +3,11 @@ package cn.miracle.octts.service;
 import cn.miracle.octts.dao.ResourceDao;
 import cn.miracle.octts.dao.TeacherDao;
 import cn.miracle.octts.entity.Resource;
+import cn.miracle.octts.util.DateConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,7 +32,7 @@ public class ResourceService {
         return resourceDao.findResourceType(course_id);
     }
 
-    public List<HashMap<String, Object>> getResourceList(Integer course_id) {
+    public List<HashMap<String, Object>> getResourceList(Integer course_id) throws ParseException{
         List<HashMap<String, Object>> resource_list = new ArrayList<HashMap<String, Object>>();
 
         ArrayList<Resource> resources = new ArrayList<>();
@@ -42,7 +44,7 @@ public class ResourceService {
             resource_item.put("resource_id", resource.getResource_id());
             resource_item.put("resource_title", resource.getResource_title());
             resource_item.put("resource_type", resource.getResource_type());
-            resource_item.put("create_time", resource.getCreatetime());
+            resource_item.put("create_time", DateConvert.datetime2String(resource.getCreatetime()));
             String teacher_name = teacherDao.findTeacherNameById(resource.getTeacher_id());
             resource_item.put("teacher_name", teacher_name);
 
