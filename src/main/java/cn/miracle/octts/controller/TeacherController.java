@@ -65,7 +65,7 @@ public class TeacherController extends BaseController {
             return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
         } else {
             try {
-                HashMap<String, Object> data = courseService.teacherCourse2Json(course);
+                HashMap<String, Object> data = courseService.course2Json(course);
                 response = setCorrectResponse(data);
             } catch (ParseException parseExceptionse) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -404,6 +404,12 @@ public class TeacherController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * API23: 通知列表
+     *
+     * @param course_id
+     * @return
+     */
     @RequestMapping(value = "/announcement_list", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getAnnouncement(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
@@ -426,6 +432,5 @@ public class TeacherController extends BaseController {
         response = setCorrectResponse(data);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
 
 }

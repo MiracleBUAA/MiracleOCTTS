@@ -2,13 +2,11 @@ package cn.miracle.octts.controller;
 
 import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
+import cn.miracle.octts.entity.Announcement;
 import cn.miracle.octts.entity.Course;
 import cn.miracle.octts.entity.HomeworkUpload;
 import cn.miracle.octts.entity.Resource;
-import cn.miracle.octts.service.CourseService;
-import cn.miracle.octts.service.HomeworkUploadService;
-import cn.miracle.octts.service.ResourceService;
-import cn.miracle.octts.service.StudentService;
+import cn.miracle.octts.service.*;
 import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -26,12 +24,18 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 
 @RestController
 @RequestMapping("/student")
 public class StudentController extends BaseController {
+
+    @Autowired
+    private AnnouncementService announcementService;
 
     @Autowired
     private StudentService studentService;
@@ -45,32 +49,56 @@ public class StudentController extends BaseController {
     @Autowired
     private HomeworkUploadService homeworkUploadService;
 
+    /**
+     * API34: 查看课程信息
+     *
+     * @param course_id
+     * @return
+     */
     @RequestMapping(value = "/course_information", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getCourseInformation(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
-
-        if (course_id == null) {
+        Course course = courseService.findCourseById(course_id);
+        if (course == null) {
             response = setParamError();
+            return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
         } else {
-            Course course = courseService.findCourseById(course_id);
-            if (course != null) {
-                try {
-                    HashMap<String, Object> data = courseService.teacherCourse2Json(course);
-                    response = setCorrectResponse(data);
-                } catch (ParseException parseException) {
-                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-                }
-
+            try {
+                HashMap<String, Object> data = courseService.course2Json(course);
+                response = setCorrectResponse(data);
+            } catch (ParseException parseExceptionse) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/announcement", method = RequestMethod.GET)
+    /**
+     * API48: 查看通知列表
+     *
+     * @param course_id
+     * @return
+     */
+    @RequestMapping(value = "/announcement_list", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getAnnouncement(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
+        List<HashMap<String, Object>> announcement_list = new ArrayList<HashMap<String, Object>>();
 
+        List<Announcement> announcement_result = announcementService.findAnnouncementByCourseId(course_id);
+        Iterator<Announcement> announcement_iter = announcement_result.iterator();
+        try {
+            while (announcement_iter.hasNext()) {
+                HashMap<String, Object> announcement = announcementService.announcement2Json(announcement_iter.next());
+                announcement_list.add(announcement);
+            }
+        } catch (ParseException parseException) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put("announcement_list", announcement_list);
+
+        response = setCorrectResponse(data);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -182,70 +210,5 @@ public class StudentController extends BaseController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
-    @RequestMapping(value = "/group", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> CreateGroup(@RequestParam(value = "uid") String uid,
-                                                    @RequestParam(value = "student_id") Integer student_id) {
-        BaseResponse response = new BaseResponse();
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/invitation", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> SendInvitation(@RequestParam(value = "uid") String uid,
-                                                       @RequestParam(value = "student_id") Integer student_id,
-                                                       @RequestParam(value = "group_id") Integer group_id) {
-        BaseResponse response = new BaseResponse();
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/verify", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> VerifyInvitation(@RequestParam(value = "uid") String uid,
-                                                         @RequestParam(value = "student_id") Integer student_id,
-                                                         @RequestParam(value = "group_id") Integer group_id) {
-        BaseResponse response = new BaseResponse();
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/application", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> SendApplication(@RequestParam(value = "uid") String uid,
-                                                        @RequestParam(value = "group_id") Integer group_id) {
-        BaseResponse response = new BaseResponse();
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/dissolution", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> SendDissolution(@RequestParam(value = "uid") String uid,
-                                                        @RequestParam(value = "group_id") Integer group_id) {
-        BaseResponse response = new BaseResponse();
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "student_score", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> setSutdentScore(@RequestParam(value = "uid") String uid,
-                                                        @RequestParam(value = "student_id") Integer student_id,
-                                                        @RequestParam(value = "homework_id") Integer homework_id,
-                                                        @RequestParam(value = "iteration_id") Integer iteration_id,
-                                                        @RequestParam(value = "score") Integer score) {
-        BaseResponse response = new BaseResponse();
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "group_score", method = RequestMethod.POST)
-    public ResponseEntity<BaseResponse> setGroupScore(@RequestParam(value = "uid") String uid,
-                                                      @RequestParam(value = "group_id") Integer group_id,
-                                                      @RequestParam(value = "homework_id") Integer homework_id,
-                                                      @RequestParam(value = "iteration_id") Integer iteration_id,
-                                                      @RequestParam(value = "score") Integer score) {
-        BaseResponse response = new BaseResponse();
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
 
 }
