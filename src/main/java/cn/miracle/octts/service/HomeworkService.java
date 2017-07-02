@@ -1,7 +1,9 @@
 package cn.miracle.octts.service;
 
 import cn.miracle.octts.dao.HomeworkDao;
+import cn.miracle.octts.dao.TeacherDao;
 import cn.miracle.octts.entity.Homework;
+import cn.miracle.octts.entity.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,9 @@ public class HomeworkService {
 
     @Autowired
     private HomeworkDao homeworkDao;
+
+    @Autowired
+    private TeacherDao teacherDao;
 
     public Homework findHomeworkById(Integer homework_id) {
         return homeworkDao.findHomeworkById(homework_id);
@@ -40,7 +45,7 @@ public class HomeworkService {
             homework_item.put("homework_start_time", start_time);
             homework_item.put("homework_end_time", end_time);
 
-            homework_item.put("teacher_id", homework.getTeacher_id());
+            homework_item.put("teacher_name", teacherDao.findTeacherNameById(homework.getTeacher_id()));
 
             homework_list.add(homework_item);
         }
