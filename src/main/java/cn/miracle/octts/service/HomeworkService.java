@@ -3,11 +3,11 @@ package cn.miracle.octts.service;
 import cn.miracle.octts.dao.HomeworkDao;
 import cn.miracle.octts.dao.TeacherDao;
 import cn.miracle.octts.entity.Homework;
-import cn.miracle.octts.entity.Teacher;
+import cn.miracle.octts.util.DateConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ public class HomeworkService {
         return homeworkDao.findHomeworkById(homework_id);
     }
 
-    public List< HashMap<String, Object> > getHomeworkList(Integer course_id) {
+    public List<HashMap<String, Object>> getHomeworkList(Integer course_id) throws ParseException {
         List<HashMap<String, Object>> homework_list = new ArrayList<HashMap<String, Object>>();
 
         ArrayList<Homework> homeworks = new ArrayList<>();
@@ -39,11 +39,8 @@ public class HomeworkService {
             homework_item.put("homework_id", homework.getHomework_id());
             homework_item.put("homework_title", homework.getHomework_title());
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String start_time = sdf.format(homework.getHomework_start_time());
-            String end_time = sdf.format(homework.getHomework_end_time());
-            homework_item.put("homework_start_time", start_time);
-            homework_item.put("homework_end_time", end_time);
+            homework_item.put("homework_start_time", DateConvert.datetime2String(homework.getHomework_start_time()));
+            homework_item.put("homework_end_time", DateConvert.datetime2String(homework.getHomework_end_time()));
 
             homework_item.put("teacher_name", teacherDao.findTeacherNameById(homework.getTeacher_id()));
 
@@ -69,7 +66,7 @@ public class HomeworkService {
         homeworkDao.updateHomework(homework);
     }
 
-    public void deleteHomework (Integer homework_id) {
+    public void deleteHomework(Integer homework_id) {
         homeworkDao.deleteHomework(homework_id);
     }
 }

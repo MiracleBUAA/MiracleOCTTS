@@ -202,8 +202,12 @@ public class TeacherController extends BaseController {
 
         HashMap<String, Object> data = new HashMap<>();
 
-        List<HashMap<String, Object>> homework_list = homeworkService.getHomeworkList(course_id);
-        data.put("homework_list", homework_list);
+        try {
+            List<HashMap<String, Object>> homework_list = homeworkService.getHomeworkList(course_id);
+            data.put("homework_list", homework_list);
+        } catch (ParseException parseException) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         response = setCorrectResponse(data);
 
@@ -514,6 +518,4 @@ public class TeacherController extends BaseController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-
 }
