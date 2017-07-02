@@ -58,6 +58,31 @@ public class TeacherControllerTest {
     }
 
     @Test
+    public void testUpdateHomework() {
+        String homework_title = CodeConvert.string2Unicode("测试作业");
+        String homework_message = CodeConvert.string2Unicode("这是真的再次修改后的中文测试作业信息");
+        String homework_start_time = CodeConvert.string2Unicode("2017-07-01 20:00:00");
+        String homework_end_time = CodeConvert.string2Unicode("2017-07-02 20:00:00");
+        try {
+            this.mockMvc.perform(
+                    post("/teacher/homework_update")
+                            .param("uid", "T001")
+                            .param("course_id", "1")
+                            .param("homework_id", "4")
+                            .param("homework_title", homework_title)
+                            .param("homework_message", homework_message)
+                            .param("homework_start_time", homework_start_time)
+                            .param("homework_end_time", homework_end_time)
+                            .param("homework_score", "10")
+                            .param("resubmit_limit", "3"))
+                    .andDo(print())
+                    .andExpect(status().isOk());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void TestgetResource() {
         try {
             this.mockMvc.perform(get("/teacher/resource")

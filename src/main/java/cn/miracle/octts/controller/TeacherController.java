@@ -263,14 +263,21 @@ public class TeacherController extends BaseController {
             return ResponseEntity.badRequest().body(null);
         }
         else {
+            homework.setUid(uid);
+            homework_title = CodeConvert.unicode2String(homework_title);
+            homework_message = CodeConvert.unicode2String(homework_message);
             homework.setHomework_title(homework_title);
             homework.setHomework_message(homework_message);
             homework.setHomework_score(homework_score);
             homework.setResubmit_limit(resubmit_limit);
 
             try {
-                homework.setHomework_start_time(DateConvert.string2Datetime(homework_start_time));
-                homework.setHomework_end_time(DateConvert.string2Datetime(homework_end_time));
+                homework_start_time = CodeConvert.unicode2String(homework_start_time);
+                homework_end_time = CodeConvert.unicode2String(homework_end_time);
+                Date start_time = DateConvert.string2Datetime(homework_start_time);
+                Date end_time = DateConvert.string2Datetime(homework_end_time);
+                homework.setHomework_start_time(start_time);
+                homework.setHomework_end_time(end_time);
             } catch (ParseException e) {
                 return ResponseEntity.badRequest().body(null);
             }
