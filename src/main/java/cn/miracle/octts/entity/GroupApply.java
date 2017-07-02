@@ -39,11 +39,11 @@ public class GroupApply extends BaseEntity {
         this.group_apply_name = group_apply_name;
     }
 
-    public String getGroup_apply_owner() {
+    public String getGroup_apply_owner_id() {
         return group_apply_owner_id;
     }
 
-    public void setGroup_apply_owner(String group_apply_owner) {
-        this.group_apply_owner_id = group_apply_owner;
+    public void setGroup_apply_owner_id(String group_apply_owner_id) {
+        this.group_apply_owner_id = group_apply_owner_id;
     }
 }

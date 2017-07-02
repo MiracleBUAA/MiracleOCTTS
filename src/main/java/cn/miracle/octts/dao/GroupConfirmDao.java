@@ -2,6 +2,7 @@ package cn.miracle.octts.dao;
 
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.GroupConfirm;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 
@@ -27,5 +28,12 @@ public interface GroupConfirmDao extends BaseMapper<GroupConfirm> {
             "WHERE course_id = #{course_id}")
     @ResultMap("cn.miracle.octts.dao.GroupConfirmDao.GroupConfirmDetail")
     List<GroupConfirm> findGroupConfirmByCourseId(Integer course_id);
+
+    @Select("SELECT max(group_id) FROM group_confirm")
+    Integer findMaxGroupId();
+
+    @Insert("INSERT INTO group_confirm(gmt_create, gmt_modified, uid, group_id, course_id, group_name, group_owner_id, group_score) " +
+            "VALUES(#{createtime}, #{updatetime}, #{uid}, #{group_id}, #{course_id}, #{group_name}, #{group_owner_id}, #{group_score})")
+    Integer insertGroupConfirm(GroupConfirm groupConfirm);
 
 }

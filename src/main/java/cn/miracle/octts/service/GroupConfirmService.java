@@ -6,10 +6,7 @@ import cn.miracle.octts.entity.GroupConfirm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by hf on 2017/7/1.
@@ -61,5 +58,20 @@ public class GroupConfirmService {
         }
 
         return group_confirm_list;
+    }
+
+    public Integer findMaxGroupId() {
+        if (groupConfirmDao.findMaxGroupId() != null) {
+            return groupConfirmDao.findMaxGroupId() + 1;
+        }
+        return new Integer(1);
+    }
+
+    public Integer insertGroupConfirm(GroupConfirm groupConfirm, String uid) {
+        Date currentTime = new Date(System.currentTimeMillis());
+        groupConfirm.setCreatetime(currentTime);
+        groupConfirm.setUpdatetime(currentTime);
+        groupConfirm.setUid(uid);
+        return groupConfirmDao.insertGroupConfirm(groupConfirm);
     }
 }
