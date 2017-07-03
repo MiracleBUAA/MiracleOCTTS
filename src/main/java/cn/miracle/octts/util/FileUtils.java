@@ -28,7 +28,6 @@ public class FileUtils {
     public static String saveSingleUploadFile(MultipartFile file, String file_type) throws IOException {
         byte[] filebytes = file.getBytes();
         String file_url = UPLOAD_SAVE_FOLDER + FILE_SEPARATOR + file_type + FILE_SEPARATOR +file.getOriginalFilename();
-//        String file_path = UPLOAD_SAVE_FOLDER + file_url;
         Path path = Paths.get(file_url);
         Files.write(path, filebytes);
         return file_url;

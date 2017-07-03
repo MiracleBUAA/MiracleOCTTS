@@ -12,10 +12,9 @@ import java.util.List;
  */
 public interface HomeworkUploadDao extends BaseMapper<HomeworkUpload> {
 
-    @Insert("Insert into homework_upload(gmt_create,gmt_modified,uid,homework_upload_id," +
-            "course_id, group_id, homework_id, homework_url, message, homework_upload_time) " +
+    @Insert("INSERT INTO homework_upload(gmt_create, gmt_modified, uid, homework_upload_id, course_id, homework_id, group_id, file_name, homework_url, resubmit) " +
             "values(#{createtime},#{updatetime},#{uid},#{homework_upload_id}," +
-            "#{course_id},#{group_id}, #{homework_id}, #{homework_url},#{message},#{homework_upload_time})")
+            "#{course_id}, #{homework_id},#{group_id}, #{file_name}, #{homework_url},#{resubmit})")
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void InsertHomeworkUpload(HomeworkUpload homeworkUpload);
 
