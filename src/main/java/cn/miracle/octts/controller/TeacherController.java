@@ -501,7 +501,7 @@ public class TeacherController extends BaseController {
     public ResponseEntity<BaseResponse> UploadResource(@RequestParam(value = "uid", required = false) String uid,
                                                        @RequestParam(value = "course_id") Integer course_id,
                                                        @RequestParam(value = "resource_type") String resource_type,
-                                                       @RequestParam(value = "title") String resource_title,
+                                                       @RequestParam(value = "title", required = false) String resource_title,
                                                        @RequestParam(value = "file") MultipartFile resource_file) {
         BaseResponse response = new BaseResponse();
         if (resource_file.isEmpty()) {
@@ -518,6 +518,7 @@ public class TeacherController extends BaseController {
                 resource_upload.setResource_id(resource_id);
                 resource_upload.setUid(uid);
                 resource_upload.setCourse_id(course_id);
+//                resource_type = CodeConvert.unicode2String(resource_type);
                 resource_upload.setResource_type(resource_type);
                 resource_upload.setResource_title(resource_title);
                 resource_upload.setTeacher_id(uid);

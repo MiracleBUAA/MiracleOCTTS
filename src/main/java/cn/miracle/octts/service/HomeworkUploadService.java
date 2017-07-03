@@ -43,6 +43,15 @@ public class HomeworkUploadService {
         homeworkUploadDao.InsertHomeworkUpload(homeworkUpload);
     }
 
+    public Integer findMaxId() {
+        Integer maxId = homeworkUploadDao.findMaxId();
+        return maxId == null? 1: maxId+1;
+    }
+
+    public void deleteHomeworkUploadById(Integer homework_upload_id) {
+        homeworkUploadDao.deleteHomeworkUploadById(homework_upload_id);
+    }
+
     public HomeworkUpload findHomeworkUploadById(Integer homework_upload_id) {
         return homeworkUploadDao.findHomeworkUploadById(homework_upload_id);
     }
