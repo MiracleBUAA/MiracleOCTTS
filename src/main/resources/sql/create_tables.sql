@@ -218,6 +218,7 @@ CREATE TABLE `homework_upload` (
   `group_id`           TINYINT(4)          NOT NULL,
   `file_name`          VARCHAR(255)        NOT NULL,
   `homework_url`       VARCHAR(255)        NOT NULL,
+  resubmit int DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_homework_upload_id` (`homework_upload_id`)
 )
