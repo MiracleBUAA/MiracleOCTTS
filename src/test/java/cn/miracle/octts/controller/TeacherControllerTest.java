@@ -1,6 +1,7 @@
 package cn.miracle.octts.controller;
 
 import cn.miracle.octts.util.CodeConvert;
+import org.aspectj.apache.bcel.classfile.Code;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,17 +131,20 @@ public class TeacherControllerTest {
 
     @Test
     public void TestUploadResource() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", "upload_test2333.txt",
+        MockMultipartFile file = new MockMultipartFile("file", "测试2.txt",
                 "text/plain", "这是一个上传测试2333".getBytes());
 
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+        String resource_type = CodeConvert.string2Unicode("测试");
+        String name = CodeConvert.string2Unicode("测试2.txt");
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/teacher/resource_upload")
                 .file(file)
                 .param("uid", "T001")
                 .param("course_id", "1")
-                .param("resource_type", "test")
-                .param("title", "upload_test.txt"))
+                .param("resource_type", resource_type)
+                .param("title", name))
                 .andExpect(status().is(200));
     }
 

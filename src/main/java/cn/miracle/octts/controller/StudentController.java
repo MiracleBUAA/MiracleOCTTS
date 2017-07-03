@@ -269,6 +269,7 @@ public class StudentController extends BaseController {
             // 完成文件上传
             try {
                 // 将文件写入服务器
+                String file_name = uploadFile.getOriginalFilename();
                 String filePath = FileUtils.saveSingleUploadFile(uploadFile, FileUtils.HOMEWORK_UPLOAD_FOLDER);
                 // TODO: WRITE DATABASE
                 // Uid included
@@ -279,7 +280,7 @@ public class StudentController extends BaseController {
                 homeworkUpload.setUid(uid);
                 homeworkUpload.setGroup_id(group_id);
                 homeworkUpload.setHomework_url(filePath);
-
+                homeworkUpload.setFile_name(file_name);
                 homeworkUploadService.InsertHomeworkUpload(homeworkUpload);
                 data.put("desc", "OK");
 
