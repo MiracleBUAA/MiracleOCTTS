@@ -24,4 +24,7 @@ public interface GroupApplyMemberDao extends BaseMapper<GroupApplyMember> {
 
     @Delete("DELETE FROM group_apply_member WHERE group_apply_id = #{group_apply_id}")
     Integer deleteGroupApplyMemberByGroupApplyId(Integer group_apply_id);
+
+    @Select("SELECT student_id FROM group_apply_member WHERE course_id = #{course_id}")
+    List<String> findStudentIdByCourseId(Integer course_id);
 }

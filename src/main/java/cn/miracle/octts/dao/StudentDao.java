@@ -43,4 +43,7 @@ public interface StudentDao extends BaseMapper<Student> {
 
     @Update("UPDATE student SET group_id = #{group_id} WHERE student_id = #{student_id}")
     Integer updateGroupId(Student student);
+
+    @Select("SELECT student_id from student")
+    List<String> findAllStudentId();
 }

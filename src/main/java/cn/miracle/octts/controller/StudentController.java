@@ -110,8 +110,8 @@ public class StudentController extends BaseController {
     }
 
     /**
-    * API.35: 学生查看课程资源
-    * */
+     * API.35: 学生查看课程资源
+     */
     @RequestMapping(value = "/resource", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getResource(@RequestParam(value = "course_id") Integer course_id) {
 
@@ -137,8 +137,8 @@ public class StudentController extends BaseController {
     }
 
     /**
-    * API.36:学生下载课程资源
-    * */
+     * API.36:学生下载课程资源
+     */
     @RequestMapping(value = "/resource_download", method = RequestMethod.GET)
     public ResponseEntity<org.springframework.core.io.Resource> downloadResource(
             @RequestParam(value = "resource_id") Integer resource_id) {
@@ -169,8 +169,8 @@ public class StudentController extends BaseController {
     }
 
     /**
-    * API.42: 学生——查看作业列表
-    * */
+     * API.42: 学生——查看作业列表
+     */
     @RequestMapping(value = "/homework_list", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getHomeworkList(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
@@ -190,11 +190,11 @@ public class StudentController extends BaseController {
 
     /**
      * API.43: 学生——作业信息
-     * */
+     */
     @RequestMapping(value = "/homework_information", method = RequestMethod.GET)
-    public ResponseEntity<BaseResponse> getHomeworkInformation (@RequestParam(value = "uid") String uid, // uid即学生id
-                                                                @RequestParam(value = "course_id") Integer course_id,
-                                                                @RequestParam(value = "homework_id") Integer homework_id) {
+    public ResponseEntity<BaseResponse> getHomeworkInformation(@RequestParam(value = "uid") String uid, // uid即学生id
+                                                               @RequestParam(value = "course_id") Integer course_id,
+                                                               @RequestParam(value = "homework_id") Integer homework_id) {
         BaseResponse response = new BaseResponse();
         HashMap<String, Object> data = new HashMap<>();
 
