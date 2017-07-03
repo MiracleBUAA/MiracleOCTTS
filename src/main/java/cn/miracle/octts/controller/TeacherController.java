@@ -787,6 +787,12 @@ public class TeacherController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * API28: 查看未组队人员
+     *
+     * @param course_id
+     * @return
+     */
     @RequestMapping(value = "/student_not_in_group", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getStudentNotInGroup(@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
