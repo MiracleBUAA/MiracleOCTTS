@@ -816,5 +816,19 @@ public class TeacherController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+    *  API.32: 教师——获取团队成绩报表页面
+    * */
+    @RequestMapping(value = "/teacher/group _form", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getGroupForm (@RequestParam(value = "course_id") Integer course_id) {
+        BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<String, Object>();
+
+
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
 
 }
