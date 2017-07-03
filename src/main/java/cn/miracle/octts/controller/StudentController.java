@@ -337,7 +337,7 @@ public class StudentController extends BaseController {
                 return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
             } else {
                 data = groupConfirmService.groupConfirm2Json(groupConfirm);
-                data.put("group_status", "团队已批准");
+                data.put("group_status", "1");
 
                 response = setCorrectResponse(data);
                 return new ResponseEntity<>(response, HttpStatus.OK);
@@ -353,7 +353,7 @@ public class StudentController extends BaseController {
                 return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
             } else {
                 data = groupApplyService.groupApply2Json(groupApply);
-                data.put("group_status", "团队待审核");
+                data.put("group_status", "0");
 
                 response = setCorrectResponse(data);
                 return new ResponseEntity<>(response, HttpStatus.OK);

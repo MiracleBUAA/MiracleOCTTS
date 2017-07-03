@@ -34,10 +34,10 @@ public class GroupApplyService {
         HashMap<String, Object> data = new HashMap<String, Object>();
         Integer gaid = groupApply.getGroup_apply_id();
 
-        data.put("group_apply_id", groupApply.getGroup_apply_id());
-        data.put("group_apply_name", groupApply.getGroup_apply_name());
-        data.put("group_apply_owner", studentDao.findStudentNameById(groupApply.getGroup_apply_owner_id()));
-        data.put("group_apply_member", studentService.getMemberList(groupApplyMemberService.findStudentIdByGroupApplyId(gaid)));
+        data.put("group_id", groupApply.getGroup_apply_id());
+        data.put("group_name", groupApply.getGroup_apply_name());
+        data.put("group_owner_name", studentDao.findStudentNameById(groupApply.getGroup_apply_owner_id()));
+        data.put("group_member", studentService.getMemberList(groupApplyMemberService.findStudentIdByGroupApplyId(gaid)));
 
         return data;
     }
