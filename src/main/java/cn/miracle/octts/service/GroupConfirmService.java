@@ -102,8 +102,10 @@ public class GroupConfirmService {
             // 团队作业评分
             Integer group_id = group.getGroup_id();
             Score score = scoreDao.findScoreByHomeworkIdAndGroupId(homework_id, group_id);
-            group_map.put("score", score.getScore());
-            group_map.put("score_message", score.getScore_message());
+            if (score != null) {
+                group_map.put("score", score.getScore());
+                group_map.put("score_message", score.getScore_message());
+            }
 
             // 作业列表
             ArrayList<HomeworkUpload> homework_uploads = new ArrayList<>();
