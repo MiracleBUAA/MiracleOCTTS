@@ -2,10 +2,10 @@ package cn.miracle.octts.dao;
 
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.Invitation;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+
 import java.util.List;
 
 /**
@@ -22,5 +22,11 @@ public interface InvitationDao extends BaseMapper<Invitation> {
     @Insert("INSERT INTO invitation(gmt_create, gmt_modified, uid, sender_id, receiver_id) " +
             "VALUES(#{createtime}, #{updatetime}, #{uid}, #{sender_id}, #{receiver_id})")
     Integer insertInvitation(Invitation invitation);
+
+    @Delete("DELETE FROM invitation WHERE receiver_id = #{receiver_id}")
+    Integer deleteInvitationByReceiverId(String receiver_id);
+
+    @Delete("DELETE FROM invitation WHERE sender_id = #{sender_id}")
+    Integer deleteInvitationBySenderId(String sender_id);
 
 }

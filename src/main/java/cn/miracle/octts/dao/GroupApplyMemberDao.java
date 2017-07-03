@@ -3,6 +3,7 @@ package cn.miracle.octts.dao;
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.GroupApplyMember;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 
@@ -40,4 +41,7 @@ public interface GroupApplyMemberDao extends BaseMapper<GroupApplyMember> {
     @ResultMap("cn.miracle.octts.dao.GroupApplyMemberDao.GroupApplyMemberDetail")
     GroupApplyMember findGroupApplyMemberByStudentId(String student_id);
 
+    @Insert("INSERT INTO group_apply_member(gmt_create, gmt_modified, uid, group_apply_id, course_id, student_id, group_role) " +
+            "VALUES(#{createtime}, #{updatetime}, #{uid}, #{group_apply_id}, #{course_id}, #{student_id}, #{group_role})")
+    Integer insertGroupApplyMember(GroupApplyMember groupApplyMember);
 }

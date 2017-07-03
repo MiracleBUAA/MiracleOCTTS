@@ -41,4 +41,7 @@ public interface GroupApplyDao extends BaseMapper<GroupApply> {
 
     @Select("SELECT group_apply_name FROM group_apply WHERE group_apply_owner_id = #{group_apply_owner_id}")
     String findGroupApplyNameByGroupApplyOwnerId(String group_apply_owner_id);
+
+    @Select("SELECT group_apply_id FROM group_apply WHERE group_apply_owner_id = #{group_apply_owner_id}")
+    Integer findGroupApplyIdByGroupApplyOwnerId(String group_apply_owner_id);
 }

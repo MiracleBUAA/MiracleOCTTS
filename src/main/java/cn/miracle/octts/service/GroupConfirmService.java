@@ -88,8 +88,6 @@ public class GroupConfirmService {
         return groupConfirmDao.insertGroupConfirm(groupConfirm);
     }
 
-//    public GroupConfirm findGroupConfirmByOwner
-
     public List<HashMap<String, Object>> getGroupHomeworkList(ArrayList<GroupConfirm> group_list, Integer homework_id) throws ParseException{
         List<HashMap<String, Object>> homework_group_list = new ArrayList<HashMap<String, Object>>();
 

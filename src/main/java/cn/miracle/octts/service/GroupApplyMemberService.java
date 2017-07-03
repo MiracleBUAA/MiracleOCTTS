@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -54,5 +55,14 @@ public class GroupApplyMemberService {
 
     public GroupApplyMember findGroupApplyMemberByStudentId(String student_id) {
         return groupApplyMemberDao.findGroupApplyMemberByStudentId(student_id);
+    }
+
+    public Integer insertGroupApplyMember(GroupApplyMember groupApplyMember, String uid) {
+        Date currentTime = new Date(System.currentTimeMillis());
+        groupApplyMember.setCreatetime(currentTime);
+        groupApplyMember.setUpdatetime(currentTime);
+        groupApplyMember.setUid(uid);
+
+        return groupApplyMemberDao.insertGroupApplyMember(groupApplyMember);
     }
 }

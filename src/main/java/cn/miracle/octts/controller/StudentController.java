@@ -379,6 +379,7 @@ public class StudentController extends BaseController {
             return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
         }
 
+        //插入 group_apply
         GroupApply groupApply = new GroupApply();
 
         Integer gaid = groupApplyService.findMaxGroupApplyId();
@@ -389,6 +390,14 @@ public class StudentController extends BaseController {
         groupApply.setGroup_apply_owner_id(uid);
 
         groupApplyService.insetGroupApply(groupApply, uid);
+
+        //插入 group_apply_member
+        GroupApplyMember groupApplyMember = new GroupApplyMember();
+        groupApplyMember.setGroup_apply_id(groupApplyService.findGroupApplyIdByGroupApplyOwnerId(uid));
+        groupApplyMember.setCourse_id(course_id);
+        groupApplyMember.setStudent_id(uid);
+        groupApplyMember.setGroup_role(2);
+        groupApplyMemberService.insertGroupApplyMember(groupApplyMember, uid);
 
         response = setCorrectInsert();
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -474,7 +483,7 @@ public class StudentController extends BaseController {
             return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        //学生已经接受过此人的邀请
+        //学生已经收到过此人的邀请
         if (invitationService.findSenderIdByReceiverId(receiver_id).contains(uid)) {
             response = setParamError();
             return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
@@ -487,6 +496,33 @@ public class StudentController extends BaseController {
         invitationService.insertInvitation(invitation, uid);
 
         response = setCorrectInsert();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/accept_invitation", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> acceptInvitation(@RequestParam(value = "uid") String uid,
+                                                         @RequestParam(value = "course_id") Integer course_id,
+                                                         @RequestParam(value = "sender_id") String sender_id) {
+        BaseResponse response = new BaseResponse();
+        //学生已经在其他队伍里
+        if (!studentService.getStudentNotInGroupSet(course_id).contains(uid)) {
+            response = setParamError();
+            return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        //插入 group_apply_member
+        GroupApplyMember groupApplyMember = new GroupApplyMember();
+        groupApplyMember.setGroup_apply_id(groupApplyService.findGroupApplyIdByGroupApplyOwnerId(sender_id));
+        groupApplyMember.setCourse_id(course_id);
+        groupApplyMember.setStudent_id(uid);
+        groupApplyMember.setGroup_role(1);
+        groupApplyMemberService.insertGroupApplyMember(groupApplyMember, uid);
+
+        //T删除此人收到的所有邀请
+        invitationService.deleteInvitationByReceiverId(uid);
+
+        response = setCorrectInsert();
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

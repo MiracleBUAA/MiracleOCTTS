@@ -76,4 +76,8 @@ public class GroupApplyService {
         return groupApplyDao.insertGroupApply(groupApply);
     }
 
+    public Integer findGroupApplyIdByGroupApplyOwnerId(String group_apply_owner_id) {
+        return groupApplyDao.findGroupApplyIdByGroupApplyOwnerId(group_apply_owner_id);
+    }
+
 }
