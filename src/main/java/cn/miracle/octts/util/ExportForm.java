@@ -3,6 +3,7 @@ package cn.miracle.octts.util;
 import cn.miracle.octts.entity.GroupConfirm;
 import cn.miracle.octts.entity.GroupConfirmMember;
 import cn.miracle.octts.entity.Homework;
+import cn.miracle.octts.entity.Student;
 import cn.miracle.octts.service.*;
 import jxl.Workbook;
 import jxl.write.Label;
@@ -138,6 +139,7 @@ public class ExportForm {
                 if (homeworkService.findHoweworkByCourseId(course_id) != null) {
                     Iterator<Homework> homeworkIter = homeworkService.findHoweworkByCourseId(course_id).iterator();
                     int col = 2;
+
                     while (homeworkIter.hasNext()) {
                         col++;
                         Homework homework = homeworkIter.next();
@@ -189,6 +191,29 @@ public class ExportForm {
         firstSheet.addCell(label);
         label = new Label(5, 0, "缺勤次数");
         firstSheet.addCell(label);
+
+        if (studentService.findAllStudent() != null) {
+            Iterator<Student> stuentIter = studentService.findAllStudent().iterator();
+            int row = 0;
+
+            while (stuentIter.hasNext()) {
+                row++;
+                Student student = stuentIter.next();
+
+                label = new Label(0, row, student.getStudent_id());
+                firstSheet.addCell(label);
+                label = new Label(1, row, student.getStudent_name());
+                firstSheet.addCell(label);
+                label = new Label(2, row, student.getPersonal_score().toString());
+                firstSheet.addCell(label);
+                label = new Label(3, row, student.getGroup_score().toString());
+                firstSheet.addCell(label);
+                label = new Label(4, row, student.getStudent_rate().toString());
+                firstSheet.addCell(label);
+                label = new Label(5, row, student.getStudent_absent().toString());
+                firstSheet.addCell(label);
+            }
+        }
 
         writeBook.write();
         writeBook.close();
