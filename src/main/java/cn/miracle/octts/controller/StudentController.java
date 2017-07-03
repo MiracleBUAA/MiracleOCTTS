@@ -442,8 +442,10 @@ public class StudentController extends BaseController {
 
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
-                response = setParamError();
-                return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+                response.setErrorNo(5);
+                response.setErrorMsg("已加入待审核团队");
+                response.setData(new HashMap<>());
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
         }
 
