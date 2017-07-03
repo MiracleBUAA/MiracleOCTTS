@@ -819,14 +819,20 @@ public class TeacherController extends BaseController {
     /**
     *  API.32: 教师——获取团队成绩报表页面
     * */
-    @RequestMapping(value = "/teacher/group _form", method = RequestMethod.GET)
+    @RequestMapping(value = "/group_form", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getGroupForm (@RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
         HashMap<String, Object> data = new HashMap<String, Object>();
 
+        try {
+            List<HashMap<String, Object>> group_list = groupConfirmService.getGroupScoreList(course_id);
+            data.put("group_list", group_list);
+            response = setCorrectResponse(data);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<BaseResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 

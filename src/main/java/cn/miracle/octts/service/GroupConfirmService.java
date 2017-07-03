@@ -1,10 +1,8 @@
 package cn.miracle.octts.service;
 
-import cn.miracle.octts.dao.GroupConfirmDao;
-import cn.miracle.octts.dao.HomeworkUploadDao;
-import cn.miracle.octts.dao.ScoreDao;
-import cn.miracle.octts.dao.StudentDao;
+import cn.miracle.octts.dao.*;
 import cn.miracle.octts.entity.GroupConfirm;
+import cn.miracle.octts.entity.Homework;
 import cn.miracle.octts.entity.HomeworkUpload;
 import cn.miracle.octts.entity.Score;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +37,9 @@ public class GroupConfirmService {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private HomeworkDao homeworkDao;
 
 
     public List<String> findGroupOwner() {
@@ -121,5 +122,36 @@ public class GroupConfirmService {
         }
 
         return homework_group_list;
+    }
+
+    public List<HashMap<String, Object>> getGroupScoreList (Integer course_id) {
+        List<HashMap<String, Object>> group_score_list = new ArrayList<>();
+
+        List<GroupConfirm> group_list = new ArrayList<>();
+        group_list.addAll(groupConfirmDao.findGroupConfirmByCourseId(course_id));
+        for (GroupConfirm group : group_list) {
+            HashMap<String, Object> group_map = new HashMap<>();
+            // 写小组信息
+            Integer group_id = group.getGroup_id();
+            group_map.put("group_id", group_id);
+            group_map.put("group_name", group.getGroup_name());
+            // 写小组成绩
+            List<HashMap<String, Object>> homework_score_list = new ArrayList<>();
+
+            List<Score> scoreList = new ArrayList<>();
+            scoreList.addAll(scoreDao.findScoreByGroupId(group_id));
+            for (Score score : scoreList) {
+                HashMap<String, Object> score_map = new HashMap<>();
+                score_map.put("homework_id", score.getHomework_id());
+                Integer homework_id = score.getHomework_id();
+                score_map.put("homework_name", homeworkDao.findHomeworkTitleById(homework_id));
+                score_map.put("score", score.getScore());
+
+                homework_score_list.add(score_map);
+            }
+            group_map.put("homework_score_list", homework_score_list);
+            group_score_list.add(group_map);
+        }
+        return group_score_list;
     }
 }

@@ -4,6 +4,8 @@ import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.Score;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 /**
  * Created by hf on 2017/7/2.
  */
@@ -21,6 +23,12 @@ public interface ScoreDao extends BaseMapper<Score> {
     @ResultMap("cn.miracle.octts.dao.ScoreDao.ScoreDetail")
     Score findScoreByHomeworkIdAndGroupId(@Param(value = "homework_id")Integer homework_id,
                                           @Param(value = "group_id") Integer group_id);
+
+    @Select("SELECT gmt_create, gmt_modified, uid, score_id, course_id, homework_id, group_id, grader_id, score, score_message " +
+            "FROM score " +
+            "WHERE group_id=#{group_id}")
+    @ResultMap("cn.miracle.octts.dao.ScoreDao.ScoreDetail")
+    List<Score> findScoreByGroupId(@Param(value = "group_id") Integer group_id);
 
     @Insert("INSERT INTO score(gmt_create, gmt_modified, uid, score_id, course_id, homework_id, group_id, grader_id, score, score_message) " +
             "VALUES(#{createtime}, #{updatetime}, #{uid}, #{score_id}, #{course_id}, #{homework_id}, #{group_id}, #{grader_id}, #{score}, #{score_message})")
