@@ -24,6 +24,8 @@ import java.util.List;
 @Component
 public class ExportForm {
 
+    private static final String FILE_SEPARATOR = System.getProperty("file.separator");
+
     @Autowired
     GroupConfirmService groupConfirmService;
 
@@ -33,8 +35,10 @@ public class ExportForm {
     @Autowired
     StudentService studentService;
 
-    public Integer exportGroupList() throws IOException, RowsExceededException, WriteException {
-        WritableWorkbook writeBook = Workbook.createWorkbook(new File("file\\form\\group_list.xls"));
+    public String exportGroupList() throws IOException, RowsExceededException, WriteException {
+        String path = "file" + FILE_SEPARATOR + "form" + FILE_SEPARATOR + "group_list.xls";
+
+        WritableWorkbook writeBook = Workbook.createWorkbook(new File(path));
         WritableSheet firstSheet = writeBook.createSheet("团队组建报表", 0);
         Label label;
 
@@ -78,7 +82,7 @@ public class ExportForm {
 
         writeBook.write();
         writeBook.close();
-        return 0;
+        return path;
     }
 
 
