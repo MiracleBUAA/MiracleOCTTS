@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class FileUtils {
 
-    private static final String FILE_SEPARATOR =  System.getProperty("file.separator");
+    private static final String FILE_SEPARATOR = System.getProperty("file.separator");
     private static final String UPLOAD_SAVE_FOLDER = "file";
 
     public static final String RESOURCE_FOLDER = "resource";

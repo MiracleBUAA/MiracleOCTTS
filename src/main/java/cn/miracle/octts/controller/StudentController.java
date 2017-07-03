@@ -442,15 +442,19 @@ public class StudentController extends BaseController {
 
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
-                response = setParamError();
-                return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+                response.setErrorNo(5);
+                response.setErrorMsg("已加入待审核团队");
+                response.setData(new HashMap<>());
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
         }
 
         //未加入团队
         List<HashMap<String, Object>> invitationList = invitationService.getInvitationList(uid);
         data.put("invitation_list", invitationList);
-        response = setCorrectResponse(data);
+        response.setErrorNo(3);
+        response.setErrorMsg("不是团队负责人");
+        response.setData(data);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

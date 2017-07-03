@@ -41,4 +41,7 @@ public interface GroupConfirmDao extends BaseMapper<GroupConfirm> {
             "VALUES(#{createtime}, #{updatetime}, #{uid}, #{group_id}, #{course_id}, #{group_name}, #{group_owner_id}, #{group_score})")
     Integer insertGroupConfirm(GroupConfirm groupConfirm);
 
+    @Select("SELECT group_name FROM group_confirm WHERE group_id = 1")
+    String findGroupConfirmNameById(Integer group_id);
+
 }

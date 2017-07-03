@@ -3,6 +3,7 @@ package cn.miracle.octts.dao;
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.GroupConfirmMember;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public interface GroupConfirmMemberDao extends BaseMapper<GroupConfirmMember> {
     @Select("SELECT gmt_create, gmt_modified, uid, group_id, course_id, student_id, group_role " +
             "FROM group_confirm_member " +
             "ORDER BY group_id")
+    @ResultMap("cn.miracle.octts.dao.GroupConfirmMemberDao.GroupConfirmMemberDetail")
     List<GroupConfirmMember> findAllGroupConfirmMember();
 
 }
