@@ -37,7 +37,6 @@ public class GroupConfirmMemberService {
                 memberList.add(studentDao.findStudentNameById(studentIdIter.next()));
             }
         }
-
         return memberList;
     }
 

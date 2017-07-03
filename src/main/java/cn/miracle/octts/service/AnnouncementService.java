@@ -73,7 +73,6 @@ public class AnnouncementService {
             HashMap<String, Object> announcement = announcement2Json(announcement_iter.next());
             announcement_list.add(announcement);
         }
-
         return announcement_list;
     }
 }

@@ -31,4 +31,6 @@ public interface GroupApplyDao extends BaseMapper<GroupApply> {
     @Delete("DELETE FROM group_apply WHERE group_apply_id = #{group_apply_id}")
     Integer deleteGroupApplyById(Integer group_apply_id);
 
+    @Select("SELECT max(group_apply_id) FROM group_apply")
+    Integer findMaxGroupApplyId();
 }

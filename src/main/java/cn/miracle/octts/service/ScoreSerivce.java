@@ -22,16 +22,16 @@ public class ScoreSerivce {
 
     public void insertScore(Score score) {
         Integer maxId = scoreDao.findMaxId();
-        Integer score_id = maxId == null? 1: maxId+1;
+        Integer score_id = maxId == null ? 1 : maxId + 1;
         score.setScore_id(score_id);
-        Date currentdate = new Date();
+        Date currentdate = new Date(System.currentTimeMillis());
         score.setCreatetime(currentdate);
         score.setUpdatetime(currentdate);
         scoreDao.InsertScore(score);
     }
 
     public void updateScore(Score score) {
-        Date currentdate = new Date();
+        Date currentdate = new Date(System.currentTimeMillis());
         score.setUpdatetime(currentdate);
         scoreDao.updateScore(score);
     }

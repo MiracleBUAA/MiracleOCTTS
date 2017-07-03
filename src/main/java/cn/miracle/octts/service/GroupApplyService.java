@@ -41,7 +41,6 @@ public class GroupApplyService {
         return data;
     }
 
-
     public List<HashMap<String, Object>> getGroupApplyList(Integer course_id) {
         List<HashMap<String, Object>> groupApplyList = new ArrayList<HashMap<String, Object>>();
 
@@ -61,6 +60,14 @@ public class GroupApplyService {
 
     public Integer deleteGroupApplyById(Integer group_apply_id) {
         return groupApplyDao.deleteGroupApplyById(group_apply_id);
+    }
+
+    public Integer findMaxGroupApplyId() {
+        if (groupApplyDao.findMaxGroupApplyId() != null) {
+            return groupApplyDao.findMaxGroupApplyId() + 1;
+        } else {
+            return new Integer(1);
+        }
     }
 
 }

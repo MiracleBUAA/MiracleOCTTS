@@ -70,7 +70,6 @@ public class GroupConfirmService {
             HashMap<String, Object> group_confirm = groupConfirm2Json(group_confirm_iter.next());
             group_confirm_list.add(group_confirm);
         }
-
         return group_confirm_list;
     }
 

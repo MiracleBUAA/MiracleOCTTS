@@ -50,7 +50,7 @@ public class HomeworkService {
     }
 
     public void InsertHomework(Homework homework) {
-        Date currenttime = new Date();
+        Date currenttime = new Date(System.currentTimeMillis());
         homework.setCreatetime(currenttime);
         homework.setUpdatetime(currenttime);
         homeworkDao.InsertHomework(homework);
@@ -62,7 +62,8 @@ public class HomeworkService {
     }
 
     public void updateHomework(Homework homework) {
-        homework.setUpdatetime(new Date());
+        Date currenttime = new Date(System.currentTimeMillis());
+        homework.setUpdatetime(currenttime);
         homeworkDao.updateHomework(homework);
     }
 
