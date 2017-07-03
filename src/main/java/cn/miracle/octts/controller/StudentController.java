@@ -59,8 +59,6 @@ public class StudentController extends BaseController {
     @Autowired
     private GroupApplyMemberService groupApplyMemberService;
 
-    @Autowired
-    private GroupConfirmService groupConfirmService;
 
     @Autowired
     private GroupConfirmMemberService groupConfirmMemberService;
