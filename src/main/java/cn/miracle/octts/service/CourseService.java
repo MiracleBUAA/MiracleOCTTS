@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Tony on 2017/6/27.
@@ -25,10 +23,9 @@ public class CourseService {
         return courseDao.findCourseById(course_id);
     }
 
-    //导出教务课程信息
-    public HashMap<String, Object> adminCourse2Json(Course course) throws ParseException {
+    public HashMap<String, Object> course2Json(Course course) throws ParseException {
 
-        HashMap<String, Object> data = new HashMap<>();
+        HashMap<String, Object> data = new HashMap<String, Object>();
 
         data.put("course_id", course.getCourse_id());
         data.put("course_year", course.getCourse_year());
@@ -38,17 +35,8 @@ public class CourseService {
         data.put("course_hour", course.getCourse_hour());
         data.put("course_location", course.getCourse_location());
         data.put("course_credit", course.getCourse_credit());
-        data.put("teacher_information", course.getTeacher_information());
-
-        return data;
-    }
-
-    //导出教师课程信息
-    public HashMap<String, Object> course2Json(Course course) throws ParseException {
-
-        HashMap<String, Object> data = adminCourse2Json(course);
-
         data.put("team_limit_information", course.getTeam_limit_information());
+        data.put("teacher_information", course.getTeacher_information());
         data.put("course_information", course.getCourse_information());
 
         return data;
@@ -87,5 +75,17 @@ public class CourseService {
         } else {
             return new Integer(1);
         }
+    }
+
+    public List<HashMap<String, Object>> getCourseList() throws ParseException {
+        List<HashMap<String, Object>> courseList = new ArrayList<HashMap<String, Object>>();
+
+        List<Course> courseResult = findAllCourse();
+        Iterator<Course> courseIter = courseResult.iterator();
+        while (courseIter.hasNext()) {
+            HashMap<String, Object> course = course2Json(courseIter.next());
+            courseList.add(course);
+        }
+        return courseList;
     }
 }

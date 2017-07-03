@@ -4,6 +4,7 @@ import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
 import cn.miracle.octts.entity.*;
 import cn.miracle.octts.service.*;
+import cn.miracle.octts.util.CodeConvert;
 import cn.miracle.octts.util.DateConvert;
 import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -336,7 +337,7 @@ public class StudentController extends BaseController {
                 return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
             } else {
                 data = groupConfirmService.groupConfirm2Json(groupConfirm);
-                data.put("group_status", "团队已批准");
+                data.put("group_status", "1");
 
                 response = setCorrectResponse(data);
                 return new ResponseEntity<>(response, HttpStatus.OK);
@@ -352,7 +353,7 @@ public class StudentController extends BaseController {
                 return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
             } else {
                 data = groupApplyService.groupApply2Json(groupApply);
-                data.put("group_status", "团队待审核");
+                data.put("group_status", "0");
 
                 response = setCorrectResponse(data);
                 return new ResponseEntity<>(response, HttpStatus.OK);
@@ -393,7 +394,7 @@ public class StudentController extends BaseController {
 
         groupApply.setGroup_apply_id(gaid);
         groupApply.setCourse_id(course_id);
-        groupApply.setGroup_apply_name(group_name);
+        groupApply.setGroup_apply_name(CodeConvert.unicode2String(group_name));
         groupApply.setGroup_apply_owner_id(uid);
 
         groupApplyService.insetGroupApply(groupApply, uid);
@@ -537,6 +538,50 @@ public class StudentController extends BaseController {
         invitationService.deleteInvitationByReceiverId(uid);
 
         response = setCorrectInsert();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    /**
+     * API53 未组队学生拒绝邀请
+     *
+     * @param uid
+     * @param course_id
+     * @param sender_id
+     * @return
+     */
+    @RequestMapping(value = "/reject_invitation", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> rejectInvitation(@RequestParam(value = "uid") String uid,
+                                                         @RequestParam(value = "course_id") Integer course_id,
+                                                         @RequestParam(value = "sender_id") String sender_id) {
+        BaseResponse response = new BaseResponse();
+
+        invitationService.deleteInvitationBySenderIdAndReceiverId(sender_id, uid);
+
+        response = setCorrectUpdate();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+
+    @RequestMapping(value = "/dismiss_group", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> rejectGroupApply(@RequestParam(value = "uid") String uid,
+                                                         @RequestParam(value = "course_id") Integer course_id,
+                                                         @RequestParam(value = "group_apply_id") Integer group_apply_id) {
+        BaseResponse response = new BaseResponse();
+
+        //判读group_apply_id合法性
+        GroupApply groupApply = groupApplyService.findGroupApplyById(group_apply_id);
+        if (groupApply == null || (!groupApply.getCourse_id().equals(course_id))) {
+            response = setParamError();
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        //group_apply 删除记录
+        groupApplyService.deleteGroupApplyById(group_apply_id);
+
+        //group_apply_member 删除记录
+        groupApplyMemberService.deleteGroupApplyMemberByGroupApplyId(group_apply_id);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

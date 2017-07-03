@@ -817,6 +817,27 @@ public class TeacherController extends BaseController {
     }
 
     /**
+     * API30: 查看以往学期
+     *
+     * @return
+     */
+    @RequestMapping(value = "/old_course", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getOldCourse() {
+        BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<String, Object>();
+
+        try {
+            List<HashMap<String, Object>> courseList = courseService.getCourseList();
+            data.put("course_list", courseList);
+        } catch (ParseException parseException) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        response = setCorrectResponse(data);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    /**
     *  API.32: 教师——获取团队成绩报表页面
     * */
     @RequestMapping(value = "/group_form", method = RequestMethod.GET)

@@ -3,7 +3,6 @@ package cn.miracle.octts.controller;
 import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
 import cn.miracle.octts.entity.Course;
-import cn.miracle.octts.entity.Student;
 import cn.miracle.octts.service.CourseService;
 import cn.miracle.octts.service.StudentService;
 import cn.miracle.octts.service.TeacherService;
@@ -21,7 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Tony on 2017/7/1.
@@ -190,24 +191,16 @@ public class AdminController extends BaseController {
     @RequestMapping(value = "/course_information", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getCourseInformation() {
         BaseResponse response = new BaseResponse();
-        List<HashMap<String, Object>> course_list = new ArrayList<HashMap<String, Object>>();
+        HashMap<String, Object> data = new HashMap<String, Object>();
 
-        List<Course> course_result = courseService.findAllCourse();
-        Iterator<Course> course_iter = course_result.iterator();
         try {
-            while (course_iter.hasNext()) {
-
-                HashMap<String, Object> course = courseService.adminCourse2Json(course_iter.next());
-                course_list.add(course);
-            }
+            List<HashMap<String, Object>> courseList = courseService.getCourseList();
+            data.put("course_list", courseList);
         } catch (ParseException parseException) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        HashMap<String, Object> data = new HashMap<String, Object>();
-        data.put("course_list", course_list);
         response = setCorrectResponse(data);
-
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

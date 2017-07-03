@@ -70,4 +70,8 @@ public class InvitationService {
         return invitationDao.deleteInvitationBySenderId(sender_id);
     }
 
+    public Integer deleteInvitationBySenderIdAndReceiverId(String sender_id, String receiver_id) {
+        return invitationDao.deleteInvitationBySenderIdAndReceiverId(sender_id, receiver_id);
+    }
+
 }
