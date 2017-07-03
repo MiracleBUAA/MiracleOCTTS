@@ -4,6 +4,7 @@ import cn.miracle.octts.common.base.BaseController;
 import cn.miracle.octts.common.base.BaseResponse;
 import cn.miracle.octts.entity.*;
 import cn.miracle.octts.service.*;
+import cn.miracle.octts.util.CodeConvert;
 import cn.miracle.octts.util.DateConvert;
 import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -393,7 +394,7 @@ public class StudentController extends BaseController {
 
         groupApply.setGroup_apply_id(gaid);
         groupApply.setCourse_id(course_id);
-        groupApply.setGroup_apply_name(group_name);
+        groupApply.setGroup_apply_name(CodeConvert.unicode2String(group_name));
         groupApply.setGroup_apply_owner_id(uid);
 
         groupApplyService.insetGroupApply(groupApply, uid);
