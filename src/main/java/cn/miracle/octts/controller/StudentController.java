@@ -7,7 +7,6 @@ import cn.miracle.octts.service.*;
 import cn.miracle.octts.util.DateConvert;
 import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -301,8 +300,7 @@ public class StudentController extends BaseController {
         HomeworkUpload homeworkUploadToBeDelete = homeworkUploadService.findHomeworkUploadById(homework_upload_id);
         if (homeworkUploadToBeDelete == null) { // 作业不存在
             return new ResponseEntity<>(response, HttpStatus.OK);
-        }
-        else {
+        } else {
             try {
                 homeworkUploadService.deleteHomeworkUploadById(homeworkUploadToBeDelete.getHomework_upload_id());
 
@@ -508,6 +506,14 @@ public class StudentController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * API42: 未组队学生接受邀请
+     *
+     * @param uid
+     * @param course_id
+     * @param sender_id
+     * @return
+     */
     @RequestMapping(value = "/accept_invitation", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> acceptInvitation(@RequestParam(value = "uid") String uid,
                                                          @RequestParam(value = "course_id") Integer course_id,
