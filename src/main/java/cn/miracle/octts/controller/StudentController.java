@@ -56,6 +56,9 @@ public class StudentController extends BaseController {
     @Autowired
     private GroupConfirmMemberService groupConfirmMemberService;
 
+    @Autowired
+    private GroupConfirmService groupConfirmService;
+
     /**
      * API34: 查看课程信息
      *
@@ -198,7 +201,7 @@ public class StudentController extends BaseController {
         BaseResponse response = new BaseResponse();
         HashMap<String, Object> data = new HashMap<>();
 
-        // TODO: 生成学生作业提交信息
+        //生成学生作业提交信息
 
         Homework homework = homeworkService.findHomeworkById(homework_id);
         if (homework == null) {
@@ -213,22 +216,39 @@ public class StudentController extends BaseController {
                 data.put("teacher_name", teacherService.findTeacherNameById(homework.getTeacher_id()));
                 data.put("homework_start_time", DateConvert.datetime2String(homework.getHomework_start_time()));
                 data.put("homework_end_time", DateConvert.datetime2String(homework.getHomework_end_time()));
+                data.put("homework_resubmit_limit", homework.getResubmit_limit());
             } catch (ParseException e) {
                 return new ResponseEntity<>(response, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
             }
             // 写入提交作业列表
-            ArrayList<HomeworkUpload> homeworkUploads = new ArrayList<>();
+//            ArrayList<HomeworkUpload> homeworkUploads = new ArrayList<>();
+//            Integer group_id = groupConfirmMemberService.findGroupIdByStudentId(uid);
+//            homeworkUploads.addAll(homeworkUploadService.findHomeworkUploadByHomeworkIdAndGroupId(homework_id, group_id));
+//            try {
+//                List<HashMap<String, Object>> homework_upload_list = homeworkUploadService.getHomeworkUploadList(homeworkUploads);
+//
+//                data.put("homework_upload_list", homework_upload_list);
+//                response = setCorrectResponse(data);
+//
+//                return new ResponseEntity<>(response, HttpStatus.OK);
+//            } catch (ParseException e) {
+//                return new ResponseEntity<BaseResponse>(response, HttpStatus.BAD_GATEWAY);
+//            }
+
+            //修改后的：写入group_list
+            ArrayList<GroupConfirm> group_list = new ArrayList<>();
             Integer group_id = groupConfirmMemberService.findGroupIdByStudentId(uid);
-            homeworkUploads.addAll(homeworkUploadService.findHomeworkUploadByHomeworkIdAndGroupId(homework_id, group_id));
+            group_list.add(groupConfirmService.findGroupConfirmById(group_id));
             try {
-                List<HashMap<String, Object>> homework_upload_list = homeworkUploadService.getHomeworkUploadList(homeworkUploads);
 
-                data.put("homework_upload_list", homework_upload_list);
+                List<HashMap<String, Object>> group_homework_list = groupConfirmService.getGroupHomeworkList(group_list, homework_id);
+
+                data.put("group_list", group_homework_list);
                 response = setCorrectResponse(data);
-
                 return new ResponseEntity<>(response, HttpStatus.OK);
+
             } catch (ParseException e) {
-                return new ResponseEntity<BaseResponse>(response, HttpStatus.BAD_GATEWAY);
+                return new ResponseEntity<BaseResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
     }
@@ -275,30 +295,8 @@ public class StudentController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-//    @RequestMapping(value = "/download/", method = RequestMethod.GET)
-//    public ResponseEntity<org.springframework.core.io.Resource> DownloadHomework(@RequestParam(value = "course_id") Integer course_id,
-//                                                                                 @RequestParam(value = "group_id") String group_id,
-//                                                                                 @RequestParam(value = "homework_id") String homework_id) {
-//        BaseResponse response = new BaseResponse();
-//
-//        String file_folder = "test";
-//
-//        String file_name = "test.txt";
-//
-//        String downloadFileURL = "/Users/hf/tmp/download/" + file_folder + "/" + file_name;
-//
-//        try {
-//            ByteArrayOutputStream baos = FileUtils.getSingleDownloadFile(downloadFileURL);
-//            org.springframework.core.io.Resource resource = new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));
-//
-//            HttpHeaders headers = getFileDownloadHeaders(file_name);
-//
-//            return ResponseEntity.ok().headers(headers).contentType(MediaType.parseMediaType("application/x-msdownload")).body(resource);
-//
-//        } catch (IOException e) {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//    }
+//    @RequestMapping
+//    public ResponseEntity<BaseResponse>
 
 
 

@@ -62,18 +62,19 @@ public class HomeworkUploadService {
             HashMap<String, Object> homework_upload_map = new HashMap<>();
             homework_upload_map.put("homework_upload_id", homework_upload.getHomework_upload_id());
             homework_upload_map.put("homework_upload_time", DateConvert.datetime2String(homework_upload.getCreatetime()));
-
-            homework_upload_map.put("group_id", homework_upload.getGroup_id());
-            // 获取团队名和团队负责人信息
-            GroupConfirm groupConfirm = groupConfirmDao.findGroupConfirmById(homework_upload.getGroup_id());
-            homework_upload_map.put("group_name", groupConfirm.getGroup_name());
-            homework_upload_map.put("group_owner", studentDao.findStudentNameById(groupConfirm.getGroup_owner_id()));
-            // 获取团队得分
-            Integer homework_id = homework_upload.getHomework_id();
-            Integer group_id = homework_upload.getGroup_id();
-            Score score = scoreDao.findScoreByHomeworkIdAndGroupId(homework_id, group_id);
-            homework_upload_map.put("score", score.getScore());
-            homework_upload_map.put("score_message", score.getScore_message());
+            homework_upload_map.put("homework_file_name", homework_upload.getFile_name());
+            homework_upload_map.put("resubmit_limit", homework_upload.getResubmit());
+//            homework_upload_map.put("group_id", homework_upload.getGroup_id());
+//            // 获取团队名和团队负责人信息
+//            GroupConfirm groupConfirm = groupConfirmDao.findGroupConfirmById(homework_upload.getGroup_id());
+//            homework_upload_map.put("group_name", groupConfirm.getGroup_name());
+//            homework_upload_map.put("group_owner", studentDao.findStudentNameById(groupConfirm.getGroup_owner_id()));
+//            // 获取团队得分
+//            Integer homework_id = homework_upload.getHomework_id();
+//            Integer group_id = homework_upload.getGroup_id();
+//            Score score = scoreDao.findScoreByHomeworkIdAndGroupId(homework_id, group_id);
+//            homework_upload_map.put("score", score.getScore());
+//            homework_upload_map.put("score_message", score.getScore_message());
 
             homework_upload_list.add(homework_upload_map);
         }

@@ -357,21 +357,24 @@ public class TeacherController extends BaseController {
                 data.put("teacher_name", teacherService.findTeacherNameById(homework.getTeacher_id()));
                 data.put("homework_start_time", DateConvert.datetime2String(homework.getHomework_start_time()));
                 data.put("homework_end_time", DateConvert.datetime2String(homework.getHomework_end_time()));
+                data.put("homework_resubmit_limit", homework.getResubmit_limit());
             } catch (ParseException e) {
-                return new ResponseEntity<>(response, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+                return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            // 写入提交作业列表
-            ArrayList<HomeworkUpload> homeworkUploads = new ArrayList<>();
-            homeworkUploads.addAll(homeworkUploadService.findHomeworkUploadByHomeworkId(homework_id));
+
+            //修改后的：写入group_list
+            ArrayList<GroupConfirm> group_list = new ArrayList<>();
+            group_list.addAll(groupConfirmService.findGroupConfirmByCourseId(course_id));
             try {
-                List<HashMap<String, Object>> homework_upload_list = homeworkUploadService.getHomeworkUploadList(homeworkUploads);
 
-                data.put("homework_upload_list", homework_upload_list);
+                List<HashMap<String, Object>> group_homework_list = groupConfirmService.getGroupHomeworkList(group_list, homework_id);
+
+                data.put("group_list", group_homework_list);
                 response = setCorrectResponse(data);
-
                 return new ResponseEntity<>(response, HttpStatus.OK);
+
             } catch (ParseException e) {
-                return new ResponseEntity<BaseResponse>(response, HttpStatus.BAD_GATEWAY);
+                return new ResponseEntity<BaseResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
     }

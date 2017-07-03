@@ -1,11 +1,16 @@
 package cn.miracle.octts.service;
 
 import cn.miracle.octts.dao.GroupConfirmDao;
+import cn.miracle.octts.dao.HomeworkUploadDao;
+import cn.miracle.octts.dao.ScoreDao;
 import cn.miracle.octts.dao.StudentDao;
 import cn.miracle.octts.entity.GroupConfirm;
+import cn.miracle.octts.entity.HomeworkUpload;
+import cn.miracle.octts.entity.Score;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -22,6 +27,15 @@ public class GroupConfirmService {
 
     @Autowired
     private GroupConfirmMemberService groupConfirmMemberService;
+
+    @Autowired
+    private ScoreDao scoreDao;
+
+    @Autowired
+    private HomeworkUploadDao homeworkUploadDao;
+
+    @Autowired
+    private HomeworkUploadService homeworkUploadService;
 
 
     public List<String> findGroupOwner() {
@@ -73,5 +87,36 @@ public class GroupConfirmService {
         groupConfirm.setUpdatetime(currentTime);
         groupConfirm.setUid(uid);
         return groupConfirmDao.insertGroupConfirm(groupConfirm);
+    }
+
+//    public GroupConfirm findGroupConfirmByOwner
+
+    public List<HashMap<String, Object>> getGroupHomeworkList(ArrayList<GroupConfirm> group_list, Integer homework_id) throws ParseException{
+        List<HashMap<String, Object>> homework_group_list = new ArrayList<HashMap<String, Object>>();
+
+        for (GroupConfirm group : group_list) {
+            HashMap<String, Object> group_map = new HashMap<>();
+            // 团队信息
+            group_map.put("group_id", group.getGroup_id());
+            group_map.put("group_name", group.getGroup_name());
+            group_map.put("group_owner", studentDao.findStudentNameById(group.getGroup_owner_id()));
+            // 团队作业评分
+            Integer group_id = group.getGroup_id();
+            Score score = scoreDao.findScoreByHomeworkIdAndGroupId(homework_id, group_id);
+            group_map.put("score", score.getScore());
+            group_map.put("score_message", score.getScore_message());
+
+            // 作业列表
+            ArrayList<HomeworkUpload> homework_uploads = new ArrayList<>();
+            homework_uploads.addAll(homeworkUploadDao.findHomeworkUploadByHomeworkIdAndGroupId(homework_id, group_id));
+            ArrayList<HashMap<String, Object>> homework_upload_list = new ArrayList<>();
+            homework_upload_list.addAll(homeworkUploadService.getHomeworkUploadList(homework_uploads));
+            group_map.put("homework_upload_list", homework_upload_list);
+
+            // 写入homework_group_list
+            homework_group_list.add(group_map);
+        }
+
+        return homework_group_list;
     }
 }

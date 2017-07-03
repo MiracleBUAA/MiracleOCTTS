@@ -32,6 +32,11 @@ public interface GroupConfirmDao extends BaseMapper<GroupConfirm> {
     @Select("SELECT max(group_id) FROM group_confirm")
     Integer findMaxGroupId();
 
+    @Select("SELECT gmt_create, gmt_modified, uid, group_id, course_id, group_name, group_owner_id, group_score " +
+            "FROM group_confirm " +
+            "WHERE group_owner_id=#{group_owner_id}")
+    GroupConfirm findGroupConfirmByOwnerId(Integer group_owner_id);
+
     @Insert("INSERT INTO group_confirm(gmt_create, gmt_modified, uid, group_id, course_id, group_name, group_owner_id, group_score) " +
             "VALUES(#{createtime}, #{updatetime}, #{uid}, #{group_id}, #{course_id}, #{group_name}, #{group_owner_id}, #{group_score})")
     Integer insertGroupConfirm(GroupConfirm groupConfirm);
