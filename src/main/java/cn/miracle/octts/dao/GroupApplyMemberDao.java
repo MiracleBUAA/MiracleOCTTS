@@ -27,4 +27,7 @@ public interface GroupApplyMemberDao extends BaseMapper<GroupApplyMember> {
 
     @Select("SELECT student_id FROM group_apply_member WHERE course_id = #{course_id}")
     List<String> findStudentIdByCourseId(Integer course_id);
+
+    @Select("SELECT group_apply_id FROM group_apply_member WHERE student_id = #{student_id}")
+    Integer findGroupApplyIdByStudentId(String student_id);
 }

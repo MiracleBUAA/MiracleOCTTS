@@ -199,8 +199,6 @@ public class AdminController extends BaseController {
 
                 HashMap<String, Object> course = courseService.adminCourse2Json(course_iter.next());
                 course_list.add(course);
-
-
             }
         } catch (ParseException parseException) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

@@ -44,5 +44,9 @@ public class GroupApplyMemberService {
         return groupApplyMemberDao.deleteGroupApplyMemberByGroupApplyId(group_apply_id);
     }
 
+    public Integer findGroupApplyIdByStudentId(String student_id) {
+        return groupApplyMemberDao.findGroupApplyIdByStudentId(student_id);
+    }
+
 
 }

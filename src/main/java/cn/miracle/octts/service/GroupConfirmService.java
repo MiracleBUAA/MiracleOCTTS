@@ -74,4 +74,5 @@ public class GroupConfirmService {
         groupConfirm.setUid(uid);
         return groupConfirmDao.insertGroupConfirm(groupConfirm);
     }
+
 }
