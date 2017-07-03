@@ -54,6 +54,15 @@ public class StudentController extends BaseController {
     private TeacherService teacherService;
 
     @Autowired
+    private GroupApplyService groupApplyService;
+
+    @Autowired
+    private GroupApplyMemberService groupApplyMemberService;
+
+    @Autowired
+    private GroupConfirmService groupConfirmService;
+
+    @Autowired
     private GroupConfirmMemberService groupConfirmMemberService;
 
     @Autowired
@@ -298,6 +307,54 @@ public class StudentController extends BaseController {
 //    @RequestMapping
 //    public ResponseEntity<BaseResponse>
 
+    /**
+     * API37: 查看我的团队
+     *
+     * @param course_id
+     * @param student_id
+     * @return
+     */
+    @RequestMapping(value = "/mygroup", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getMyGroup(@RequestParam(value = "course_id") Integer course_id,
+                                                   @RequestParam(value = "student_id") String student_id) {
+        BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<String, Object>();
 
+        //已加入批准团队
+        Integer group_id = groupConfirmMemberService.findGroupIdByStudentId(student_id);
+        if (group_id != null) {
+            GroupConfirm groupConfirm = groupConfirmService.findGroupConfirmById(group_id);
+            if (groupConfirm == null || (!groupConfirm.getCourse_id().equals(course_id))) {
+                response = setParamError();
+                return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+            } else {
+                data = groupConfirmService.groupConfirm2Json(groupConfirm);
+                data.put("group_status", "团队已批准");
 
+                response = setCorrectResponse(data);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+        }
+
+        //已加入待审核团队
+        Integer group_apply_id = groupApplyMemberService.findGroupApplyIdByStudentId(student_id);
+        if (group_apply_id != null) {
+            GroupApply groupApply = groupApplyService.findGroupApplyById(group_apply_id);
+            if (groupApply == null || (!groupApply.getCourse_id().equals(course_id))) {
+                response = setParamError();
+                return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+            } else {
+                data = groupApplyService.groupApply2Json(groupApply);
+                data.put("group_status", "团队待审核");
+
+                response = setCorrectResponse(data);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+        }
+
+        //未加入团队
+        response.setErrorNo(3);
+        response.setErrorMsg("未加入团队");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
