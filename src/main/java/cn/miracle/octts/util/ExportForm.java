@@ -1,10 +1,9 @@
 package cn.miracle.octts.util;
 
+import cn.miracle.octts.entity.GroupConfirm;
 import cn.miracle.octts.entity.GroupConfirmMember;
-import cn.miracle.octts.service.GroupConfirmMemberService;
-import cn.miracle.octts.service.GroupConfirmService;
-import cn.miracle.octts.service.HomeworkService;
-import cn.miracle.octts.service.StudentService;
+import cn.miracle.octts.entity.Homework;
+import cn.miracle.octts.service.*;
 import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
@@ -38,6 +37,9 @@ public class ExportForm {
 
     @Autowired
     HomeworkService homeworkService;
+
+    @Autowired
+    ScoreSerivce scoreSerivce;
 
     /**
      * 生成团队组建报表
@@ -98,37 +100,62 @@ public class ExportForm {
     }
 
     /**
-     * 生成团队成绩报表
+     * 生成团队提交作业情况报表
      *
      * @return
      * @throws IOException
      * @throws RowsExceededException
      * @throws WriteException
      */
-    public String exportGroupScoreList() throws IOException, RowsExceededException, WriteException {
+    public String exportGroupScoreList(Integer course_id) throws IOException, RowsExceededException, WriteException {
         String path = "file" + FILE_SEPARATOR + "form" + FILE_SEPARATOR + "group_score.xls";
 
         WritableWorkbook writeBook = Workbook.createWorkbook(new File(path));
-        WritableSheet firstSheet = writeBook.createSheet("团队成绩报表", 0);
+        WritableSheet firstSheet = writeBook.createSheet("提交作业情况报表", 0);
         Label label;
 
         label = new Label(0, 0, "团队名称");
         firstSheet.addCell(label);
         label = new Label(1, 0, "团队编号");
         firstSheet.addCell(label);
-        label = new Label(2, 0, "团队总成绩");
+        label = new Label(2, 0, "团队成绩");
         firstSheet.addCell(label);
 
-        if (homeworkService.findAllHomeworkId() != null) {
-            Iterator<Integer> homeworkIdIter = homeworkService.findAllHomeworkId().iterator();
-            while (homeworkIdIter.hasNext()) {
-                Integer homeworkId = homeworkIdIter.next();
+        if (groupConfirmService.findGroupConfirmByCourseId(course_id) != null) {
+            Iterator<GroupConfirm> groupListIter = groupConfirmService.findGroupConfirmByCourseId(course_id).iterator();
+            int row = 0;
 
+            while (groupListIter.hasNext()) {
+                Double sumGroupScore = 0.0;
+                row++;
+                GroupConfirm group = groupListIter.next();
 
+                label = new Label(0, row, group.getGroup_name());
+                firstSheet.addCell(label);
+                label = new Label(1, row, group.getGroup_id().toString());
+                firstSheet.addCell(label);
+
+                if (homeworkService.findHoweworkByCourseId(course_id) != null) {
+                    Iterator<Homework> homeworkIter = homeworkService.findHoweworkByCourseId(course_id).iterator();
+                    int col = 2;
+                    while (homeworkIter.hasNext()) {
+                        col++;
+                        Homework homework = homeworkIter.next();
+
+                        label = new Label(col, 0, homework.getHomework_title());
+                        firstSheet.addCell(label);
+
+                        Double score = scoreSerivce.findScoreValueByHomeworkIdAndGroupId(homework.getHomework_id(), group.getGroup_id());
+                        sumGroupScore += (score == null) ? 0.0 : score;
+                        label = new Label(col, row, (score == null) ? "0" : score.toString());
+                        firstSheet.addCell(label);
+                    }
+                }
+
+                label = new Label(2, row, sumGroupScore.toString());
+                firstSheet.addCell(label);
             }
         }
-
-
 
         writeBook.write();
         writeBook.close();
@@ -150,11 +177,17 @@ public class ExportForm {
         WritableSheet firstSheet = writeBook.createSheet("个人成绩报表", 0);
         Label label;
 
-        label = new Label(0, 0, "学号");
+        label = new Label(0, 0, "学生学号");
         firstSheet.addCell(label);
-        label = new Label(1, 0, "姓名");
+        label = new Label(1, 0, "学生姓名");
         firstSheet.addCell(label);
-        label = new Label(2, 0, "成绩");
+        label = new Label(2, 0, "个人成绩");
+        firstSheet.addCell(label);
+        label = new Label(3, 0, "团队成绩");
+        firstSheet.addCell(label);
+        label = new Label(4, 0, "业务系数");
+        firstSheet.addCell(label);
+        label = new Label(5, 0, "缺勤次数");
         firstSheet.addCell(label);
 
         writeBook.write();

@@ -15,13 +15,13 @@ public interface ScoreDao extends BaseMapper<Score> {
             "FROM score " +
             "WHERE score_id = #{score_id}")
     @ResultMap("cn.miracle.octts.dao.ScoreDao.ScoreDetail")
-    Score findScoreById (Integer score_id);
+    Score findScoreById(Integer score_id);
 
     @Select("SELECT gmt_create, gmt_modified, uid, score_id, course_id, homework_id, group_id, grader_id, score, score_message " +
             "FROM score " +
             "WHERE homework_id=#{homework_id} AND group_id=#{group_id}")
     @ResultMap("cn.miracle.octts.dao.ScoreDao.ScoreDetail")
-    Score findScoreByHomeworkIdAndGroupId(@Param(value = "homework_id")Integer homework_id,
+    Score findScoreByHomeworkIdAndGroupId(@Param(value = "homework_id") Integer homework_id,
                                           @Param(value = "group_id") Integer group_id);
 
     @Select("SELECT gmt_create, gmt_modified, uid, score_id, course_id, homework_id, group_id, grader_id, score, score_message " +
@@ -42,4 +42,8 @@ public interface ScoreDao extends BaseMapper<Score> {
             "SET gmt_modified=#{updatetime}, uid=#{uid}, course_id=#{course_id}, homework_id=#{homework_id}, group_id=#{group_id}, grader_id=#{grader_id}, score=#{score}, score_message=#{score_message} " +
             "WHERE score_id=#{score_id}")
     void updateScore(Score score);
+
+    @Select("SELECT score FROM score WHERE homework_id = #{homework_id} AND group_id = #{group_id}")
+    Double findScoreValueByHomeworkIdAndGroupId(@Param(value = "homework_id") Integer homework_id,
+                                                @Param(value = "group_id") Integer group_id);
 }

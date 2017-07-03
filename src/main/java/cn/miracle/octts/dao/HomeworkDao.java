@@ -18,7 +18,8 @@ public interface HomeworkDao extends BaseMapper<Homework> {
 
     @Select("SELECT homework_id, course_id, teacher_id, homework_score, homework_status, homework_title, homework_message, homework_start_time, homework_end_time, resubmit_limit " +
             "FROM homework " +
-            "WHERE course_id = #{course_id}")
+            "WHERE course_id = #{course_id} " +
+            "ORDER BY homework_id")
     @ResultMap("cn.miracle.octts.dao.HomeworkDao.HomeworkInformation")
     List<Homework> findHoweworkByCourseId(Integer course_id);
 
@@ -40,8 +41,5 @@ public interface HomeworkDao extends BaseMapper<Homework> {
 
     @Select("SELECT homework_title FROM homework WHERE homework_id=#{homework_id}")
     String findHomeworkTitleById(Integer homework_id);
-
-    @Select("SELECT homework_id FROM homework ORDER BY homework_id")
-    List<Integer> findAllHomeworkId();
 
 }

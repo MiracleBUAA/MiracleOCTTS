@@ -35,4 +35,8 @@ public class ScoreSerivce {
         score.setUpdatetime(currentdate);
         scoreDao.updateScore(score);
     }
+
+    public Double findScoreValueByHomeworkIdAndGroupId(Integer homework_id, Integer group_id) {
+        return scoreDao.findScoreValueByHomeworkIdAndGroupId(homework_id, group_id);
+    }
 }
