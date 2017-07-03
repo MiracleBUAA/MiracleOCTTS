@@ -35,16 +35,18 @@ public class HomeworkService {
         ArrayList<Homework> homeworks = new ArrayList<>();
         homeworks.addAll(homeworkDao.findHoweworkByCourseId(course_id));
         for (Homework homework : homeworks) {
-            HashMap<String, Object> homework_item = new HashMap<>();
-            homework_item.put("homework_id", homework.getHomework_id());
-            homework_item.put("homework_title", homework.getHomework_title());
+            if (homework != null) {
+                HashMap<String, Object> homework_item = new HashMap<>();
+                homework_item.put("homework_id", homework.getHomework_id());
+                homework_item.put("homework_title", homework.getHomework_title());
 
-            homework_item.put("homework_start_time", DateConvert.datetime2String(homework.getHomework_start_time()));
-            homework_item.put("homework_end_time", DateConvert.datetime2String(homework.getHomework_end_time()));
+                homework_item.put("homework_start_time", DateConvert.datetime2String(homework.getHomework_start_time()));
+                homework_item.put("homework_end_time", DateConvert.datetime2String(homework.getHomework_end_time()));
 
-            homework_item.put("teacher_name", teacherDao.findTeacherNameById(homework.getTeacher_id()));
+                homework_item.put("teacher_name", teacherDao.findTeacherNameById(homework.getTeacher_id()));
 
-            homework_list.add(homework_item);
+                homework_list.add(homework_item);
+            }
         }
         return homework_list;
     }

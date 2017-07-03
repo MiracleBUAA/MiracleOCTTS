@@ -41,16 +41,18 @@ public class ResourceService {
 
         resources.addAll(resourceDao.findResourceByCourseId(course_id));
         for (Resource resource : resources) {
-            HashMap<String, Object> resource_item = new HashMap<>();
+            if (resource != null) {
+                HashMap<String, Object> resource_item = new HashMap<>();
 
-            resource_item.put("resource_id", resource.getResource_id());
-            resource_item.put("resource_title", resource.getResource_title());
-            resource_item.put("resource_type", resource.getResource_type());
-            resource_item.put("create_time", DateConvert.datetime2String(resource.getCreatetime()));
-            String teacher_name = teacherDao.findTeacherNameById(resource.getTeacher_id());
-            resource_item.put("teacher_name", teacher_name);
+                resource_item.put("resource_id", resource.getResource_id());
+                resource_item.put("resource_title", resource.getResource_title());
+                resource_item.put("resource_type", resource.getResource_type());
+                resource_item.put("create_time", DateConvert.datetime2String(resource.getCreatetime()));
+                String teacher_name = teacherDao.findTeacherNameById(resource.getTeacher_id());
+                resource_item.put("teacher_name", teacher_name);
 
-            resource_list.add(resource_item);
+                resource_list.add(resource_item);
+            }
         }
         return resource_list;
     }

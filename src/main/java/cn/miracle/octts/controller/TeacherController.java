@@ -856,6 +856,36 @@ public class TeacherController extends BaseController {
 
     }
 
+    /**
+    * API.33: 教师——获取个人成绩报表
+    *
+    * */
+    @RequestMapping(value = "/student_form", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getStudentForm(@RequestParam(value = "course_id") Integer course_id) {
+        BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        try {
+            List<HashMap<String, Object>> student_score_list = new ArrayList<>();
+            List<Student> students = studentService.findAllStudent();
+            for (Student student : students) {
+                if(student != null) {
+                    HashMap<String, Object> student_map = new HashMap<>();
+                    student_map.put("student_id", student.getStudent_id());
+                    student_map.put("student_name", student.getStudent_name());
+                    student_map.put("student_class", student.getStudent_class());
+                    student_map.put("gender", student.getStudent_gender());
+                    student_map.put("score", student.getPersonal_score());
 
+                    student_score_list.add(student_map);
+                }
+            }
+            data.put("student_score_list", student_score_list);
 
+            response = setCorrectResponse(data);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<BaseResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

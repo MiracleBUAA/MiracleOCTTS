@@ -140,7 +140,7 @@ public class GroupConfirmService {
                 group_map.put("group_name", group.getGroup_name());
                 // 写小组成绩
                 List<HashMap<String, Object>> homework_score_list = new ArrayList<>();
-
+                Double total_score = 0.0;
                 List<Score> scoreList = new ArrayList<>();
                 scoreList.addAll(scoreDao.findScoreByGroupId(group_id));
                 for (Score score : scoreList) {
@@ -149,13 +149,13 @@ public class GroupConfirmService {
                     Integer homework_id = score.getHomework_id();
                     score_map.put("homework_name", homeworkDao.findHomeworkTitleById(homework_id));
                     score_map.put("score", score.getScore());
-
+                    total_score += score.getScore();
                     homework_score_list.add(score_map);
                 }
+                group_map.put("total_score", total_score);
                 group_map.put("homework_score_list", homework_score_list);
                 group_score_list.add(group_map);
             }
-
         }
         return group_score_list;
     }

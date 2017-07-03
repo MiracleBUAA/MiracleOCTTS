@@ -263,7 +263,6 @@ public class StudentController extends BaseController {
 
         if (uploadFile.isEmpty()) {
             response = setFileUploadError();
-            response = setCorrectResponse(data);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             // 完成文件上传
