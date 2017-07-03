@@ -97,28 +97,30 @@ public class GroupConfirmService {
         List<HashMap<String, Object>> homework_group_list = new ArrayList<HashMap<String, Object>>();
 
         for (GroupConfirm group : group_list) {
-            HashMap<String, Object> group_map = new HashMap<>();
-            // 团队信息
-            group_map.put("group_id", group.getGroup_id());
-            group_map.put("group_name", group.getGroup_name());
-            group_map.put("group_owner", studentDao.findStudentNameById(group.getGroup_owner_id()));
-            // 团队作业评分
-            Integer group_id = group.getGroup_id();
-            Score score = scoreDao.findScoreByHomeworkIdAndGroupId(homework_id, group_id);
-            if (score != null) {
-                group_map.put("score", score.getScore());
-                group_map.put("score_message", score.getScore_message());
+            if (group != null) {
+                HashMap<String, Object> group_map = new HashMap<>();
+                // 团队信息
+                group_map.put("group_id", group.getGroup_id());
+                group_map.put("group_name", group.getGroup_name());
+                group_map.put("group_owner", studentDao.findStudentNameById(group.getGroup_owner_id()));
+                // 团队作业评分
+                Integer group_id = group.getGroup_id();
+                Score score = scoreDao.findScoreByHomeworkIdAndGroupId(homework_id, group_id);
+                if (score != null) {
+                    group_map.put("score", score.getScore());
+                    group_map.put("score_message", score.getScore_message());
+                }
+
+                // 作业列表
+                ArrayList<HomeworkUpload> homework_uploads = new ArrayList<>();
+                homework_uploads.addAll(homeworkUploadDao.findHomeworkUploadByHomeworkIdAndGroupId(homework_id, group_id));
+                ArrayList<HashMap<String, Object>> homework_upload_list = new ArrayList<>();
+                homework_upload_list.addAll(homeworkUploadService.getHomeworkUploadList(homework_uploads));
+                group_map.put("homework_upload_list", homework_upload_list);
+
+                // 写入homework_group_list
+                homework_group_list.add(group_map);
             }
-
-            // 作业列表
-            ArrayList<HomeworkUpload> homework_uploads = new ArrayList<>();
-            homework_uploads.addAll(homeworkUploadDao.findHomeworkUploadByHomeworkIdAndGroupId(homework_id, group_id));
-            ArrayList<HashMap<String, Object>> homework_upload_list = new ArrayList<>();
-            homework_upload_list.addAll(homeworkUploadService.getHomeworkUploadList(homework_uploads));
-            group_map.put("homework_upload_list", homework_upload_list);
-
-            // 写入homework_group_list
-            homework_group_list.add(group_map);
         }
 
         return homework_group_list;
@@ -130,27 +132,30 @@ public class GroupConfirmService {
         List<GroupConfirm> group_list = new ArrayList<>();
         group_list.addAll(groupConfirmDao.findGroupConfirmByCourseId(course_id));
         for (GroupConfirm group : group_list) {
-            HashMap<String, Object> group_map = new HashMap<>();
-            // 写小组信息
-            Integer group_id = group.getGroup_id();
-            group_map.put("group_id", group_id);
-            group_map.put("group_name", group.getGroup_name());
-            // 写小组成绩
-            List<HashMap<String, Object>> homework_score_list = new ArrayList<>();
+            if (group != null) {
+                HashMap<String, Object> group_map = new HashMap<>();
+                // 写小组信息
+                Integer group_id = group.getGroup_id();
+                group_map.put("group_id", group_id);
+                group_map.put("group_name", group.getGroup_name());
+                // 写小组成绩
+                List<HashMap<String, Object>> homework_score_list = new ArrayList<>();
 
-            List<Score> scoreList = new ArrayList<>();
-            scoreList.addAll(scoreDao.findScoreByGroupId(group_id));
-            for (Score score : scoreList) {
-                HashMap<String, Object> score_map = new HashMap<>();
-                score_map.put("homework_id", score.getHomework_id());
-                Integer homework_id = score.getHomework_id();
-                score_map.put("homework_name", homeworkDao.findHomeworkTitleById(homework_id));
-                score_map.put("score", score.getScore());
+                List<Score> scoreList = new ArrayList<>();
+                scoreList.addAll(scoreDao.findScoreByGroupId(group_id));
+                for (Score score : scoreList) {
+                    HashMap<String, Object> score_map = new HashMap<>();
+                    score_map.put("homework_id", score.getHomework_id());
+                    Integer homework_id = score.getHomework_id();
+                    score_map.put("homework_name", homeworkDao.findHomeworkTitleById(homework_id));
+                    score_map.put("score", score.getScore());
 
-                homework_score_list.add(score_map);
+                    homework_score_list.add(score_map);
+                }
+                group_map.put("homework_score_list", homework_score_list);
+                group_score_list.add(group_map);
             }
-            group_map.put("homework_score_list", homework_score_list);
-            group_score_list.add(group_map);
+
         }
         return group_score_list;
     }
