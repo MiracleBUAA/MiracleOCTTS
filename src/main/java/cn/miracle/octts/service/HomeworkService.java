@@ -72,4 +72,8 @@ public class HomeworkService {
     public void deleteHomework(Integer homework_id) {
         homeworkDao.deleteHomework(homework_id);
     }
+
+    public List<Integer> findAllHomeworkId() {
+        return homeworkDao.findAllHomeworkId();
+    }
 }

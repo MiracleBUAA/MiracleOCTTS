@@ -40,4 +40,8 @@ public interface HomeworkDao extends BaseMapper<Homework> {
 
     @Select("SELECT homework_title FROM homework WHERE homework_id=#{homework_id}")
     String findHomeworkTitleById(Integer homework_id);
+
+    @Select("SELECT homework_id FROM homework ORDER BY homework_id")
+    List<Integer> findAllHomeworkId();
+
 }

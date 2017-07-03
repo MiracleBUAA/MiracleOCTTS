@@ -19,8 +19,18 @@ public class ExportFormTest {
     ExportForm exportForm;
 
     @Test
-    public void testExportGroupList() throws Exception{
+    public void testExportGroupList() throws Exception {
         exportForm.exportGroupList();
+    }
+
+    @Test
+    public void testExportGroupScoreList() throws Exception {
+        exportForm.exportGroupScoreList();
+    }
+
+    @Test
+    public void testExportStudentScoreList() throws Exception {
+        exportForm.exportStudentScoreList();
     }
 
 }

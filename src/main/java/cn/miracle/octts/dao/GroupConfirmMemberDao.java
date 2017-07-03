@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface GroupConfirmMemberDao extends BaseMapper<GroupConfirmMember> {
 
-    @Select("SELECT student_id FROM group_confirm_member WHERE group_id = #{group_id}")
+    @Select("SELECT student_id FROM group_confirm_member WHERE group_id = #{group_id} ORDER BY group_role DESC")
     List<String> findStudentIdByGroupId(Integer group_id);
 
     @Insert("INSERT INTO group_confirm_member(gmt_create, gmt_modified, uid, group_id, course_id, student_id, group_role) " +
@@ -28,7 +28,7 @@ public interface GroupConfirmMemberDao extends BaseMapper<GroupConfirmMember> {
 
     @Select("SELECT gmt_create, gmt_modified, uid, group_id, course_id, student_id, group_role " +
             "FROM group_confirm_member " +
-            "ORDER BY group_id")
+            "ORDER BY group_id ASC, group_role DESC")
     @ResultMap("cn.miracle.octts.dao.GroupConfirmMemberDao.GroupConfirmMemberDetail")
     List<GroupConfirmMember> findAllGroupConfirmMember();
 
