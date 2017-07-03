@@ -84,7 +84,7 @@ public class StudentControllerTest {
     public void testSendInvitation() throws Exception {
         this.mockMvc.perform(
                 post("/student/send_invitation")
-                        .param("uid", "14214243")
+                        .param("uid", "14216666")
                         .param("course_id", "1")
                         .param("receiver_id", "14213333"))
                 .andDo(print())

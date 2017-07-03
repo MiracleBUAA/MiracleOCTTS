@@ -159,4 +159,9 @@ public class GroupConfirmService {
         }
         return group_score_list;
     }
+
+    public String findGroupConfirmNameById(Integer group_id) {
+        return groupConfirmDao.findGroupConfirmNameById(group_id);
+    }
+
 }
