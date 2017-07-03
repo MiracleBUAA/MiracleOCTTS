@@ -4,6 +4,7 @@ import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.Invitation;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -28,5 +29,9 @@ public interface InvitationDao extends BaseMapper<Invitation> {
 
     @Delete("DELETE FROM invitation WHERE sender_id = #{sender_id}")
     Integer deleteInvitationBySenderId(String sender_id);
+
+    @Delete("DELETE FROM invitation WHERE sender_id = #{sender_id} AND receiver_id = #{receiver_id}")
+    Integer deleteInvitationBySenderIdAndReceiverId(@Param(value = "sender_id") String sender_id,
+                                                    @Param(value = "receiver_id") String receiver_id);
 
 }

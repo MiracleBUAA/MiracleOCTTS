@@ -541,5 +541,25 @@ public class StudentController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * API53 未组队学生拒绝邀请
+     *
+     * @param uid
+     * @param course_id
+     * @param sender_id
+     * @return
+     */
+    @RequestMapping(value = "/reject_invitation", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> rejectInvitation(@RequestParam(value = "uid") String uid,
+                                                         @RequestParam(value = "course_id") Integer course_id,
+                                                         @RequestParam(value = "sender_id") String sender_id) {
+        BaseResponse response = new BaseResponse();
+
+        invitationService.deleteInvitationBySenderIdAndReceiverId(sender_id, uid);
+
+        response = setCorrectUpdate();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
 }
