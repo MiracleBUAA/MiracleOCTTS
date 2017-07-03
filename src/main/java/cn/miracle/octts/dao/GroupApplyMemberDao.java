@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface GroupApplyMemberDao extends BaseMapper<GroupApplyMember> {
 
-    @Select("SELECT student_id FROM group_apply_member WHERE group_apply_id = #{group_apply_id}")
+    @Select("SELECT student_id FROM group_apply_member WHERE group_apply_id = #{group_apply_id} ORDER BY group_role DESC")
     List<String> findStudentIdByGroupApplyId(Integer group_apply_id);
 
     @Select("SELECT gmt_create, gmt_modified, uid, group_apply_id, course_id, student_id, group_role " +

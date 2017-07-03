@@ -3,6 +3,7 @@ package cn.miracle.octts.util;
 import cn.miracle.octts.entity.GroupConfirmMember;
 import cn.miracle.octts.service.GroupConfirmMemberService;
 import cn.miracle.octts.service.GroupConfirmService;
+import cn.miracle.octts.service.HomeworkService;
 import cn.miracle.octts.service.StudentService;
 import jxl.Workbook;
 import jxl.write.Label;
@@ -35,6 +36,17 @@ public class ExportForm {
     @Autowired
     StudentService studentService;
 
+    @Autowired
+    HomeworkService homeworkService;
+
+    /**
+     * 生成团队组建报表
+     *
+     * @return
+     * @throws IOException
+     * @throws RowsExceededException
+     * @throws WriteException
+     */
     public String exportGroupList() throws IOException, RowsExceededException, WriteException {
         String path = "file" + FILE_SEPARATOR + "form" + FILE_SEPARATOR + "group_list.xls";
 
@@ -42,7 +54,7 @@ public class ExportForm {
         WritableSheet firstSheet = writeBook.createSheet("团队组建报表", 0);
         Label label;
 
-        label = new Label(0, 0, "团队名称");//列，行
+        label = new Label(0, 0, "团队名称");
         firstSheet.addCell(label);
         label = new Label(1, 0, "团队编号");
         firstSheet.addCell(label);
@@ -85,5 +97,69 @@ public class ExportForm {
         return path;
     }
 
+    /**
+     * 生成团队成绩报表
+     *
+     * @return
+     * @throws IOException
+     * @throws RowsExceededException
+     * @throws WriteException
+     */
+    public String exportGroupScoreList() throws IOException, RowsExceededException, WriteException {
+        String path = "file" + FILE_SEPARATOR + "form" + FILE_SEPARATOR + "group_score.xls";
+
+        WritableWorkbook writeBook = Workbook.createWorkbook(new File(path));
+        WritableSheet firstSheet = writeBook.createSheet("团队成绩报表", 0);
+        Label label;
+
+        label = new Label(0, 0, "团队名称");
+        firstSheet.addCell(label);
+        label = new Label(1, 0, "团队编号");
+        firstSheet.addCell(label);
+        label = new Label(2, 0, "团队总成绩");
+        firstSheet.addCell(label);
+
+        if (homeworkService.findAllHomeworkId() != null) {
+            Iterator<Integer> homeworkIdIter = homeworkService.findAllHomeworkId().iterator();
+            while (homeworkIdIter.hasNext()) {
+                Integer homeworkId = homeworkIdIter.next();
+
+
+            }
+        }
+
+
+
+        writeBook.write();
+        writeBook.close();
+        return path;
+    }
+
+    /**
+     * 生成个人成绩报表
+     *
+     * @return
+     * @throws IOException
+     * @throws RowsExceededException
+     * @throws WriteException
+     */
+    public String exportStudentScoreList() throws IOException, RowsExceededException, WriteException {
+        String path = "file" + FILE_SEPARATOR + "form" + FILE_SEPARATOR + "student_score.xls";
+
+        WritableWorkbook writeBook = Workbook.createWorkbook(new File(path));
+        WritableSheet firstSheet = writeBook.createSheet("个人成绩报表", 0);
+        Label label;
+
+        label = new Label(0, 0, "学号");
+        firstSheet.addCell(label);
+        label = new Label(1, 0, "姓名");
+        firstSheet.addCell(label);
+        label = new Label(2, 0, "成绩");
+        firstSheet.addCell(label);
+
+        writeBook.write();
+        writeBook.close();
+        return path;
+    }
 
 }
