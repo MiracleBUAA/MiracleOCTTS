@@ -14,5 +14,6 @@
         <result property="group_id" column="group_id"/>
         <result property="file_name" column="file_name"/>
         <result property="homework_url" column="homework_url"/>
+        <result property="resubmit" column="resubmit"/>
     </resultMap>
 </mapper>

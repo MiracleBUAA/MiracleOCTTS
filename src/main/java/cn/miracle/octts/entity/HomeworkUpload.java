@@ -13,6 +13,7 @@ public class HomeworkUpload extends BaseEntity {
     private Integer group_id;
     private String file_name;
     private String homework_url;
+    private Integer resubmit;
 
     public HomeworkUpload() {
     }
@@ -63,5 +64,13 @@ public class HomeworkUpload extends BaseEntity {
 
     public void setHomework_url(String homework_url) {
         this.homework_url = homework_url;
+    }
+
+    public Integer getResubmit() {
+        return resubmit;
+    }
+
+    public void setResubmit(Integer resubmit) {
+        this.resubmit = resubmit;
     }
 }
