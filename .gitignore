@@ -1,6 +1,7 @@
 # .gitignore for maven 
 target/
 file/
+src/main/resources/application.properties
 
 # Compiled class file
 *.class
