@@ -24,4 +24,10 @@ public interface GroupConfirmMemberDao extends BaseMapper<GroupConfirmMember> {
 
     @Select("SELECT student_id FROM group_confirm_member WHERE course_id = #{course_id}")
     List<String> findStudentIdByCourseId(Integer course_id);
+
+    @Select("SELECT gmt_create, gmt_modified, uid, group_id, course_id, student_id, group_role " +
+            "FROM group_confirm_member " +
+            "ORDER BY group_id")
+    List<GroupConfirmMember> findAllGroupConfirmMember();
+
 }

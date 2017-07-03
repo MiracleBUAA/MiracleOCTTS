@@ -494,8 +494,9 @@ public class StudentController extends BaseController {
 
         //学生已经收到过此人的邀请
         if (invitationService.findSenderIdByReceiverId(receiver_id).contains(uid)) {
-            response = setParamError();
-            return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+            response.setErrorNo(3);
+            response.setErrorMsg("你已发出邀请");
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
 
         //新建邀请

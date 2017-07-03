@@ -83,4 +83,8 @@ public class GroupConfirmMemberService {
         return groupConfirmMemberDao.findGroupIdByStudentId(student_id);
     }
 
+    List<GroupConfirmMember> findAllGroupConfirmMember() {
+        return groupConfirmMemberDao.findAllGroupConfirmMember();
+    }
+
 }
