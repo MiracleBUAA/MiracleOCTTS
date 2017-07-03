@@ -450,7 +450,9 @@ public class StudentController extends BaseController {
         //未加入团队
         List<HashMap<String, Object>> invitationList = invitationService.getInvitationList(uid);
         data.put("invitation_list", invitationList);
-        response = setCorrectResponse(data);
+        response.setErrorNo(3);
+        response.setErrorMsg("不是团队负责人");
+        response.setData(data);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
