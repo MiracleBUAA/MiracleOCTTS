@@ -82,4 +82,5 @@ public class GroupConfirmMemberService {
     public Integer findGroupIdByStudentId(String student_id) {
         return groupConfirmMemberDao.findGroupIdByStudentId(student_id);
     }
+
 }

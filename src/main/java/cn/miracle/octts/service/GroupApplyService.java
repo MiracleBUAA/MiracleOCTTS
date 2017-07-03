@@ -23,17 +23,21 @@ public class GroupApplyService {
     @Autowired
     private GroupApplyMemberService groupApplyMemberService;
 
+    @Autowired
+    private StudentService studentService;
+
     public List<String> findGroupApplyOwner() {
         return groupApplyDao.findGroupApplyOwner();
     }
 
     public HashMap<String, Object> groupApply2Json(GroupApply groupApply) {
         HashMap<String, Object> data = new HashMap<String, Object>();
+        Integer gaid = groupApply.getGroup_apply_id();
 
         data.put("group_apply_id", groupApply.getGroup_apply_id());
         data.put("group_apply_name", groupApply.getGroup_apply_name());
         data.put("group_apply_owner", studentDao.findStudentNameById(groupApply.getGroup_apply_owner_id()));
-        data.put("group_apply_member", groupApplyMemberService.findGroupApplyMemberNameByGroupApplyId(groupApply.getGroup_apply_id()));
+        data.put("group_apply_member", studentService.getMemberList(groupApplyMemberService.findStudentIdByGroupApplyId(gaid)));
 
         return data;
     }
