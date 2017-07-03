@@ -515,7 +515,7 @@ public class TeacherController extends BaseController {
                 resource_upload.setResource_id(resource_id);
                 resource_upload.setUid(uid);
                 resource_upload.setCourse_id(course_id);
-                resource_type = CodeConvert.unicode2String(resource_type);
+//                resource_type = CodeConvert.unicode2String(resource_type);
                 resource_upload.setResource_type(resource_type);
                 resource_upload.setResource_title(resource_title);
                 resource_upload.setTeacher_id(uid);
