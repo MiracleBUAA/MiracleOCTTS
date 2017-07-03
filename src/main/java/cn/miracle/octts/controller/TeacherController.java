@@ -71,6 +71,9 @@ public class TeacherController extends BaseController {
     @Autowired
     private ScoreSerivce scoreSerivce;
 
+    @Autowired
+    private InvitationService invitationService;
+
     /**
      * API7: 课程信息
      *
@@ -748,7 +751,7 @@ public class TeacherController extends BaseController {
 
         groupConfirmMemberService.insertGroupConfirmMember(groupApplyMemberList, uid, gid);
 
-        //student 加入 group_id
+        //student 插入 group_id
         groupConfirmMemberService.updateStudentGroupId(gid);
 
         //group_apply 删除记录
@@ -757,6 +760,10 @@ public class TeacherController extends BaseController {
         //group_apply_member 删除记录
         groupApplyMemberService.deleteGroupApplyMemberByGroupApplyId(group_apply_id);
 
+        //invitation 删除记录
+        invitationService.deleteInvitationBySenderId(groupConfirm.getGroup_owner_id());
+
+        response = setCorrectInsert();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
