@@ -425,8 +425,10 @@ public class StudentController extends BaseController {
 
         //已加入已审批团队
         if (groupConfirmMemberService.findGroupIdByStudentId(uid) != null) {
-            response = setParamError();
-            return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+            response.setErrorNo(4);
+            response.setErrorMsg("团队已经批准");
+            response.setData(new HashMap<>());
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
 
         //已加入未审批团队
