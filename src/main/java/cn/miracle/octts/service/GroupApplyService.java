@@ -6,10 +6,7 @@ import cn.miracle.octts.entity.GroupApply;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by hf on 2017/7/1.
@@ -68,6 +65,15 @@ public class GroupApplyService {
         } else {
             return new Integer(1);
         }
+    }
+
+    public Integer insetGroupApply(GroupApply groupApply, String uid) {
+        Date currentTime = new Date(System.currentTimeMillis());
+        groupApply.setCreatetime(currentTime);
+        groupApply.setUpdatetime(currentTime);
+        groupApply.setUid(uid);
+
+        return groupApplyDao.insertGroupApply(groupApply);
     }
 
 }

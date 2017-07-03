@@ -3,6 +3,7 @@ package cn.miracle.octts.dao;
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.GroupApply;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 
@@ -33,4 +34,8 @@ public interface GroupApplyDao extends BaseMapper<GroupApply> {
 
     @Select("SELECT max(group_apply_id) FROM group_apply")
     Integer findMaxGroupApplyId();
+
+    @Insert("INSERT INTO group_apply(gmt_create, gmt_modified, uid, group_apply_id, course_id, group_apply_name, group_apply_owner_id) " +
+            "VALUES(#{createtime}, #{updatetime}, #{uid}, #{group_apply_id}, #{course_id}, #{group_apply_name}, #{group_apply_owner_id})")
+    Integer insertGroupApply(GroupApply groupApply);
 }
