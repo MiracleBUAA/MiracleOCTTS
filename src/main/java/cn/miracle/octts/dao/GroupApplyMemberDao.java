@@ -44,4 +44,5 @@ public interface GroupApplyMemberDao extends BaseMapper<GroupApplyMember> {
     @Insert("INSERT INTO group_apply_member(gmt_create, gmt_modified, uid, group_apply_id, course_id, student_id, group_role) " +
             "VALUES(#{createtime}, #{updatetime}, #{uid}, #{group_apply_id}, #{course_id}, #{student_id}, #{group_role})")
     Integer insertGroupApplyMember(GroupApplyMember groupApplyMember);
+
 }

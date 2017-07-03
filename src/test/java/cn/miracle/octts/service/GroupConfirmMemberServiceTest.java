@@ -31,11 +31,6 @@ public class GroupConfirmMemberServiceTest {
     GroupConfirmService groupConfirmService;
 
     @Test
-    public void testFindGroupConfirmMemberListByGroupId() {
-       groupConfirmMemberService.findGroupConfirmMemberNameByGroupId(1);
-    }
-
-    @Test
     public void testInsertGroupConfirmMember() {
         List<GroupApplyMember> groupApplyMemberList = new ArrayList<GroupApplyMember>();
 

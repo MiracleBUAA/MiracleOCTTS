@@ -26,9 +26,6 @@ public class GroupConfirmService {
     private StudentDao studentDao;
 
     @Autowired
-    private GroupConfirmMemberService groupConfirmMemberService;
-
-    @Autowired
     private ScoreDao scoreDao;
 
     @Autowired
@@ -36,6 +33,12 @@ public class GroupConfirmService {
 
     @Autowired
     private HomeworkUploadService homeworkUploadService;
+
+    @Autowired
+    private GroupConfirmMemberService groupConfirmMemberService;
+
+    @Autowired
+    private StudentService studentService;
 
 
     public List<String> findGroupOwner() {
@@ -52,11 +55,12 @@ public class GroupConfirmService {
 
     public HashMap<String, Object> groupConfirm2Json(GroupConfirm group_confirm) {
         HashMap<String, Object> data = new HashMap<String, Object>();
+        Integer gid = group_confirm.getGroup_id();
 
         data.put("group_id", group_confirm.getGroup_id());
         data.put("group_name", group_confirm.getGroup_name());
         data.put("group_owner_name", studentDao.findStudentNameById(group_confirm.getGroup_owner_id()));
-        data.put("group_member", groupConfirmMemberService.findGroupConfirmMemberNameByGroupId(group_confirm.getGroup_id()));
+        data.put("group_apply_member", studentService.getMemberList(groupConfirmMemberService.findStudentIdByGroupId(gid)));
 
         return data;
     }
@@ -88,7 +92,7 @@ public class GroupConfirmService {
         return groupConfirmDao.insertGroupConfirm(groupConfirm);
     }
 
-    public List<HashMap<String, Object>> getGroupHomeworkList(ArrayList<GroupConfirm> group_list, Integer homework_id) throws ParseException{
+    public List<HashMap<String, Object>> getGroupHomeworkList(ArrayList<GroupConfirm> group_list, Integer homework_id) throws ParseException {
         List<HashMap<String, Object>> homework_group_list = new ArrayList<HashMap<String, Object>>();
 
         for (GroupConfirm group : group_list) {

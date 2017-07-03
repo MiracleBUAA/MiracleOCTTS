@@ -65,4 +65,8 @@ public class GroupApplyMemberService {
 
         return groupApplyMemberDao.insertGroupApplyMember(groupApplyMember);
     }
+
+    public List<String> findStudentIdByGroupApplyId(Integer group_apply_id) {
+        return groupApplyMemberDao.findStudentIdByGroupApplyId(group_apply_id);
+    }
 }

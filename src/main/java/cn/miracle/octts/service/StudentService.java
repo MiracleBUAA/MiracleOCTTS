@@ -111,4 +111,15 @@ public class StudentService {
         return receiverList;
     }
 
+    public List<HashMap<String, Object>> getMemberList(List<String> memberIdList) {
+        List<HashMap<String, Object>> memberlist = new ArrayList<HashMap<String, Object>>();
+
+        Iterator<String> memberIdIter = memberIdList.iterator();
+        while (memberIdIter.hasNext()) {
+            HashMap<String, Object> student = student2Json(findStudentById(memberIdIter.next()));
+            memberlist.add(student);
+        }
+        return memberlist;
+    }
+
 }
