@@ -60,12 +60,14 @@ public class StudentController extends BaseController {
     @Autowired
     private GroupApplyMemberService groupApplyMemberService;
 
-
     @Autowired
     private GroupConfirmMemberService groupConfirmMemberService;
 
     @Autowired
     private GroupConfirmService groupConfirmService;
+
+    @Autowired
+    private InvitationService invitationService;
 
     /**
      * API34: 查看课程信息
@@ -399,4 +401,102 @@ public class StudentController extends BaseController {
         response = setCorrectInsert();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    /**
+     * API39: 邀请页面
+     *
+     * @param course_id
+     * @param uid
+     * @return
+     */
+    @RequestMapping(value = "/invitation", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getInvitation(@RequestParam(value = "course_id") Integer course_id,
+                                                      @RequestParam(value = "uid") String uid) {
+        BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<String, Object>();
+
+        //已加入已审批团队
+        if (groupConfirmMemberService.findGroupIdByStudentId(uid) != null) {
+            response = setParamError();
+            return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        //已加入未审批团队
+        GroupApplyMember groupApplyMember = groupApplyMemberService.findGroupApplyMemberByStudentId(uid);
+        if (groupApplyMember != null && groupApplyMember.getCourse_id().equals(course_id)) {
+            //是团队负责人
+            if (groupApplyMember.getGroup_role().equals(2)) {
+                List<HashMap<String, Object>> receiverList = studentService.getReceiverList(uid);
+                data.put("invitation_list", receiverList);
+                response = setCorrectResponse(data);
+
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                response = setParamError();
+                return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+            }
+        }
+
+        //未加入团队
+        List<HashMap<String, Object>> invitationList = invitationService.getInvitationList(uid);
+        data.put("invitation_list", invitationList);
+        response = setCorrectResponse(data);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    /**
+     * API40: 负责人查看未组队学生信息
+     *
+     * @param course_id
+     * @return
+     */
+    @RequestMapping(value = "/student_not_in_group", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getStudentNotInGroup(@RequestParam(value = "course_id") Integer course_id) {
+        BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<String, Object>();
+
+        List<HashMap<String, Object>> student_list = studentService.getStudentNotInGroup(course_id);
+        data.put("student_list", student_list);
+
+        response = setCorrectResponse(data);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    /**
+     * API41 负责人发出邀请
+     *
+     * @param uid
+     * @param course_id
+     * @param receiver_id
+     * @return
+     */
+    @RequestMapping(value = "/send_invitation", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> sendInvitation(@RequestParam(value = "uid") String uid,
+                                                       @RequestParam(value = "course_id") Integer course_id,
+                                                       @RequestParam(value = "receiver_id") String receiver_id) {
+        BaseResponse response = new BaseResponse();
+        //学生已经在其他队伍里
+        if (!studentService.getStudentNotInGroupSet(course_id).contains(receiver_id)) {
+            response = setParamError();
+            return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        //学生已经接受过此人的邀请
+        if (invitationService.findSenderIdByReceiverId(receiver_id).contains(uid)) {
+            response = setParamError();
+            return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        //新建邀请
+        Invitation invitation = new Invitation();
+        invitation.setSender_id(uid);
+        invitation.setReceiver_id(receiver_id);
+        invitationService.insertInvitation(invitation, uid);
+
+        response = setCorrectInsert();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
 }

@@ -1,9 +1,11 @@
 package cn.miracle.octts.entity;
 
+import cn.miracle.octts.common.base.BaseEntity;
+
 /**
  * Created by Tony on 2017/7/1.
  */
-public class Invitation {
+public class Invitation extends BaseEntity {
     private String sender_id;
     private String receiver_id;
 

@@ -48,5 +48,11 @@ public class GroupApplyMemberService {
         return groupApplyMemberDao.findGroupApplyIdByStudentId(student_id);
     }
 
+    public Integer findGroupRoleByStudentId(String student_id) {
+        return groupApplyMemberDao.findGroupRoleByStudentId(student_id);
+    }
 
+    public GroupApplyMember findGroupApplyMemberByStudentId(String student_id) {
+        return groupApplyMemberDao.findGroupApplyMemberByStudentId(student_id);
+    }
 }
