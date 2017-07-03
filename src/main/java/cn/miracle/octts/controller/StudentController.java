@@ -437,5 +437,23 @@ public class StudentController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * API40: 负责人查看未组队学生信息
+     *
+     * @param course_id
+     * @return
+     */
+    @RequestMapping(value = "/student_not_in_group", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getStudentNotInGroup(@RequestParam(value = "course_id") Integer course_id) {
+        BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<String, Object>();
+
+        List<HashMap<String, Object>> student_list = studentService.getStudentNotInGroup(course_id);
+        data.put("student_list", student_list);
+
+        response = setCorrectResponse(data);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
 }
