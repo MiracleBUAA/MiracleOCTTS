@@ -1,13 +1,3 @@
-DROP TABLE IF EXISTS `announcement`;
-DROP TABLE IF EXISTS `course`;
-DROP TABLE IF EXISTS `group_confirm`;
-DROP TABLE IF EXISTS `group_apply`;
-DROP TABLE IF EXISTS `group_apply_member`;
-DROP TABLE IF EXISTS `group_confirm_member`;
-DROP TABLE IF EXISTS `homework`;
-DROP TABLE IF EXISTS `homework_upload`;
-DROP TABLE IF EXISTS `invitation`;
-DROP TABLE IF EXISTS `resource`;
-DROP TABLE IF EXISTS `score`;
-DROP TABLE IF EXISTS `student`;
-DROP TABLE IF EXISTS `teacher`;
+-- 删表
+DROP DATABASE octts;
+CREATE DATABASE octts;
