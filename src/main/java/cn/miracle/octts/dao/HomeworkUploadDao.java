@@ -19,6 +19,13 @@ public interface HomeworkUploadDao extends BaseMapper<HomeworkUpload> {
     void InsertHomeworkUpload(HomeworkUpload homeworkUpload);
 
 
+    @Select("SELECT max(homework_upload_id) FROM homework_upload")
+    Integer findMaxId();
+
+    @Delete("DELETE FROM homework_upload WHERE homework_upload_id=#{homework_upload_id}")
+    void deleteHomeworkUploadById(Integer homework_upload_id);
+
+
     @Select("SELECT gmt_create, gmt_modified, uid, homework_upload_id, course_id, homework_id, group_id, file_name, homework_url, resubmit " +
             "FROM homework_upload " +
             "WHERE homework_upload_id = #{homework_upload_id}")

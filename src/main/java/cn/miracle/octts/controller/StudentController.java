@@ -7,6 +7,7 @@ import cn.miracle.octts.service.*;
 import cn.miracle.octts.util.DateConvert;
 import cn.miracle.octts.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -179,7 +180,7 @@ public class StudentController extends BaseController {
     }
 
     /**
-     * API.42: 学生——查看作业列表
+     * API.43: 学生——查看作业列表
      */
     @RequestMapping(value = "/homework_list", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getHomeworkList(@RequestParam(value = "course_id") Integer course_id) {
@@ -199,7 +200,7 @@ public class StudentController extends BaseController {
     }
 
     /**
-     * API.43: 学生——作业信息
+     * API.44: 学生——作业信息
      */
     @RequestMapping(value = "/homework_information", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getHomeworkInformation(@RequestParam(value = "uid") String uid, // uid即学生id
@@ -227,20 +228,6 @@ public class StudentController extends BaseController {
             } catch (ParseException e) {
                 return new ResponseEntity<>(response, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
             }
-            // 写入提交作业列表
-//            ArrayList<HomeworkUpload> homeworkUploads = new ArrayList<>();
-//            Integer group_id = groupConfirmMemberService.findGroupIdByStudentId(uid);
-//            homeworkUploads.addAll(homeworkUploadService.findHomeworkUploadByHomeworkIdAndGroupId(homework_id, group_id));
-//            try {
-//                List<HashMap<String, Object>> homework_upload_list = homeworkUploadService.getHomeworkUploadList(homeworkUploads);
-//
-//                data.put("homework_upload_list", homework_upload_list);
-//                response = setCorrectResponse(data);
-//
-//                return new ResponseEntity<>(response, HttpStatus.OK);
-//            } catch (ParseException e) {
-//                return new ResponseEntity<BaseResponse>(response, HttpStatus.BAD_GATEWAY);
-//            }
 
             //修改后的：写入group_list
             ArrayList<GroupConfirm> group_list = new ArrayList<>();
@@ -270,40 +257,61 @@ public class StudentController extends BaseController {
                                                        @RequestParam(value = "homework_id") Integer homework_id,
                                                        @RequestParam(value = "group_id") Integer group_id) {
         BaseResponse response = new BaseResponse();
-        if (course_id == null || homework_id == null || group_id == null) {
-            response = setParamError();
-        } else if (uploadFile.isEmpty()) {
+        HashMap<String, Object> data = new HashMap<>();
+
+        if (uploadFile.isEmpty()) {
             response = setFileUploadError();
+            response = setCorrectResponse(data);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             // 完成文件上传
             try {
                 // 将文件写入服务器
                 String filePath = FileUtils.saveSingleUploadFile(uploadFile, FileUtils.HOMEWORK_UPLOAD_FOLDER);
                 // TODO: WRITE DATABASE
-                //Uid included
+                // Uid included
                 HomeworkUpload homeworkUpload = new HomeworkUpload();
-                homeworkUpload.setHomework_upload_id(233);
-                homeworkUpload.setCourse_id(course_id);
+                homeworkUpload.setHomework_upload_id(homeworkUploadService.findMaxId());
                 homeworkUpload.setHomework_id(homework_id);
-                homeworkUpload.setGroup_id(group_id);
+                homeworkUpload.setCourse_id(course_id);
                 homeworkUpload.setUid(uid);
+                homeworkUpload.setGroup_id(group_id);
                 homeworkUpload.setHomework_url(filePath);
 
                 homeworkUploadService.InsertHomeworkUpload(homeworkUpload);
+                data.put("desc", "OK");
+
+                response = setCorrectResponse(data);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } catch (IOException e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+    }
+
+    @RequestMapping(value = "/homework_delete", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> deleteHomeworkUpload(@RequestParam(value = "uid") String uid,
+                                                             @RequestParam(value = "homework_upload_id") Integer homework_upload_id) {
+        BaseResponse response = new BaseResponse();
+
+        HomeworkUpload homeworkUploadToBeDelete = homeworkUploadService.findHomeworkUploadById(homework_upload_id);
+        if (homeworkUploadToBeDelete == null) { // 作业不存在
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        else {
+            try {
+                homeworkUploadService.deleteHomeworkUploadById(homeworkUploadToBeDelete.getHomework_upload_id());
 
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("desc", "OK");
                 response = setCorrectResponse(data);
-
-            } catch (IOException e) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<BaseResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-//    @RequestMapping
-//    public ResponseEntity<BaseResponse>
 
     /**
      * API37: 查看我的团队
