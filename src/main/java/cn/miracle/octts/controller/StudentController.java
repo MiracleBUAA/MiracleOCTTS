@@ -355,4 +355,40 @@ public class StudentController extends BaseController {
         response.setErrorMsg("未加入团队");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    /**
+     * API38: 创建新团队
+     *
+     * @param uid
+     * @param course_id
+     * @param group_name
+     * @return
+     */
+    @RequestMapping(value = "/new_group", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> createGroup(@RequestParam(value = "uid") String uid,
+                                                    @RequestParam(value = "course_id") Integer course_id,
+                                                    @RequestParam(value = "group_name") String group_name) {
+        BaseResponse response = new BaseResponse();
+        //如果已经在团队中则不允许创建团队
+        Integer group_id = groupConfirmMemberService.findGroupIdByStudentId(uid);
+        Integer group_apply_id = groupApplyMemberService.findGroupApplyIdByStudentId(uid);
+        if (group_id != null || group_apply_id != null) {
+            response = setParamError();
+            return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        GroupApply groupApply = new GroupApply();
+
+        Integer gaid = groupApplyService.findMaxGroupApplyId();
+
+        groupApply.setGroup_apply_id(gaid);
+        groupApply.setCourse_id(course_id);
+        groupApply.setGroup_apply_name(group_name);
+        groupApply.setGroup_apply_owner_id(uid);
+
+        groupApplyService.insetGroupApply(groupApply, uid);
+
+        response = setCorrectInsert();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

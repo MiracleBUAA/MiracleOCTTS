@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,5 +33,16 @@ public class StudentControllerTest {
         this.mockMvc.perform(
                 get("/student/resource_download")
                         .param("resource_id", "3"));
+    }
+
+    @Test
+    public void testCreateGroup() throws Exception {
+        this.mockMvc.perform(
+                post("/student/new_group")
+                        .param("uid", "14213333")
+                        .param("course_id", "1")
+                        .param("group_name", "测试创建组"))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }
