@@ -1,5 +1,6 @@
 package cn.miracle.octts.service;
 
+import cn.miracle.octts.entity.Invitation;
 import cn.miracle.octts.dao.GroupApplyDao;
 import cn.miracle.octts.dao.InvitationDao;
 import cn.miracle.octts.dao.StudentDao;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Date;
 
 /**
  * Created by Tony on 2017/7/3.
@@ -55,4 +57,12 @@ public class InvitationService {
         return invitationList;
     }
 
+    public Integer insertInvitation(Invitation invitation, String uid){
+        Date currentTime = new Date(System.currentTimeMillis());
+        invitation.setCreatetime(currentTime);
+        invitation.setUpdatetime(currentTime);
+        invitation.setUid(uid);
+
+        return invitationDao.insertInvitation(invitation);
+    }
 }

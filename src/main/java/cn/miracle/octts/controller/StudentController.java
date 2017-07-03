@@ -455,5 +455,40 @@ public class StudentController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * API41 负责人发出邀请
+     *
+     * @param uid
+     * @param course_id
+     * @param receiver_id
+     * @return
+     */
+    @RequestMapping(value = "/send_invitation", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> sendInvitation(@RequestParam(value = "uid") String uid,
+                                                       @RequestParam(value = "course_id") Integer course_id,
+                                                       @RequestParam(value = "receiver_id") String receiver_id) {
+        BaseResponse response = new BaseResponse();
+        //学生已经在其他队伍里
+        if (!studentService.getStudentNotInGroupSet(course_id).contains(receiver_id)) {
+            response = setParamError();
+            return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        //学生已经接受过此人的邀请
+        if (invitationService.findSenderIdByReceiverId(receiver_id).contains(uid)) {
+            response = setParamError();
+            return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        //新建邀请
+        Invitation invitation = new Invitation();
+        invitation.setSender_id(uid);
+        invitation.setReceiver_id(receiver_id);
+        invitationService.insertInvitation(invitation, uid);
+
+        response = setCorrectInsert();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
 }
