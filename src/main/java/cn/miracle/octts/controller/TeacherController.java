@@ -874,8 +874,8 @@ public class TeacherController extends BaseController {
                     student_map.put("student_name", student.getStudent_name());
                     student_map.put("student_class", student.getStudent_class());
                     student_map.put("gender", student.getStudent_gender());
-                    student_map.put("score", student.getPersonal_score());
-
+                    Double personal_score = studentService.setPersonalScoreById(student);
+                    student_map.put("score", personal_score);
                     student_score_list.add(student_map);
                 }
             }

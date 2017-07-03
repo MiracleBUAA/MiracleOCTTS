@@ -1,10 +1,7 @@
 package cn.miracle.octts.service;
 
 import cn.miracle.octts.dao.*;
-import cn.miracle.octts.entity.GroupConfirm;
-import cn.miracle.octts.entity.Homework;
-import cn.miracle.octts.entity.HomeworkUpload;
-import cn.miracle.octts.entity.Score;
+import cn.miracle.octts.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -110,7 +107,10 @@ public class GroupConfirmService {
                     group_map.put("score", score.getScore());
                     group_map.put("score_message", score.getScore_message());
                 }
-
+                else {
+                    group_map.put("score", "未评分");
+                    group_map.put("score_message", "无信息");
+                }
                 // 作业列表
                 ArrayList<HomeworkUpload> homework_uploads = new ArrayList<>();
                 homework_uploads.addAll(homeworkUploadDao.findHomeworkUploadByHomeworkIdAndGroupId(homework_id, group_id));
@@ -150,6 +150,13 @@ public class GroupConfirmService {
                     score_map.put("homework_name", homeworkDao.findHomeworkTitleById(homework_id));
                     score_map.put("score", score.getScore());
                     total_score += score.getScore();
+                    // 将团队总分写入学生表
+                    List<String> StudentIdInGroup = groupConfirmMemberService.findStudentIdByGroupId(group_id);
+                    Iterator<String> StudentId_iter = StudentIdInGroup.iterator();
+                    while (StudentId_iter.hasNext()) {
+                        String student_id = StudentId_iter.next();
+                        studentDao.setGroupScoreById(student_id, total_score);
+                    }
                     homework_score_list.add(score_map);
                 }
                 group_map.put("total_score", total_score);
