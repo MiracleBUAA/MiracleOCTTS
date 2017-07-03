@@ -38,4 +38,7 @@ public interface GroupApplyDao extends BaseMapper<GroupApply> {
     @Insert("INSERT INTO group_apply(gmt_create, gmt_modified, uid, group_apply_id, course_id, group_apply_name, group_apply_owner_id) " +
             "VALUES(#{createtime}, #{updatetime}, #{uid}, #{group_apply_id}, #{course_id}, #{group_apply_name}, #{group_apply_owner_id})")
     Integer insertGroupApply(GroupApply groupApply);
+
+    @Select("SELECT group_apply_name FROM group_apply WHERE group_apply_owner_id = #{group_apply_owner_id}")
+    String findGroupApplyNameByGroupApplyOwnerId(String group_apply_owner_id);
 }

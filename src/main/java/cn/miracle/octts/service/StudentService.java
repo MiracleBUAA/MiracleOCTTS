@@ -2,6 +2,7 @@ package cn.miracle.octts.service;
 
 import cn.miracle.octts.dao.GroupApplyMemberDao;
 import cn.miracle.octts.dao.GroupConfirmMemberDao;
+import cn.miracle.octts.dao.InvitationDao;
 import cn.miracle.octts.dao.StudentDao;
 import cn.miracle.octts.entity.Student;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class StudentService {
 
     @Autowired
     private GroupConfirmMemberDao groupConfirmMemberDao;
+
+    @Autowired
+    private InvitationDao invitationDao;
 
 
     public List<Student> findAllStudent() {
@@ -94,6 +98,17 @@ public class StudentService {
             student_list.add(student);
         }
         return student_list;
+    }
+
+    public List<HashMap<String, Object>> getReceiverList(String sender_id) {
+        List<HashMap<String, Object>> receiverList = new ArrayList<HashMap<String, Object>>();
+
+        Iterator<String> receiverIter = invitationDao.findReceiverIdBySenderId(sender_id).iterator();
+        while (receiverIter.hasNext()) {
+            HashMap<String, Object> receiver = student2Json(findStudentById(receiverIter.next()));
+            receiverList.add(receiver);
+        }
+        return receiverList;
     }
 
 }

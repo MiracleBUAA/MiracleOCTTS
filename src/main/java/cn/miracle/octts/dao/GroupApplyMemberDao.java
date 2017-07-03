@@ -30,4 +30,14 @@ public interface GroupApplyMemberDao extends BaseMapper<GroupApplyMember> {
 
     @Select("SELECT group_apply_id FROM group_apply_member WHERE student_id = #{student_id}")
     Integer findGroupApplyIdByStudentId(String student_id);
+
+    @Select("SELECT group_role FROM group_apply_member WHERE student_id = #{student_id}")
+    Integer findGroupRoleByStudentId(String student_id);
+
+    @Select("SELECT gmt_create, gmt_modified, uid, group_apply_id, course_id, student_id, group_role " +
+            "FROM group_apply_member " +
+            "WHERE student_id = #{student_id}")
+    @ResultMap("cn.miracle.octts.dao.GroupApplyMemberDao.GroupApplyMemberDetail")
+    GroupApplyMember findGroupApplyMemberByStudentId(String student_id);
+
 }
