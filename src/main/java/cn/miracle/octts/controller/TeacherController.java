@@ -6,7 +6,10 @@ import cn.miracle.octts.entity.*;
 import cn.miracle.octts.service.*;
 import cn.miracle.octts.util.CodeConvert;
 import cn.miracle.octts.util.DateConvert;
+import cn.miracle.octts.util.ExportForm;
 import cn.miracle.octts.util.FileUtils;
+import jxl.write.WriteException;
+import jxl.write.biff.RowsExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -70,6 +73,9 @@ public class TeacherController extends BaseController {
 
     @Autowired
     private InvitationService invitationService;
+
+    @Autowired
+    private ExportForm exportForm;
 
     /**
      * API7: 课程信息
@@ -887,7 +893,7 @@ public class TeacherController extends BaseController {
     }
 
     /**
-    * API.49: 教师——录入缺勤信息
+    * API.49: 教师——录入缺勤信息 GET
     * */
     @RequestMapping(value = "/student_absent", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getStudentAbsent (@RequestParam(value = "uid") String uid) {
@@ -913,6 +919,10 @@ public class TeacherController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+
+    /**
+     * API.49: 教师——录入缺勤信息 POST
+     * */
     @RequestMapping(value = "/student_absent", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> setStudentAbsent (@RequestParam(value = "uid") String uid,
                                                           @RequestParam(value = "student_id") String student_id,
@@ -927,6 +937,75 @@ public class TeacherController extends BaseController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<BaseResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * API.29: 教师——下载团队信息
+     * */
+    @RequestMapping(value = "/group_download", method = RequestMethod.GET)
+    public ResponseEntity<org.springframework.core.io.Resource> downloadGroupForm (
+            @RequestParam(value = "course_id") Integer course_id) {
+        try {
+            String group_form_url = exportForm.exportGroupList();
+            ByteArrayOutputStream baos = FileUtils.getSingleDownloadFile(group_form_url);
+            org.springframework.core.io.Resource resource = new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));
+
+            HttpHeaders headers = getFileDownloadHeaders("团队组建报表.xls");
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentType(MediaType.parseMediaType("application/x-msdownload"))
+                    .body(resource);
+
+        } catch (IOException | WriteException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * API.51: 教师——下载团队成绩报表
+     * */
+    @RequestMapping(value = "/group_form_download", method = RequestMethod.GET)
+    public ResponseEntity<org.springframework.core.io.Resource> downloadGroupScoreForm (
+            @RequestParam(value = "course_id") Integer course_id) {
+        try {
+            String student_form_url = exportForm.exportGroupScoreList(course_id);
+            ByteArrayOutputStream baos = FileUtils.getSingleDownloadFile(student_form_url);
+            org.springframework.core.io.Resource resource = new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));
+
+            HttpHeaders headers = getFileDownloadHeaders("提交作业情况报表.xls");
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentType(MediaType.parseMediaType("application/x-msdownload"))
+                    .body(resource);
+
+        } catch (IOException | WriteException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * API.52: 教师——下载个人成绩报表
+     * */
+    @RequestMapping(value = "/student_form_download", method = RequestMethod.GET)
+    public ResponseEntity<org.springframework.core.io.Resource> downloadStudentScoreForm (
+            @RequestParam(value = "course_id") Integer course_id) {
+        try {
+            String student_score_url = exportForm.exportStudentScoreList();
+            ByteArrayOutputStream baos = FileUtils.getSingleDownloadFile(student_score_url);
+            org.springframework.core.io.Resource resource = new InputStreamResource(new ByteArrayInputStream(baos.toByteArray()));
+
+            HttpHeaders headers = getFileDownloadHeaders("个人成绩报表.xls");
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentType(MediaType.parseMediaType("application/x-msdownload"))
+                    .body(resource);
+
+        } catch (IOException | WriteException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
