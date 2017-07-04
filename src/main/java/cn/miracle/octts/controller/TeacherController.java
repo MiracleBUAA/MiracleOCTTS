@@ -28,7 +28,7 @@ import java.util.*;
 /**
  * Created by Tony on 2017/6/27.
  */
-@CrossOrigin(origins = "http://*")
+//@CrossOrigin(origins = "http://*")
 @RestController
 @RequestMapping("/teacher")
 public class TeacherController extends BaseController {

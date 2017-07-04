@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-@CrossOrigin(origins = "http://*")
+//@CrossOrigin(origins = "http://*")
 @RestController
 @RequestMapping("/student")
 public class StudentController extends BaseController {

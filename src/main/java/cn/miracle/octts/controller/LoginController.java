@@ -19,7 +19,7 @@ import java.util.HashMap;
 /**
  * Created by Tony on 2017/6/27.
  */
-@CrossOrigin(origins = "http://*")
+//@CrossOrigin(origins = "http://*")
 @RestController
 public class LoginController extends BaseController {
 

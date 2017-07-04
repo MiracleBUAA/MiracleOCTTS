@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Created by Tony on 2017/7/1.
  */
-@CrossOrigin(origins = "http://*")
+//@CrossOrigin(origins = "http://*")
 @RestController
 @RequestMapping("/admin")
 public class AdminController extends BaseController {
