@@ -149,6 +149,18 @@ public class TeacherControllerTest {
     }
 
     @Test
+    public void testDeleteResource () {
+        try {
+            this.mockMvc.perform(post("/teacher/resource_delete")
+                    .param("resource_id", "7"))
+                    .andDo(print())
+                    .andExpect(status().isOk());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void TestAnnouncementInsert() throws Exception {
         this.mockMvc.perform(
                 post("/teacher/new_announcement")
