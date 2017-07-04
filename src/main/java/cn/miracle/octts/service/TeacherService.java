@@ -32,7 +32,7 @@ public class TeacherService {
 
     public Integer importStudentList(String ListUrl, String uid) {
         //设置缺勤次数为20次
-        Integer absent = 20;
+        Integer absent = 0;
 
         jxl.Workbook readwb = null;
         int studentCount = 0;
