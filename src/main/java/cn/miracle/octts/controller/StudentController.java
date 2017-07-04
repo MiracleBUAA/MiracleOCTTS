@@ -637,6 +637,10 @@ public class StudentController extends BaseController {
                                                          @RequestParam(value = "student_id") String student_id,
                                                          @RequestParam(value = "student_rate") Double student_rate) {
         BaseResponse response = new BaseResponse();
+        if (studentService.findStudentById(student_id) == null) {
+            response = setParamError();
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
 
         studentService.updateStudentRateById(student_rate, student_id, uid);
 
