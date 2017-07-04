@@ -121,6 +121,7 @@ public class StudentService {
         }
         return memberlist;
     }
+
     public void setGroupScoreById(String student_id, Double group_score) {
         studentDao.setGroupScoreById(student_id, group_score);
     }
@@ -146,5 +147,21 @@ public class StudentService {
         student.setPersonal_score(personal_score);
         studentDao.setPersonalScoreById(student);
         return personal_score;
+    }
+
+    public List<HashMap<String, Object>> getMemberRateList(Integer group_id) {
+        List<HashMap<String, Object>> memberRateList = new ArrayList<HashMap<String, Object>>();
+
+        Iterator<String> studentIdIter = groupConfirmMemberDao.findStudentIdByGroupId(group_id).iterator();
+        while (studentIdIter.hasNext()) {
+            Student student = findStudentById(studentIdIter.next());
+            HashMap<String, Object> memberRate = new HashMap<String, Object>();
+            memberRate.put("student_id", student.getStudent_id());
+            memberRate.put("student_name",student.getStudent_name());
+            memberRate.put("student_rate", student.getStudent_rate());
+
+            memberRateList.add(memberRate);
+        }
+        return memberRateList;
     }
 }
