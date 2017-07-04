@@ -24,7 +24,8 @@ public interface AnnouncementDao extends BaseMapper<Announcement> {
 
     @Select("SELECT gmt_modified, uid, announcement_id, course_id, teacher_id, announcement_title, announcement_message " +
             "FROM announcement " +
-            "WHERE course_id = #{course_id}")
+            "WHERE course_id = #{course_id} " +
+            "ORDER BY gmt_modified DESC")
     @ResultMap("cn.miracle.octts.dao.AnnouncementDao.AnnouncementDetail")
     List<Announcement> findAnnouncementByCourseId(Integer course_id);
 
