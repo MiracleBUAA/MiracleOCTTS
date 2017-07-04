@@ -90,4 +90,15 @@ public class StudentControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void testGroupRate() throws Exception {
+        this.mockMvc.perform(
+                post("/student/group_rate")
+                        .param("uid", "14215555")
+                        .param("student_id", "14215555")
+                        .param("student_rate", "1.2"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }

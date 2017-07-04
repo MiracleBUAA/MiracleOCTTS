@@ -57,7 +57,7 @@ CREATE TABLE `course` (
   `course_status`          TINYINT(4)          NOT NULL,
   `course_name`            VARCHAR(20)         NOT NULL,
   `course_hour`            INT(11)             NOT NULL,
-  `course_credit`          DECIMAL(10, 0)      NOT NULL,
+  `course_credit`          DECIMAL(10, 1)      NOT NULL,
   `course_location`        VARCHAR(50)         NOT NULL,
   `team_limit_information` VARCHAR(255)                 DEFAULT NULL,
   `teacher_information`    VARCHAR(255)                 DEFAULT NULL,
@@ -132,7 +132,7 @@ CREATE TABLE `group_confirm` (
   `course_id`      INT(11)             NOT NULL,
   `group_name`     VARCHAR(50)         NOT NULL,
   `group_owner_id` CHAR(8)             NOT NULL,
-  `group_score`    DECIMAL(10, 0)               DEFAULT NULL,
+  `group_score`    DECIMAL(10, 1)               DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_group_id` (`group_id`),
   UNIQUE KEY `uk_group_owner_id` (`group_owner_id`)
@@ -281,7 +281,7 @@ CREATE TABLE `score` (
   `homework_id`   TINYINT(4)          NOT NULL,
   `group_id`      TINYINT(4)          NOT NULL,
   `grader_id`     VARCHAR(20)         NOT NULL,
-  `score`         DECIMAL(10, 0)               DEFAULT '0',
+  `score`         DECIMAL(10, 1)               DEFAULT '0.0',
   `score_message` VARCHAR(255)                 DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_score_id` (`score_id`),
@@ -310,9 +310,9 @@ CREATE TABLE `student` (
   `student_gender` CHAR(1)             NOT NULL,
   `student_class`  CHAR(6)             NOT NULL,
   `student_absent` INT(11)                      DEFAULT '0',
-  `student_rate`   DECIMAL(10, 0)               DEFAULT '0',
-  `personal_score` DECIMAL(10, 0)               DEFAULT '0',
-  `group_score`    DECIMAL(10, 0)               DEFAULT '0',
+  `student_rate`   DECIMAL(10, 1)               DEFAULT '0.0',
+  `personal_score` DECIMAL(10, 1)               DEFAULT '0.0',
+  `group_score`    DECIMAL(10, 1)               DEFAULT '0.0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_student_id` (`student_id`)
 )
@@ -351,4 +351,4 @@ CREATE TABLE `teacher` (
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-03 23:46:25
+-- Dump completed on 2017-07-05  0:33:44

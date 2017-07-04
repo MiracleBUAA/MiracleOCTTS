@@ -10,8 +10,12 @@
     </resultMap>
     <resultMap id="StudentDetail" type="Student">
         <id property="id" column="id"/>
+        <result property="createtime" column="gmt_create"/>
+        <result property="updatetime" column="gmt_modified"/>
+        <result property="uid" column="uid"/>
         <result property="student_id" column="student_id"/>
         <result property="group_id" column="group_id"/>
+        <result property="password" column="password"/>
         <result property="student_name" column="student_name"/>
         <result property="student_gender" column="student_gender"/>
         <result property="student_class" column="student_class"/>

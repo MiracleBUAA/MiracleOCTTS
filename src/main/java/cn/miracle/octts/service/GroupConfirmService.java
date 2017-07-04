@@ -134,6 +134,20 @@ public class GroupConfirmService {
 
         List<GroupConfirm> group_list = new ArrayList<>();
         group_list.addAll(groupConfirmDao.findGroupConfirmByCourseId(course_id));
+        if (group_list.size() == 0) {
+            HashMap<String, Object> group_map = new HashMap<>();
+            group_map.put("group_id", "N/A");
+            group_map.put("group_name", "N/A");
+            List<HashMap<String, Object>> homework_score_list = new ArrayList<>();
+            HashMap<String, Object> score_map = new HashMap<>();
+            score_map.put("homework_id", "N/A");
+            score_map.put("homework_name","N/A");
+            score_map.put("score", "N/A");
+            homework_score_list.add(score_map);
+            group_map.put("total_score", 0.0);
+            group_map.put("homework_score_list", homework_score_list);
+            group_score_list.add(group_map);
+        }
         for (GroupConfirm group : group_list) {
             if (group != null) {
                 HashMap<String, Object> group_map = new HashMap<>();
@@ -164,10 +178,6 @@ public class GroupConfirmService {
                 }
                 group_map.put("total_score", total_score);
                 group_map.put("homework_score_list", homework_score_list);
-                group_score_list.add(group_map);
-            } else {
-                HashMap<String, Object> group_map = new HashMap<>();
-                group_map.put("homework_score_list", null);
                 group_score_list.add(group_map);
             }
         }
