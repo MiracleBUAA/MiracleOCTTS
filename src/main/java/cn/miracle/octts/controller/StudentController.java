@@ -645,6 +645,12 @@ public class StudentController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * API 学生签到功能
+     *
+     * @param uid
+     * @return
+     */
     @RequestMapping(value = "/check_in", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> rejectInvitation(@RequestParam(value = "uid") String uid) {
 
