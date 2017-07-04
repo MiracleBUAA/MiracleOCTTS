@@ -2,6 +2,7 @@
 target/
 file/
 src/main/resources/application.properties
+*.sh
 
 # Compiled class file
 *.class
