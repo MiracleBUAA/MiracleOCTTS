@@ -437,7 +437,7 @@ public class StudentController extends BaseController {
             //是团队负责人
             if (groupApplyMember.getGroup_role().equals(2)) {
                 List<HashMap<String, Object>> receiverList = studentService.getReceiverList(uid);
-                List<HashMap<String, Object>> student_list = studentService.getStudentNotInGroup(course_id);
+                List<HashMap<String, Object>> student_list = studentService.getStudentNotInGroupAndNotInvite(course_id, uid);
                 data.put("invitation_list", receiverList);
                 data.put("student_list", student_list);
                 response = setCorrectResponse(data);

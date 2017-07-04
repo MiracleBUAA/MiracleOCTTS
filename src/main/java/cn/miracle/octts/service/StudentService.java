@@ -28,6 +28,9 @@ public class StudentService {
     @Autowired
     private InvitationDao invitationDao;
 
+    @Autowired
+    private InvitationService invitationService;
+
 
     public List<Student> findAllStudent() {
         return studentDao.findAllStudent();
@@ -186,5 +189,27 @@ public class StudentService {
         return studentDao.updateStudentById(student);
     }
 
+    public Set<String> getStudentNotInGroupAndNotInviteSet(Integer course_id, String sender_id) {
+        Set<String> result = new HashSet<String>();
 
+        Set<String> studentNotInGroupSet = getStudentNotInGroupSet(course_id);
+        Set<String> receiverSet = new HashSet<String>(invitationService.findReceiverIdBySenderId(sender_id));
+
+
+        result.addAll(studentNotInGroupSet);
+        result.removeAll(receiverSet);
+
+        return result;
+    }
+
+    public List<HashMap<String, Object>> getStudentNotInGroupAndNotInvite(Integer course_id, String sender_id) {
+        List<HashMap<String, Object>> student_list = new ArrayList<HashMap<String, Object>>();
+
+        Iterator<String> studentIdIter = getStudentNotInGroupAndNotInviteSet(course_id, sender_id).iterator();
+        while (studentIdIter.hasNext()) {
+            HashMap<String, Object> student = student2Json(findStudentById(studentIdIter.next()));
+            student_list.add(student);
+        }
+        return student_list;
+    }
 }
