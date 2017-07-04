@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,7 +28,11 @@ public class FileUtils {
 
     public static String saveSingleUploadFile(MultipartFile file, String file_type) throws IOException {
         byte[] filebytes = file.getBytes();
-        String file_url = UPLOAD_SAVE_FOLDER + FILE_SEPARATOR + file_type + FILE_SEPARATOR +file.getOriginalFilename();
+        Date current = new Date();
+        Long timestamp = current.getTime();
+
+        String file_url = UPLOAD_SAVE_FOLDER + FILE_SEPARATOR + file_type + FILE_SEPARATOR +
+                           timestamp.toString() + "_" + file.getOriginalFilename();
         Path path = Paths.get(file_url);
         Files.write(path, filebytes);
         return file_url;
