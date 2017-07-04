@@ -644,5 +644,20 @@ public class StudentController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/check_in", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> rejectInvitation(@RequestParam(value = "uid") String uid) {
+
+        BaseResponse response = new BaseResponse();
+        if (studentService.findStudentById(uid) == null){
+            response = setParamError();
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        studentService.setStudentCheckIn(uid);
+
+        response = setCorrectUpdate();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 }

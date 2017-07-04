@@ -31,6 +31,9 @@ public class TeacherService {
     }
 
     public Integer importStudentList(String ListUrl, String uid) {
+        //设置缺勤次数为20次
+        Integer absent = 20;
+
         jxl.Workbook readwb = null;
         int studentCount = 0;
         try {
@@ -54,6 +57,9 @@ public class TeacherService {
                     cell = readsheet.getCell(3, row);
                     student.setStudent_class(cell.getContents());
                 }
+
+                student.setStudent_absent(absent);
+
                 Date currentTime = new Date(System.currentTimeMillis());
                 student.setCreatetime(currentTime);
                 student.setUpdatetime(currentTime);

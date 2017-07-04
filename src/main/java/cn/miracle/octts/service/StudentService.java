@@ -212,4 +212,19 @@ public class StudentService {
         }
         return student_list;
     }
+
+    public Integer setStudentCheckIn(String uid) {
+        Student student = findStudentById(uid);
+        Integer absent = student.getStudent_absent();
+        if (absent <= 0) {
+            return 0;
+        } else {
+            student.setStudent_absent(absent - 1);
+
+            Date currentTime = new Date(System.currentTimeMillis());
+            student.setUpdatetime(currentTime);
+            student.setUid(uid);
+            return studentDao.updateStudentById(student);
+        }
+    }
 }
