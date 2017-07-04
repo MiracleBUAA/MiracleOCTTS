@@ -608,11 +608,12 @@ public class StudentController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/group_rate", method = RequestMethod.GET)
-    public ResponseEntity<BaseResponse> getGroupRate(@RequestParam(value = "course_id") Integer course_id,
-                                                     @RequestParam(value = "group_id") Integer group_id) {
+    public ResponseEntity<BaseResponse> getGroupRate(@RequestParam(value = "uid") String uid,
+                                                     @RequestParam(value = "course_id") Integer course_id) {
         BaseResponse response = new BaseResponse();
         HashMap<String, Object> data = new HashMap<String, Object>();
-        if (!groupConfirmService.findGroupConfirmById(group_id).getCourse_id().equals(course_id)) {
+        Integer group_id = groupConfirmMemberService.findGroupIdByStudentId(uid);
+        if (group_id == null || !groupConfirmService.findGroupConfirmById(group_id).getCourse_id().equals(course_id)) {
             response = setParamError();
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
@@ -648,7 +649,7 @@ public class StudentController extends BaseController {
     public ResponseEntity<BaseResponse> rejectInvitation(@RequestParam(value = "uid") String uid) {
 
         BaseResponse response = new BaseResponse();
-        if (studentService.findStudentById(uid) == null){
+        if (studentService.findStudentById(uid) == null) {
             response = setParamError();
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
