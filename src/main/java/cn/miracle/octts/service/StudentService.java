@@ -133,6 +133,7 @@ public class StudentService {
         Double group_score = student.getGroup_score();
         Double student_rate = student.getStudent_rate();
         HashMap<Integer, Double> absent_punish = new HashMap<>();
+        absent_punish.put(0, 0.0);
         absent_punish.put(1, 0.5);
         absent_punish.put(2, 1.0);
         absent_punish.put(3, 4.5);
@@ -145,7 +146,8 @@ public class StudentService {
         absent_punish.put(10, 40.0);
         absent_punish.put(11, 45.0);
         absent_punish.put(12, 50.0);
-        Double absent_punish_score = absent_punish.get(student.getStudent_absent());
+        Integer absent = student.getStudent_absent();
+        Double absent_punish_score = absent_punish.get(absent);
         Double personal_score = group_score * student_rate - absent_punish_score;
         student.setPersonal_score(personal_score);
         studentDao.setPersonalScoreById(student);
