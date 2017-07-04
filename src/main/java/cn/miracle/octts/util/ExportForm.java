@@ -76,12 +76,10 @@ public class ExportForm {
                 row++;
                 GroupConfirmMember member = memberListIter.next();
 
-                Integer gid = member.getGroup_id();
-
-                label = new Label(0, row, groupConfirmService.findGroupConfirmNameById(gid).toString());
+                label = new Label(0, row, groupConfirmService.findGroupConfirmNameById(member.getGroup_id()).toString());
                 firstSheet.addCell(label);
 
-                label = new Label(1, row, gid.toString());
+                label = new Label(1, row, member.getGroup_id().toString());
                 firstSheet.addCell(label);
 
                 label = new Label(2, row, studentService.findStudentNameById(member.getStudent_id()));
