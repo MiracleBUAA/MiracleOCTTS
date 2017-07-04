@@ -1,7 +1,9 @@
 package cn.miracle.octts.service;
 
 import cn.miracle.octts.dao.*;
-import cn.miracle.octts.entity.*;
+import cn.miracle.octts.entity.GroupConfirm;
+import cn.miracle.octts.entity.HomeworkUpload;
+import cn.miracle.octts.entity.Score;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -94,8 +96,7 @@ public class GroupConfirmService {
         List<HashMap<String, Object>> homework_group_list = new ArrayList<HashMap<String, Object>>();
         if (group_list.isEmpty()) {
 
-        }
-        else {
+        } else {
             for (GroupConfirm group : group_list) {
                 if (group != null) {
                     HashMap<String, Object> group_map = new HashMap<>();
@@ -109,8 +110,7 @@ public class GroupConfirmService {
                     if (score != null) {
                         group_map.put("score", score.getScore());
                         group_map.put("score_message", score.getScore_message());
-                    }
-                    else {
+                    } else {
                         group_map.put("score", "未评分");
                         group_map.put("score_message", "无信息");
                     }
@@ -129,7 +129,7 @@ public class GroupConfirmService {
         return homework_group_list;
     }
 
-    public List<HashMap<String, Object>> getGroupScoreList (Integer course_id) {
+    public List<HashMap<String, Object>> getGroupScoreList(Integer course_id) {
         List<HashMap<String, Object>> group_score_list = new ArrayList<>();
 
         List<GroupConfirm> group_list = new ArrayList<>();
@@ -164,6 +164,10 @@ public class GroupConfirmService {
                 }
                 group_map.put("total_score", total_score);
                 group_map.put("homework_score_list", homework_score_list);
+                group_score_list.add(group_map);
+            } else {
+                HashMap<String, Object> group_map = new HashMap<>();
+                group_map.put("homework_score_list", null);
                 group_score_list.add(group_map);
             }
         }
