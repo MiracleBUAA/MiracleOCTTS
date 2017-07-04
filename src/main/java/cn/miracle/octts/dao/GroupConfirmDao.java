@@ -25,7 +25,8 @@ public interface GroupConfirmDao extends BaseMapper<GroupConfirm> {
 
     @Select("SELECT gmt_create, gmt_modified, uid, group_id, course_id, group_name, group_owner_id, group_score " +
             "FROM group_confirm " +
-            "WHERE course_id = #{course_id}")
+            "WHERE course_id = #{course_id} " +
+            "ORDER BY group_id")
     @ResultMap("cn.miracle.octts.dao.GroupConfirmDao.GroupConfirmDetail")
     List<GroupConfirm> findGroupConfirmByCourseId(Integer course_id);
 

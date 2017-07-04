@@ -437,7 +437,9 @@ public class StudentController extends BaseController {
             //是团队负责人
             if (groupApplyMember.getGroup_role().equals(2)) {
                 List<HashMap<String, Object>> receiverList = studentService.getReceiverList(uid);
+                List<HashMap<String, Object>> student_list = studentService.getStudentNotInGroup(course_id);
                 data.put("invitation_list", receiverList);
+                data.put("student_list", student_list);
                 response = setCorrectResponse(data);
 
                 return new ResponseEntity<>(response, HttpStatus.OK);
@@ -568,8 +570,14 @@ public class StudentController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
-
+    /**
+     * API54: 解散未被批准的团队
+     *
+     * @param uid
+     * @param course_id
+     * @param group_apply_id
+     * @return
+     */
     @RequestMapping(value = "/dismiss_group", method = RequestMethod.POST)
     public ResponseEntity<BaseResponse> rejectGroupApply(@RequestParam(value = "uid") String uid,
                                                          @RequestParam(value = "course_id") Integer course_id,
@@ -592,5 +600,20 @@ public class StudentController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/group_rate", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getGroupRate(@RequestParam(value = "course_id") Integer course_id,
+                                                     @RequestParam(value = "group_id") Integer group_id) {
+        BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        if (!groupConfirmService.findGroupConfirmById(group_id).getCourse_id().equals(course_id)) {
+            response = setParamError();
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        data.put("rate_list", studentService.getMemberRateList(group_id));
+        response = setCorrectResponse(data);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 }

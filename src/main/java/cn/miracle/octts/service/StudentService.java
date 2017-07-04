@@ -148,6 +148,22 @@ public class StudentService {
         return personal_score;
     }
 
+    public List<HashMap<String, Object>> getMemberRateList(Integer group_id) {
+        List<HashMap<String, Object>> memberRateList = new ArrayList<HashMap<String, Object>>();
+
+        Iterator<String> studentIdIter = groupConfirmMemberDao.findStudentIdByGroupId(group_id).iterator();
+        while (studentIdIter.hasNext()) {
+            Student student = findStudentById(studentIdIter.next());
+            HashMap<String, Object> memberRate = new HashMap<String, Object>();
+            memberRate.put("student_id", student.getStudent_id());
+            memberRate.put("student_name",student.getStudent_name());
+            memberRate.put("student_rate", student.getStudent_rate());
+
+            memberRateList.add(memberRate);
+        }
+        return memberRateList;
+    }
+
     public void setStudentAbsentById(String student_id, Integer student_absent) {
         studentDao.setAbsentById(student_id, student_absent);
     }

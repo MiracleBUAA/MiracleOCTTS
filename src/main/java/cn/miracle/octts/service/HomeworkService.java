@@ -73,7 +73,7 @@ public class HomeworkService {
         homeworkDao.deleteHomework(homework_id);
     }
 
-    public List<Integer> findAllHomeworkId() {
-        return homeworkDao.findAllHomeworkId();
+    public List<Homework> findHoweworkByCourseId(Integer course_id) {
+        return homeworkDao.findHoweworkByCourseId(course_id);
     }
 }

@@ -25,7 +25,7 @@ public class ExportFormTest {
 
     @Test
     public void testExportGroupScoreList() throws Exception {
-        exportForm.exportGroupScoreList();
+        exportForm.exportGroupScoreList(1);
     }
 
     @Test
