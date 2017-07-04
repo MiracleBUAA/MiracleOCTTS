@@ -121,8 +121,9 @@ public class StudentService {
         }
         return memberlist;
     }
-    public void setGroupScoreById(String student_id, Double group_score) {
-        studentDao.setGroupScoreById(student_id, group_score);
+
+    public Integer setGroupScoreById(String student_id, Double group_score) {
+        return studentDao.setGroupScoreById(student_id, group_score);
     }
 
     public Double setPersonalScoreById(Student student) {
@@ -156,7 +157,7 @@ public class StudentService {
             Student student = findStudentById(studentIdIter.next());
             HashMap<String, Object> memberRate = new HashMap<String, Object>();
             memberRate.put("student_id", student.getStudent_id());
-            memberRate.put("student_name",student.getStudent_name());
+            memberRate.put("student_name", student.getStudent_name());
             memberRate.put("student_rate", student.getStudent_rate());
 
             memberRateList.add(memberRate);
@@ -164,7 +165,26 @@ public class StudentService {
         return memberRateList;
     }
 
-    public void setStudentAbsentById(String student_id, Integer student_absent) {
-        studentDao.setAbsentById(student_id, student_absent);
+    public Integer setStudentAbsentById(String student_id, Integer student_absent) {
+        Student student = findStudentById(student_id);
+        student.setStudent_absent(student_absent);
+
+        Date currentTime = new Date(System.currentTimeMillis());
+        student.setUpdatetime(currentTime);
+
+        return studentDao.updateStudentById(student);
     }
+
+    public Integer updateStudentRateById(Double student_rate, String student_id, String uid) {
+        Student student = findStudentById(student_id);
+        student.setStudent_rate(student_rate);
+
+        Date currentTime = new Date(System.currentTimeMillis());
+        student.setUpdatetime(currentTime);
+        student.setUid(uid);
+
+        return studentDao.updateStudentById(student);
+    }
+
+
 }

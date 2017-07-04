@@ -600,6 +600,13 @@ public class StudentController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * API49: 获取组内评分
+     *
+     * @param course_id
+     * @param group_id
+     * @return
+     */
     @RequestMapping(value = "/group_rate", method = RequestMethod.GET)
     public ResponseEntity<BaseResponse> getGroupRate(@RequestParam(value = "course_id") Integer course_id,
                                                      @RequestParam(value = "group_id") Integer group_id) {
@@ -615,5 +622,27 @@ public class StudentController extends BaseController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    /**
+     * API56: 获取组内评分
+     *
+     * @param uid
+     * @param student_id
+     * @param student_rate
+     * @return
+     */
+    @RequestMapping(value = "/group_rate", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> rejectInvitation(@RequestParam(value = "uid") String uid,
+                                                         @RequestParam(value = "student_id") String student_id,
+                                                         @RequestParam(value = "student_rate") Double student_rate) {
+        BaseResponse response = new BaseResponse();
+
+        studentService.updateStudentRateById(student_rate, student_id, uid);
+
+        response = setCorrectUpdate();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
 }

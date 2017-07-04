@@ -49,13 +49,18 @@ public interface StudentDao extends BaseMapper<Student> {
     List<String> findAllStudentId();
 
     @Update("UPDATE student SET group_score=#{group_score} WHERE student_id=#{student_id}")
-    void setGroupScoreById(@Param(value = "student_id") String student_id,
-                           @Param(value = "group_score") Double group_score);
+    Integer setGroupScoreById(@Param(value = "student_id") String student_id,
+                              @Param(value = "group_score") Double group_score);
 
     @Update("UPDATE student SET personal_score=#{student_id} WHERE student_id=#{personal_score}")
-    void setPersonalScoreById(Student student);
+    Integer setPersonalScoreById(Student student);
 
-    @Update("UPDATE student SET student_absent=#{student_absent} WHERE student_id=#{student_id};")
-    void setAbsentById(@Param(value = "student_id") String student_id,
-                       @Param(value = "student_absent") Integer student_absent);
+    @Update("UPDATE student " +
+            "SET gmt_create = #{createtime}, gmt_modified = #{updatetime}, uid = #{uid}, student_id = #{student_id}, " +
+            "group_id = #{group_id}, password = #{password}, student_name = #{student_name}, " +
+            "student_gender = #{student_gender}, student_class = #{student_class}, student_absent = #{student_absent}, " +
+            "student_rate = #{student_rate}, personal_score = #{personal_score}, group_score = #{group_score} " +
+            "WHERE student_id=#{student_id}")
+    Integer updateStudentById(Student student);
+
 }
