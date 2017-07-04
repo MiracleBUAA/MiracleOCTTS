@@ -147,4 +147,8 @@ public class StudentService {
         studentDao.setPersonalScoreById(student);
         return personal_score;
     }
+
+    public void setStudentAbsentById(String student_id, Integer student_absent) {
+        studentDao.setAbsentById(student_id, student_absent);
+    }
 }

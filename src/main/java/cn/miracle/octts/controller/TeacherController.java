@@ -23,10 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Tony on 2017/6/27.
@@ -888,4 +885,50 @@ public class TeacherController extends BaseController {
             return new ResponseEntity<BaseResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+    * API.49: 教师——录入缺勤信息
+    * */
+    @RequestMapping(value = "/student_absent", method = RequestMethod.GET)
+    public ResponseEntity<BaseResponse> getStudentAbsent (@RequestParam(value = "uid") String uid) {
+        BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<String, Object>();
+
+        List<HashMap<String, Object>> student_absent_list = new ArrayList<>();
+
+        List<Student> studentList = studentService.findAllStudent();
+        Iterator<Student> student_iter = studentList.iterator();
+        while (student_iter.hasNext()) {
+            Student student = student_iter.next();
+            HashMap<String, Object> student_map = new HashMap<>();
+            student_map.put("student_id", student.getStudent_id());
+            student_map.put("student_name", student.getStudent_name());
+            student_map.put("student_absent", student.getStudent_absent());
+
+            student_absent_list.add(student_map);
+        }
+
+        data.put("student_absent_list", student_absent_list);
+        response = setCorrectResponse(data);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/student_absent", method = RequestMethod.POST)
+    public ResponseEntity<BaseResponse> setStudentAbsent (@RequestParam(value = "uid") String uid,
+                                                          @RequestParam(value = "student_id") String student_id,
+                                                          @RequestParam(value = "student_absent") Integer student_absent) {
+        BaseResponse response = new BaseResponse();
+        HashMap<String, Object> data = new HashMap<String, Object>();
+
+        try {
+            studentService.setStudentAbsentById(student_id, student_absent);
+            data.put("desc", "success");
+            response = setCorrectResponse(data);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<BaseResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
+
+

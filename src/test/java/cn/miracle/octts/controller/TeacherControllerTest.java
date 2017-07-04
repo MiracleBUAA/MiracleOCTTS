@@ -208,5 +208,15 @@ public class TeacherControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    public void testSetAbsent() throws Exception {
+        this.mockMvc.perform(
+                post("/teacher/student_absent")
+                        .param("uid", "T001")
+                        .param("student_id", "14211126")
+                        .param("student_absent", "5"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }
 

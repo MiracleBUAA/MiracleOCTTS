@@ -92,37 +92,40 @@ public class GroupConfirmService {
 
     public List<HashMap<String, Object>> getGroupHomeworkList(ArrayList<GroupConfirm> group_list, Integer homework_id) throws ParseException {
         List<HashMap<String, Object>> homework_group_list = new ArrayList<HashMap<String, Object>>();
+        if (group_list.isEmpty()) {
 
-        for (GroupConfirm group : group_list) {
-            if (group != null) {
-                HashMap<String, Object> group_map = new HashMap<>();
-                // 团队信息
-                group_map.put("group_id", group.getGroup_id());
-                group_map.put("group_name", group.getGroup_name());
-                group_map.put("group_owner", studentDao.findStudentNameById(group.getGroup_owner_id()));
-                // 团队作业评分
-                Integer group_id = group.getGroup_id();
-                Score score = scoreDao.findScoreByHomeworkIdAndGroupId(homework_id, group_id);
-                if (score != null) {
-                    group_map.put("score", score.getScore());
-                    group_map.put("score_message", score.getScore_message());
-                }
-                else {
-                    group_map.put("score", "未评分");
-                    group_map.put("score_message", "无信息");
-                }
-                // 作业列表
-                ArrayList<HomeworkUpload> homework_uploads = new ArrayList<>();
-                homework_uploads.addAll(homeworkUploadDao.findHomeworkUploadByHomeworkIdAndGroupId(homework_id, group_id));
-                ArrayList<HashMap<String, Object>> homework_upload_list = new ArrayList<>();
-                homework_upload_list.addAll(homeworkUploadService.getHomeworkUploadList(homework_uploads));
-                group_map.put("homework_upload_list", homework_upload_list);
+        }
+        else {
+            for (GroupConfirm group : group_list) {
+                if (group != null) {
+                    HashMap<String, Object> group_map = new HashMap<>();
+                    // 团队信息
+                    group_map.put("group_id", group.getGroup_id());
+                    group_map.put("group_name", group.getGroup_name());
+                    group_map.put("group_owner", studentDao.findStudentNameById(group.getGroup_owner_id()));
+                    // 团队作业评分
+                    Integer group_id = group.getGroup_id();
+                    Score score = scoreDao.findScoreByHomeworkIdAndGroupId(homework_id, group_id);
+                    if (score != null) {
+                        group_map.put("score", score.getScore());
+                        group_map.put("score_message", score.getScore_message());
+                    }
+                    else {
+                        group_map.put("score", "未评分");
+                        group_map.put("score_message", "无信息");
+                    }
+                    // 作业列表
+                    ArrayList<HomeworkUpload> homework_uploads = new ArrayList<>();
+                    homework_uploads.addAll(homeworkUploadDao.findHomeworkUploadByHomeworkIdAndGroupId(homework_id, group_id));
+                    ArrayList<HashMap<String, Object>> homework_upload_list = new ArrayList<>();
+                    homework_upload_list.addAll(homeworkUploadService.getHomeworkUploadList(homework_uploads));
+                    group_map.put("homework_upload_list", homework_upload_list);
 
-                // 写入homework_group_list
-                homework_group_list.add(group_map);
+                    // 写入homework_group_list
+                    homework_group_list.add(group_map);
+                }
             }
         }
-
         return homework_group_list;
     }
 
