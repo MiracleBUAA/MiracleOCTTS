@@ -21,8 +21,8 @@ public interface StudentDao extends BaseMapper<Student> {
     @ResultMap("cn.miracle.octts.dao.StudentDao.StudentDetail")
     List<Student> findAllStudent();
 
-    @Select("SELECT student_id, group_id, student_name, student_gender, student_class, " +
-            "student_absent, student_rate, personal_score, group_score " +
+    @Select("SELECT id, gmt_create, gmt_modified, uid, student_id, group_id, password, student_name, student_gender, " +
+            "student_class, student_absent, student_rate, personal_score, group_score " +
             "FROM student " +
             "Where student_id = #{stud_id}")
     @ResultMap("cn.miracle.octts.dao.StudentDao.StudentDetail")
@@ -56,10 +56,10 @@ public interface StudentDao extends BaseMapper<Student> {
     Integer setPersonalScoreById(Student student);
 
     @Update("UPDATE student " +
-            "SET gmt_create = #{createtime}, gmt_modified = #{updatetime}, uid = #{uid}, student_id = #{student_id}, " +
-            "group_id = #{group_id}, password = #{password}, student_name = #{student_name}, " +
-            "student_gender = #{student_gender}, student_class = #{student_class}, student_absent = #{student_absent}, " +
-            "student_rate = #{student_rate}, personal_score = #{personal_score}, group_score = #{group_score} " +
+            "SET gmt_modified = #{updatetime}, uid = #{uid}, student_id = #{student_id}, group_id = #{group_id}, " +
+            "password = #{password}, student_name = #{student_name}, student_gender = #{student_gender}, " +
+            "student_class = #{student_class}, student_absent = #{student_absent}, student_rate = #{student_rate}, " +
+            "personal_score = #{personal_score}, group_score = #{group_score} " +
             "WHERE student_id=#{student_id}")
     Integer updateStudentById(Student student);
 
