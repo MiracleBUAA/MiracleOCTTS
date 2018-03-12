@@ -40,8 +40,9 @@ public class FileUtils {
 
     public static void saveUploadFiles(List<MultipartFile> files, String file_type) throws IOException {
         for (MultipartFile file : files) {
-            if (file.isEmpty())
+            if (file.isEmpty()) {
                 continue;
+            }
             String file_path = saveSingleUploadFile(file, file_type);
         }
     }

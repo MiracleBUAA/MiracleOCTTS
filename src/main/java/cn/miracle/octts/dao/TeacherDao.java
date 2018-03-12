@@ -2,14 +2,14 @@ package cn.miracle.octts.dao;
 
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.Teacher;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by hf on 2017/6/27.
  */
+@Mapper
+@Component
 public interface TeacherDao extends BaseMapper<Teacher> {
     @Select("SELECT TEACHER_ID, PASSWORD, NAME, EMAIL, TELEPHONE " +
             "FROM TEACHER " +

@@ -3,6 +3,7 @@ package cn.miracle.octts.dao;
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.HomeworkUpload;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -10,6 +11,8 @@ import java.util.List;
 /**
  * Created by Tony on 2017/6/29.
  */
+@Mapper
+@Component
 public interface HomeworkUploadDao extends BaseMapper<HomeworkUpload> {
 
     @Insert("INSERT INTO homework_upload(gmt_create, gmt_modified, uid, homework_upload_id, course_id, homework_id, group_id, file_name, homework_url, resubmit) " +

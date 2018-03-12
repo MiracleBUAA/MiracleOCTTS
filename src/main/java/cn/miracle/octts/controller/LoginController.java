@@ -137,6 +137,8 @@ public class LoginController extends BaseController {
                         }
                     }
                     break;
+                default:
+                    break;
             }
         }
         return new ResponseEntity<>(response, HttpStatus.OK);

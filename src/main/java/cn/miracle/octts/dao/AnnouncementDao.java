@@ -2,15 +2,16 @@ package cn.miracle.octts.dao;
 
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.Announcement;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 /**
  * Created by Tony on 2017/7/1.
  */
+@Mapper
+@Component
 public interface AnnouncementDao extends BaseMapper<Announcement> {
 
     @Select("SELECT gmt_modified, uid, announcement_id, course_id, teacher_id, announcement_title, announcement_message " +

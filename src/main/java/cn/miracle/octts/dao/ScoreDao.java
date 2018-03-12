@@ -3,12 +3,15 @@ package cn.miracle.octts.dao;
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.Score;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * Created by hf on 2017/7/2.
  */
+@Mapper
+@Component
 public interface ScoreDao extends BaseMapper<Score> {
 
     @Select("SELECT gmt_create, gmt_modified, uid, score_id, course_id, homework_id, group_id, grader_id, score, score_message " +

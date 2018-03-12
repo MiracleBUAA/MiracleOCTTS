@@ -3,15 +3,18 @@ package cn.miracle.octts.dao;
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.GroupConfirm;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * Created by hf on 2017/7/1.
  */
-
+@Mapper
+@Component
 public interface GroupConfirmDao extends BaseMapper<GroupConfirm> {
 
     @Select("SELECT group_owner_id FROM group_confirm")

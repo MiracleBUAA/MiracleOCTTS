@@ -27,10 +27,11 @@ public class AnnouncementService {
     }
 
     public Integer findMaxAnnouncementId() {
-        if (announcementDao.findMaxAnnouncementId() != null)
+        if (announcementDao.findMaxAnnouncementId() != null) {
             return announcementDao.findMaxAnnouncementId() + 1;
-        else
+        } else {
             return new Integer(1);
+        }
     }
 
     public Integer insertAnnouncement(Announcement announcement, String uid) {
