@@ -3,6 +3,7 @@ package cn.miracle.octts.dao;
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.Student;
 import org.apache.ibatis.annotations.*;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * Created by hf on 2017/6/25.
  */
-@Mapper
+@MapperScan
 @Component
 public interface StudentDao extends BaseMapper<Student> {
 

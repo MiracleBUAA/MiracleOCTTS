@@ -3,6 +3,7 @@ package cn.miracle.octts.dao;
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.HomeworkUpload;
 import org.apache.ibatis.annotations.*;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Created by Tony on 2017/6/29.
  */
-@Mapper
+@MapperScan
 @Component
 public interface HomeworkUploadDao extends BaseMapper<HomeworkUpload> {
 

@@ -2,16 +2,17 @@ package cn.miracle.octts.dao;
 
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.Invitation;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * Created by Tony on 2017/7/3.
  */
+@MapperScan
+@Component
 public interface InvitationDao extends BaseMapper<Invitation> {
 
     @Select("SELECT receiver_id FROM invitation WHERE sender_id = #{sender_id}")

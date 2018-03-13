@@ -3,6 +3,8 @@ package cn.miracle.octts.dao;
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.Resource;
 import org.apache.ibatis.annotations.*;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +12,8 @@ import java.util.List;
 /**
  * Created by hf on 2017/6/28.
  */
+@MapperScan
+@Component
 public interface ResourceDao extends BaseMapper<Resource> {
 
     @Select("SELECT gmt_create,  gmt_modified, resource_id, course_id, teacher_id, resource_title, resource_url, resource_type " +

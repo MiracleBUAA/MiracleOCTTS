@@ -6,13 +6,17 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * Created by hf on 2017/7/1.
  */
-public interface GroupApplyDao extends BaseMapper<GroupApply> {
+@MapperScan
+@Component
+public interface  GroupApplyDao extends BaseMapper<GroupApply> {
 
     @Select("SELECT GROUP_APPLY_OWNER_ID FROM GROUP_APPLY")
     List<String> findGroupApplyOwner();

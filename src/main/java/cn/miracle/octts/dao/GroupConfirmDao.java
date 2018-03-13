@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by hf on 2017/7/1.
  */
-@Mapper
+@MapperScan
 @Component
 public interface GroupConfirmDao extends BaseMapper<GroupConfirm> {
 

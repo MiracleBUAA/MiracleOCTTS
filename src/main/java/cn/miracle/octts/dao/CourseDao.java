@@ -3,12 +3,16 @@ package cn.miracle.octts.dao;
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.Course;
 import org.apache.ibatis.annotations.*;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * Created by Tony on 2017/6/27.
  */
+@MapperScan
+@Component
 public interface CourseDao extends BaseMapper<Course> {
 
     @Select("SELECT uid, course_id, course_year, course_start_time, course_status, course_name, course_hour, " +

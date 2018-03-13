@@ -5,12 +5,16 @@ import cn.miracle.octts.entity.GroupConfirmMember;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * Created by Tony on 2017/7/2.
  */
+@MapperScan
+@Component
 public interface GroupConfirmMemberDao extends BaseMapper<GroupConfirmMember> {
 
     @Select("SELECT student_id FROM group_confirm_member WHERE group_id = #{group_id} ORDER BY group_role DESC")

@@ -3,12 +3,16 @@ package cn.miracle.octts.dao;
 import cn.miracle.octts.common.base.BaseMapper;
 import cn.miracle.octts.entity.Homework;
 import org.apache.ibatis.annotations.*;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * Created by hf on 2017/6/28.
  */
+@MapperScan
+@Component
 public interface HomeworkDao extends BaseMapper<Homework> {
     @Select("SELECT homework_id, course_id, teacher_id, homework_score, homework_status, homework_title, homework_message, homework_start_time, homework_end_time, resubmit_limit " +
             "FROM homework " +
